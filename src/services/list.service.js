@@ -29,4 +29,3 @@ export default {
     update,
     getById
 };
-

@@ -43,7 +43,7 @@ export default {
   },
   created() {
     this.$store.dispatch("loadLists");
-    
+    // console.log('the board.vue has gotten these lists: ',this.lists);
   },
   components: {
      List,

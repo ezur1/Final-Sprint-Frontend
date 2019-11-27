@@ -1,3 +1,4 @@
+'use strict'
 
 import listService from '../services/list.service.js'
 
@@ -29,6 +30,8 @@ export default {
     },
     actions: {
         loadLists(context) {
+            // console.log('getting here');
+
             return listService.query()
                 .then(lists => context.commit({ type: 'setlists', lists }));
         },

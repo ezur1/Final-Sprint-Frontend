@@ -9,14 +9,15 @@
     <div class="list-wraper">
       <div class="list-content flex col">
         <div class="list-header">
-          <p>{{list.title}}</p>
+          <div class="list-header">{{list.title}}</div>
+
           <button @click="showForm()">edit</button>
         </div>
 
         <div class="list-items">
-          <draggable v-model="listItems">
+          <draggable v-model="items">
             <transition-group>
-              <Item v-for="item in listItems" :item="item" :key="item.id" class="list-item" />
+              <Item v-for="item in items" :item="item" :key="item.id" class="list-item" />
             </transition-group>
           </draggable>
         </div>
@@ -35,15 +36,11 @@ export default {
   props: ["list"],
   data() {
     return {
+      val: null,
       newList: {
         title: ""
       },
-      listItems: [
-        { id: "a", title: "HELLO" },
-        { id: "b", title: "WORLD" },
-        { id: "c", title: "OF" },
-        { id: "d", title: "MAGIC" }
-      ],
+
       isShowForm: false
     };
   },
@@ -56,12 +53,33 @@ export default {
     },
     edit() {
       this.newList._id = this.list._id;
-      this.$store.dispatch({type: "updateList" ,list: this.newList});
+      this.$store.dispatch({ type: "updateList", list: this.newList });
+    }
+  },
+  computed: {
+    items: {
+      get() {
+        // console.log('the val is: ', this.val);
+        return this.$store.getters.itemsToShow;
+      },
+      set(list) {
+        this.val = list;
+        this.$store.dispatch({ type: "updateItemOrder", items: list });
+      }
     }
   },
   components: {
     Draggable,
     Item
+  },
+  created() {
+    this.$store.dispatch("loadItems");
+    console.log("the list.vue has gotten these items: ", this.items);
+  },
+  watch: {
+    value(newVal) {
+      this.val = newVal;
+    }
   }
 };
 </script>
