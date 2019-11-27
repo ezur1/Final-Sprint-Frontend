@@ -1,3 +1,4 @@
+'use strict'
 
 import listService from '../services/list.service.js'
 
@@ -8,7 +9,7 @@ export default {
     mutations: {
         addList(state, { addedList }) {
             state.lists.push(addedList);
-          },
+        },
         setlists(state, { lists }) {
             state.lists = lists
         }
@@ -20,12 +21,14 @@ export default {
     },
     actions: {
         loadLists(context) {
+            // console.log('getting here');
+
             return listService.query()
                 .then(lists => context.commit({ type: 'setlists', lists }));
         },
         addList(context, { list }) {
             return listService.add(list)
-              .then(addedList => context.commit({ type: 'addList', addedList }))
-          }
+                .then(addedList => context.commit({ type: 'addList', addedList }))
+        }
     }
 }
