@@ -7,7 +7,10 @@ export default {
         lists: []
     },
     mutations: {
-        setLists(state, { lists }) {
+        addList(state, { addedList }) {
+            state.lists.push(addedList);
+        },
+        setlists(state, { lists }) {
             state.lists = lists
         }
     },
@@ -21,11 +24,11 @@ export default {
             // console.log('getting here');
 
             return listService.query()
-                .then(lists => {
-                    // console.log('the board.store is getting these lists: ', lists);
-
-                    return context.commit({ type: 'setLists', lists });
-                })
+                .then(lists => context.commit({ type: 'setlists', lists }));
+        },
+        addList(context, { list }) {
+            return listService.add(list)
+                .then(addedList => context.commit({ type: 'addList', addedList }))
         }
     }
 }

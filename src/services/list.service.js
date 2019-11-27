@@ -1,13 +1,8 @@
 import { httpService } from '../services/http.service.js';
 
 function query() {
-    // console.log('now got to the list.service');
 
-    // return httpService.get('http://localhost:3000/lists')
-    var x = httpService.get('http://localhost:3000/lists')
-        // console.log('these are the gotten lists: ', x);
-    return x
-
+    return httpService.get('http://localhost:3000/lists')
 }
 
 function update(edited) {
@@ -23,7 +18,7 @@ function remove(id) {
 }
 
 function add(added) {
-    return httpService.post(`http://localhost:3000/api/toy`, added)
+    return httpService.post(`http://localhost:3000/lists`, added)
 }
 
 export default {
