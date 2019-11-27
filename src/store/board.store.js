@@ -1,3 +1,4 @@
+'use strict'
 
 import listService from '../services/list.service.js'
 
@@ -6,7 +7,7 @@ export default {
         lists: []
     },
     mutations: {
-        setlists(state, { lists }) {
+        setLists(state, { lists }) {
             state.lists = lists
         }
     },
@@ -17,8 +18,14 @@ export default {
     },
     actions: {
         loadLists(context) {
+            // console.log('getting here');
+
             return listService.query()
-                .then(lists => context.commit({ type: 'setlists', lists }));
+                .then(lists => {
+                    // console.log('the board.store is getting these lists: ', lists);
+
+                    return context.commit({ type: 'setLists', lists });
+                })
         }
     }
 }

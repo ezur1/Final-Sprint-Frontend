@@ -1,7 +1,13 @@
 import { httpService } from '../services/http.service.js';
 
 function query() {
-    return httpService.get('http://localhost:3000/lists')
+    // console.log('now got to the list.service');
+
+    // return httpService.get('http://localhost:3000/lists')
+    var x = httpService.get('http://localhost:3000/lists')
+        // console.log('these are the gotten lists: ', x);
+    return x
+
 }
 
 function update(edited) {
@@ -27,4 +33,3 @@ export default {
     update,
     getById
 };
-
