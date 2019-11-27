@@ -43,6 +43,7 @@ export default {
   },
   created() {
     this.$store.dispatch("loadLists");
+    
   },
   components: {
      List,

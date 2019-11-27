@@ -6,15 +6,16 @@ function query() {
 }
 
 function update(edited) {
-    return httpService.put(`http://localhost:3000/api/toy/${edited._id}`, edited)
+    console.log('edited._id',edited);
+    return httpService.put(`http://localhost:3000/lists/${edited._id}`, edited)
 }
 
 function getById(id) {
-    return httpService.get(`http://localhost:3000/api/toy/${id}`)
+    return httpService.get(`http://localhost:3000/lists/${id}`)
 }
 
 function remove(id) {
-    return httpService.delete(`http://localhost:3000/api/toy/${id}`)
+    return httpService.delete(`http://localhost:3000/lists/${id}`)
 }
 
 function add(added) {
