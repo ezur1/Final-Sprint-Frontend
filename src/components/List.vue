@@ -9,15 +9,14 @@
     <div class="list-wraper">
       <div class="list-content flex col">
         <div class="list-header">
-          <div class="list-header">{{list.title}}</div>
-
+          {{list.title}}
           <button @click="showForm()">edit</button>
         </div>
 
         <div class="list-items">
           <draggable v-model="items">
             <transition-group>
-              <Item v-for="item in items" :item="item" :key="item.id" class="list-item" />
+              <Item v-for="item in items" :item="item" :key="item._id" class="list-item" />
             </transition-group>
           </draggable>
         </div>
