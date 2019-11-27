@@ -21,3 +21,20 @@
     text-decoration: none;
     z-index: 0;
 }
+
+.list-item-details {
+    overflow: hidden;
+    padding: 6px 8px 2px;
+    position: relative;
+    z-index: 10;
+}
+
+.list-item-title {
+    // clear: both;
+    display: block;
+    margin: 0 0 .5rem;
+    overflow: hidden;
+    text-decoration: none;
+    word-wrap: break-word;
+    color: #172b4d;
+}
