@@ -6,6 +6,9 @@ export default {
         lists: []
     },
     mutations: {
+        addList(state, { addedList }) {
+            state.lists.push(addedList);
+          },
         setlists(state, { lists }) {
             state.lists = lists
         }
@@ -19,6 +22,10 @@ export default {
         loadLists(context) {
             return listService.query()
                 .then(lists => context.commit({ type: 'setlists', lists }));
-        }
+        },
+        addList(context, { list }) {
+            return listService.add(list)
+              .then(addedList => context.commit({ type: 'addList', addedList }))
+          }
     }
 }

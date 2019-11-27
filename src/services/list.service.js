@@ -1,6 +1,7 @@
 import { httpService } from '../services/http.service.js';
 
 function query() {
+
     return httpService.get('http://localhost:3000/lists')
 }
 
@@ -17,7 +18,7 @@ function remove(id) {
 }
 
 function add(added) {
-    return httpService.post(`http://localhost:3000/api/toy`, added)
+    return httpService.post(`http://localhost:3000/lists`, added)
 }
 
 export default {
