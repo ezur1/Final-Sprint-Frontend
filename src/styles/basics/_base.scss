@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background-color: $clr1;
+}
+
+body {
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    &:visited{
+        color: black;
+    }
+    &:link{
+        color: black;
+
+    }
+
+}

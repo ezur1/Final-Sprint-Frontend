@@ -1,0 +1,23 @@
+.list-items{
+    // flex: 1 1 auto;
+    margin-bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 .5rem;
+    padding: 0 .5rem;
+    z-index: 1;
+    min-height: 0;
+}
+.list-item{
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    cursor: pointer;
+    display: block;
+    margin-bottom: .5rem;
+    max-width: 18rem;
+    min-height: 1.5rem;
+    position: relative;
+    text-decoration: none;
+    z-index: 0;
+}
