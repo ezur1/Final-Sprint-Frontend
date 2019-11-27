@@ -1,10 +1,24 @@
-import boardService from '../services/board.service.js'
+
+import listService from '../services/list.service.js'
 
 export default {
-    state: {},
-    mutations: {},
-    actions: {},
-    modules: {
-        boardService
+    state: {
+        lists: []
+    },
+    mutations: {
+        setlists(state, { lists }) {
+            state.lists = lists
+        }
+    },
+    getters: {
+        listsToShow(state) {
+            return state.lists
+        }
+    },
+    actions: {
+        loadLists(context) {
+            return listService.query()
+                .then(lists => context.commit({ type: 'setlists', lists }));
+        }
     }
 }
