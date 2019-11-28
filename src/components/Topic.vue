@@ -1,7 +1,6 @@
 <template>
   <section>
-   
-    <form v-if="isShowForm" @submit.prevent="edit" class="card edit-card">
+    <form v-if="isShowForm" @submit.prevent="save(topic.title)" class="card edit-card">
       edit topic title:
       <input type="text" v-model="newTopic.title" />
       <button type="submit">save</button>
@@ -24,7 +23,7 @@
 
         <div class="list-item-composer">Item - Composer</div>
       </div>
-      <button @click="remove(topic.id)">delete</button>
+      <button @click="remove()">delete</button>
     </div>
   </section>
 </template>
@@ -35,7 +34,7 @@ import Task from "@/components/Task";
 
 
 export default {
-  props: ['tasks', 'topic'],
+  props: ['topic', 'tasks'],
   data() {
     return {
       // val: null,
@@ -49,8 +48,8 @@ export default {
     showForm() {
       this.isShowForm = true;
     },
-    remove(topicId) {
-      this.$emit('removeTopic',topicId)
+    remove() {
+      this.$emit('removeTopic')
     },
     edit() {
       this.newTopic.id = this.topic.id;
@@ -58,6 +57,11 @@ export default {
     },
     showTaskPreview(){
           this.$emit('showPreview')
+    },
+    save(topicTitle) {
+      this.$emit('updateTopic', {oldTitle: topicTitle, newTitle: this.newTopic.title})
+      // this.newTopic.id = this.topic.id;
+      // this.$store.dispatch({ type: "updateTopic", topic: this.newTopic });
     }
   },
   computed: {

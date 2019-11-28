@@ -1,5 +1,5 @@
 <template>
-  <section v-if="topics" class="flex col">
+  <section v-if="currBoard" class="flex col">
     <TaskPreview v-if="isPreviewTask" />
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
@@ -11,13 +11,14 @@
     </div>
     <section class="board-lists flex wrap">
       <topic
-        v-for="topic in topics"
+        v-for="topic in currBoard.topics"
         :key="topic.id"
         :topic="topic"
         :tasks="topic.tasks"
-        @removeTopic="removeTopic"
+        @removeTopic="removeTopic(topic.title)"
+        @updateTopic="updateTopic"
         @showPreview="showPreview"
-      />
+      />     
     </section>
   </section>
 </template>
@@ -26,35 +27,44 @@
 import Topic from "../components/Topic.vue";
 import TaskPreview from "@/components/TaskPreview";
 export default {
-  props: ["board", "topics"],
-  data() {
-    return {
-      isAddTopic: false,
+  data(){
+    return{
+      isAddTopic:false,
       isPreviewTask: false,
-      newTopic: {
-        title: ""
+      newTopic:{
+        title:'',
       }
     };
   },
-  name: "board",
-  computed: {},
+  name: 'board',
+  computed: {
+    currBoard() {
+      return this.$store.getters.getCurrBoard;
+    }
+  },
   methods: {
-    addTopic() {
-      var boardToEdit = JSON.parse(JSON.stringify(this.board));
-      var newTopicEdit = JSON.parse(JSON.stringify(this.newTopic));
-      boardToEdit.topics.push(newTopicEdit);
-      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
-      this.newTopic.title = "";
-      this.openForm();
+     addTopic() {
+      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard))
+      var newTopicEdit = JSON.parse(JSON.stringify(this.newTopic))
+      boardToEdit.topics.push(newTopicEdit)
+      this.$store.dispatch({ type: "updateBoard", board: boardToEdit});
+      this.newTopic.title='';
+      this.openForm()
     },
-    removeTopic(topicId) {
-      var boardToEdit = JSON.parse(JSON.stringify(this.board));
-      var idx = boardToEdit.topics.findIndex(topic => topic.id === topicId);
-      boardToEdit.topics.splice(idx, 1);
+    removeTopic(topicTitle) {
+      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard))
+      var idx = boardToEdit.topics.findIndex(topic=> topic.title === topicTitle)
+      boardToEdit.topics.splice(idx,1)
       this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
     },
-    openForm() {
-      this.isAddTopic = !this.isAddTopic;
+    updateTopic(payload) {
+      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard))
+      var idx = boardToEdit.topics.findIndex(topic=> topic.title === payload.oldTitle)
+      boardToEdit.topics[idx].title = payload.newTitle
+      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
+    },
+    openForm(){
+      this.isAddTopic=!this.isAddTopic;
     },
     showPreview(){
       console.log('ahao');
@@ -62,11 +72,13 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("setCurrBoard", this.board);
+    var id = this.$route.params.id;    
+    this.$store.dispatch({ type: "getBoardById", boardId: id })
   },
   components: {
     Topic,
     TaskPreview
   }
-};
+}
+
 </script>

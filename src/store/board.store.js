@@ -26,6 +26,9 @@ export default {
         },
         currTask(state){
             return state.currTask;
+        },
+        getCurrBoard(state) {
+            return state.currBoard
         }
     },
     actions: {
@@ -35,8 +38,11 @@ export default {
                     return context.commit({ type: 'setBoards', boards })
                 });
         },
-        setCurrBoard(context, board) {
-            return context.commit({ type: 'setCurrBoard', board })
+        getBoardById(context, { boardId }) {
+            return boardService.getById(boardId)
+                .then(board => {
+                    context.commit({ type: 'setCurrBoard', board })
+                })
         },
         setCurrTask(context, {task}) {
             return context.commit({ type: 'setCurrTask', task })
@@ -44,9 +50,9 @@ export default {
         updateBoard(context, { board }) {
             return boardService.update(board)
                 .then(() => {
-                    return boardService.query()
-                        .then(boards => {
-                            return context.commit({ type: 'setBoards', boards })
+                    return boardService.getById(board._id)
+                        .then(board => {
+                            return context.commit({ type: 'setCurrBoard', board })
                         })
                 })
         },
