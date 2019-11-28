@@ -1,12 +1,25 @@
 .board-nav-bar-container{
-    height: 4rem;
-
-    img{
-        margin: 0rem 2rem;
+    height: 3rem;
+    background-color: #74EBD5;
+    background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+    .nav-bar-logo{
+        margin: 0rem 0.5rem;
+    }
+    .search-icon-container{
+        margin: 0;
         height: 2rem;
+        width: 2rem;
+        background-color: #9FACE6;
+        padding: 0.4rem;
+    }
+    img{
+        height: 1.5rem;
     }
     input{
-        height: 3rem;
-        border-radius: 2rem;
+        padding: 0.5rem;
+        height: 2rem;
+        border-style: none;
     }
 }
+
+

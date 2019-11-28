@@ -9,7 +9,7 @@
              </form>
         </div>
         <section class="board-lists">
-            <topic v-for="topic in topics" :key=topic.id :topic="topic" :tasks="topic.tasks" @removeTopic="removeTopic"/>
+            <topic  v-for="topic in topics" :key=topic.id :topic="topic" :tasks="topic.tasks" @removeTopic="removeTopic"/>
         </section>
         
     </section>
