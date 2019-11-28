@@ -1,6 +1,7 @@
 <template>
-  <section v-if="currBoard">
-    <div class="actions">
+  <section v-if="currBoard" class="flex col">
+    <TaskPreview v-if="isPreviewTask"/>
+    <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
       <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
         add topic title:
@@ -8,7 +9,7 @@
         <button type="submit">Add</button>
       </form>
     </div>
-    <section class="board-lists">
+    <section class="board-lists flex wrap">
       <topic
         v-for="topic in currBoard.topics"
         :key="topic.id"
