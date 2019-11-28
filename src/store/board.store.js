@@ -5,9 +5,13 @@ import boardService from '../services/board.service.js'
 export default {
     state: {
         boards: [],
-        currBoard: null
+        currBoard: null,
+        currTask:null
     },
     mutations: {
+        setCurrTask(state,{task}){
+            state.currTask = task;
+        },
         setBoards(state, { boards }) {
             state.boards = boards;
         },
@@ -19,6 +23,9 @@ export default {
     getters: {
         boardsToShow(state) {
             return state.boards
+        },
+        currTask(state){
+            return state.currTask;
         },
         getCurrBoard(state) {
             return state.currBoard
@@ -36,6 +43,9 @@ export default {
                 .then(board => {
                     context.commit({ type: 'setCurrBoard', board })
                 })
+        },
+        setCurrTask(context, {task}) {
+            return context.commit({ type: 'setCurrTask', task })
         },
         updateBoard(context, { board }) {
             return boardService.update(board)

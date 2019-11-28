@@ -1,8 +1,8 @@
 <template>
-    <div v-if="task" class="list-item" @click="openTaskModal()"> 
-        <div class="list-item-details">
+    <div v-if="task" class="task" @click="setCurrTask()"> 
+        <div class="task-details">
             <!-- <div class="labels"></div> -->
-            <div class="list-item-title">{{task.title}}</div>
+            <div class="task-title">{{task.title}}</div>
             <!-- <div class="tags"></div> -->
         </div>
         {{task.name}}
@@ -10,14 +10,18 @@
 </template>
 
 <script>
-
 export default {
     props:['task'],
-    components:{},
-    methods:{
-        openTaskModal(){
-            console.log(this.task);
+    data(){
+        return{
         }
-    }
+    },
+    methods:{
+        setCurrTask(){
+            this.$store.dispatch({ type: "setCurrTask", task: this.task });
+        }
+    },
+    components:{
+    },
 }
 </script>

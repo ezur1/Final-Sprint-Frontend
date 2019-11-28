@@ -1,0 +1,17 @@
+.task-preview{
+    background-color: #f4f5f7;
+    border-radius: 2px;
+    overflow: hidden;
+    position: absolute;
+    width: 768px;
+    z-index: 50;
+    margin-top: 10rem;
+    align-self: center;
+}
+
+.preview-header{
+    margin: 12px 40px 8px 56px;
+    min-height: 32px;
+    position: relative;
+    z-index: 1;
+}

@@ -8,7 +8,6 @@
       <section class="board">
           <board v-for="board in boards" :key=board._id :board="board" :topics="board.topics"> </board>
       </section>
-
     </div>
     <router-view/>
   </div>
