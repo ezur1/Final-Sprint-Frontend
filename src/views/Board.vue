@@ -1,52 +1,59 @@
 <template>
-    <section v-if="lists">
+    <section v-if="topics">
         <div class="actions">
-            <button  @click="openForm()">Add List</button>
-            <form v-if="isAddList" @submit.prevent="addList" class="card edit-card">
-              add list title:
-              <input type="text" v-model="newList.title" />
+            <button  @click="openForm()">Add Topic</button>
+            <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
+              add topic title:
+              <input  type="text" v-model="newTopic.title" />
               <button type="submit">Add</button>
              </form>
         </div>
         <section class="board-lists">
-            <list v-for="list in lists" :key=list._id :list="list"> </list>
+            <topic v-for="topic in topics" :key=topic.id :topic="topic" :tasks="topic.tasks" @removeTopic="removeTopic"/>
         </section>
         
     </section>
 </template>
 
 <script>
-import List from '../components/List.vue';
+import Topic from '../components/Topic.vue';
 
 export default {
+  props:['board', 'topics'],
   data(){
     return{
-      isAddList:false,
-      newList:{
+      isAddTopic:false,
+      newTopic:{
         title:'',
       }
     }
   },
   name: 'board',
-  computed: {
-    lists() {
-      return this.$store.getters.listsToShow;
-    }
-  },
+  computed: {},
   methods: {
-    addList() {
-      this.$store.dispatch({ type: "addList", list: this.newList });
+     addTopic() {
+      var boardToEdit = JSON.parse(JSON.stringify(this.board))
+      var newTopicEdit = JSON.parse(JSON.stringify(this.newTopic))
+      boardToEdit.topics.push(newTopicEdit)
+      this.$store.dispatch({ type: "updateBoard", board: boardToEdit});
+      this.newTopic.title='';
+      this.openForm()
+    },
+    removeTopic(topicId) {
+      var boardToEdit = JSON.parse(JSON.stringify(this.board))
+      var idx = boardToEdit.topics.findIndex(topic=> topic.id === topicId)
+      boardToEdit.topics.splice(idx,1)
+      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
     },
     openForm(){
-      this.isAddList=true
-    }
+      this.isAddTopic=!this.isAddTopic;
+    },
   },
   created() {
-    this.$store.dispatch("loadLists");
-    // console.log('the board.vue has gotten these lists: ',this.lists);
+    this.$store.dispatch("setCurrBoard", this.board);
   },
   components: {
-     List,
+     Topic,
   }
 }
 </script>
