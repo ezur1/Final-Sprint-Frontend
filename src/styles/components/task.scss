@@ -1,4 +1,4 @@
-.list-items{
+.topic-tasks{
     // flex: 1 1 auto;
     margin-bottom: 0;
     overflow-y: auto;
@@ -8,7 +8,7 @@
     z-index: 1;
     min-height: 0;
 }
-.list-item{
+.task{
     background-color: #fff;
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(9,30,66,.25);
@@ -22,14 +22,14 @@
     z-index: 0;
 }
 
-.list-item-details {
+.task-details {
     overflow: hidden;
     padding: 6px 8px 2px;
     position: relative;
     z-index: 10;
 }
 
-.list-item-title {
+.task-title {
     // clear: both;
     display: block;
     margin: 0 0 .5rem;

@@ -1,22 +1,23 @@
 <template>
   <section>
+   
     <form v-if="isShowForm" @submit.prevent="edit" class="card edit-card">
       edit topic title:
       <input type="text" v-model="newTopic.title" />
       <button type="submit">save</button>
     </form>
 
-    <div class="list-wraper">
-      <div class="list-content flex col">
+    <div class="topic-wraper">
+      <div class="topic-content flex col">
         <div class="list-header">
           {{topic.title}}
           <button @click="showForm()">edit</button>
         </div>
 
-        <div class="list-items">
+        <div class="topic-tasks" @click="showTaskPreview()">
           <draggable v-model="tasks">
             <transition-group>
-              <Task v-for="task in tasks" :task="task" :key="task._id" class="list-item" />
+              <Task v-for="task in tasks" :task="task" :key="task._id" class="task" />
             </transition-group>
           </draggable>
         </div>
@@ -31,6 +32,8 @@
 <script>
 import Draggable from "vuedraggable";
 import Task from "@/components/Task";
+
+
 export default {
   props: ['tasks', 'topic'],
   data() {
@@ -39,8 +42,7 @@ export default {
       newTopic: {
         title: ""
       },
-
-      isShowForm: false
+      isShowForm: false,
     };
   },
   methods: {
@@ -53,6 +55,9 @@ export default {
     edit() {
       this.newTopic.id = this.topic.id;
       this.$store.dispatch({ type: "updateTopic", topic: this.newTopic });
+    },
+    showTaskPreview(){
+          this.$emit('showPreview')
     }
   },
   computed: {
@@ -69,7 +74,8 @@ export default {
   },
   components: {
     Draggable,
-    Task
+    Task,
+
   },
   created() {},
   // watch: {
