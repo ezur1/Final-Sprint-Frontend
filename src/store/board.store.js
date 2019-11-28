@@ -1,56 +1,61 @@
 'use strict'
 
-import listService from '../services/list.service.js'
+import boardService from '../services/board.service.js'
 
 export default {
     state: {
-        lists: []
+        boards: [],
+        currBoard: null
     },
     mutations: {
-        addList(state, { addedList }) {
-            state.lists.push(addedList);
+        setBoards(state, { boards }) {
+            state.boards = boards;
         },
-        setlists(state, { lists }) {
-            state.lists = lists
-        },
-        removeList(state, { listId }) {
-            const idx = state.lists.findIndex(list => list._id === listId);
-            state.lists.splice(idx, 1);
-            
-          },
-          updateList(state, { updatedList, id  }) {
-            const idx = state.lists.findIndex(list => list._id === id);
-            state.lists.splice(idx, 1, updatedList);
-          },
+
+        setCurrBoard(state, { board }) {
+            state.currBoard = board
+        }
     },
     getters: {
-        listsToShow(state) {
-            return state.lists
+        boardsToShow(state) {
+            return state.boards
         }
     },
     actions: {
-        loadLists(context) {
-            // console.log('getting here');
-
-            return listService.query()
-                .then(lists => context.commit({ type: 'setlists', lists }));
+        loadBoards(context) {
+            return boardService.query()
+                .then(boards => {
+                    return context.commit({ type: 'setBoards', boards })
+                });
         },
-        addList(context, { list }) {
-            return listService.add(list)
-                .then(addedList => context.commit({ type: 'addList', addedList }))
+        setCurrBoard(context, board) {
+            return context.commit({ type: 'setCurrBoard', board })
         },
-        removeList(context, { listId }) {
-            listService.remove(listId)
-                .then(() => context.commit({ type: 'removeList', listId }))
-        },
-        updateList(context, { list  }) {
-            
-            console.log('list in board store actions',list)
-            return listService.update(list)
-              .then(updatedList => {
-                  console.log('updatedList',updatedList);
-                  return context.commit({ type: 'updateList', list:updatedList })
+        updateBoard(context, { board }) {
+            return boardService.update(board)
+                .then(() => {
+                    return boardService.query()
+                        .then(boards => {
+                            return context.commit({ type: 'setBoards', boards })
+                        })
                 })
-          },
+        },
     }
 }
+
+// updateItemOrder(context, { items }) {
+//     // return listService.update()
+//     // .then(list => {
+//     // console.log('B', items);
+//     return context.commit({ type: 'setItems', items })
+// }
+
+// updateTopic(context, { topic }) {
+
+//     console.log('topic in board store actions', topic)
+//     return listService.update(topic)
+//         .then(updatedTopic => {
+//             console.log('updatedTopic', updatedTopic);
+//             return context.commit({ type: 'updateTopic', tpoic: updatedTopic })
+//         })
+// },

@@ -1,23 +1,22 @@
 <template>
-    <div v-if="item" class="list-item" @click="openItemModal()"> 
+    <div v-if="task" class="list-item" @click="openTaskModal()"> 
         <div class="list-item-details">
             <!-- <div class="labels"></div> -->
-            <div class="list-item-title">{{item.title}}</div>
+            <div class="list-item-title">{{task.title}}</div>
             <!-- <div class="tags"></div> -->
         </div>
-        {{item.name}}
+        {{task.name}}
     </div>
 </template>
 
 <script>
-// import { bus } from '../main'
 
 export default {
-    props:['item'],
+    props:['task'],
     components:{},
     methods:{
-        openItemModal(){
-            console.log(this.item);
+        openTaskModal(){
+            console.log(this.task);
         }
     }
 }
