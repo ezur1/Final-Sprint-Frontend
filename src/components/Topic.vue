@@ -1,29 +1,42 @@
 <template>
   <section>
-    <form v-if="isShowForm" @submit.prevent="save(topic.title)" class="card edit-card">
-      edit topic title:
-      <input type="text" v-model="newTopic.title" />
-      <button type="submit">save</button>
+    <form v-if="isShowForm" @submit.prevent="saveTopic(topic.title)" class="card edit-card">
+    edit topic title:
+    <input type="text" v-model="newTopic.title" />
+    <button type="submit">save</button>
     </form>
 
-    <div class="list-wraper">
-      <div class="list-content flex col">
-        <div class="list-header">
-          {{topic.title}}
-          <button @click="showForm()">edit</button>
-        </div>
-
-        <div class="list-items">
-          <draggable v-model="tasks">
-            <transition-group>
-              <Task v-for="task in tasks" :task="task" :key="task._id" class="list-item" />
-            </transition-group>
-          </draggable>
-        </div>
-
-        <div class="list-item-composer">Item - Composer</div>
+  <div class="list-wraper">
+    <div class="list-content flex col">
+      <div class="list-header">
+        {{topic.title}}
+        <button @click="showForm()">edit</button>
       </div>
-      <button @click="remove()">delete</button>
+
+      <div class="list-items">
+        <draggable v-model="tasks">
+          <transition-group>
+            <Task v-for="task in tasks" :task="task" :key="task._id" class="list-item" />
+          </transition-group>
+        </draggable>
+      </div>
+
+      <form v-if="isOpenNewTask" @submit.prevent="addTask(topic.title)" class="card edit-card">
+        <input class="list-item-details" type="text" placeholder="start typing..." v-model="newTask.title" />
+        <button type="submit">save</button>
+      </form>
+      
+      <!-- <div class="list-item-title">{{task.title}}</div> -->
+                
+      
+      this will be a lovely new task!
+      
+      <div class="list-item-composer">
+      <button @click="openNewTask()">NEW-TASK</button>
+      
+      </div>
+      </div>
+    <button @click="remove()">delete</button>
     </div>
   </section>
 </template>
@@ -39,7 +52,10 @@ export default {
       newTopic: {
         title: ""
       },
-
+      newTask: {
+        title: ""
+      },
+      isOpenNewTask:false,
       isShowForm: false
     };
   },
@@ -47,13 +63,19 @@ export default {
     showForm() {
       this.isShowForm = true;
     },
+    openNewTask() {
+      this.isOpenNewTask = !this.isOpenNewTask;
+      console.log('ready to create a new task? ',this.isOpenNewTask)
+    },
     remove() {
       this.$emit('removeTopic')
     },
-    save(topicTitle) {
+    saveTopic(topicTitle) {
       this.$emit('updateTopic', {oldTitle: topicTitle, newTitle: this.newTopic.title})
-      // this.newTopic.id = this.topic.id;
-      // this.$store.dispatch({ type: "updateTopic", topic: this.newTopic });
+    },
+    addTask(topicTitle) {
+      console.log('trying to add a new task', topicTitle);
+      this.$emit('addTask', {topic: topicTitle, newTaskTitle: this.newTask.title})
     }
   },
   computed: {
@@ -73,10 +95,6 @@ export default {
     Task
   },
   created() {},
-  // watch: {
-  //   value(newVal) {
-  //     this.val = newVal;
-  //   }
-  // }
+
 };
 </script>
