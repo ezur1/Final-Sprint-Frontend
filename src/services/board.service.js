@@ -6,7 +6,7 @@ function query() {
 }
 
 function update(board) {
-    console.log('edited._id', board._id);
+    // console.log('edited._id', board._id);
     return httpService.put(`http://localhost:3000/boards/${board._id}`, board)
 }
 

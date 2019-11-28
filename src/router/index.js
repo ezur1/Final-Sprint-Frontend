@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Board from '../views/Board.vue'
+import TaskFloApp from '../views/TaskFloApp.vue'
 import SignIn from '../views/SignIn.vue'
 
 Vue.use(VueRouter)
@@ -11,6 +12,11 @@ const routes = [{
         path: '/',
         name: 'home',
         component: Home
+    },
+    {
+        path: '/taskfloapp',
+        name: 'taskfloapp',
+        component: TaskFloApp
     },
     {
         path: '/signin',
@@ -23,7 +29,7 @@ const routes = [{
         component: About
     },
     {
-        path: '/board/:id?',
+        path: '/boards/:id?',
         name: 'board',
         component: Board
     }
