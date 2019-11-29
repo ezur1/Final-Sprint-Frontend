@@ -1,34 +1,30 @@
 <template>
-    <section class="task-preview flex col">
-        <div class="preview-header flex space-between">
-            <span>{{task.title}}</span>
-            <span>{{task.createdBy}}</span>
+    <div v-if="task" class="task" @click="showTaskDetails(task.id)"> 
+        <div class="task-details flex space-between">
+            <!-- <div class="labels"></div> -->
+            <div class="task-title">{{task.title}}</div>
+            <!-- <div class="tags"></div> -->
+            <button @click.stop="removeTask(task.title)">X</button>
         </div>
-        <div class="preview-body flex space-between">
-            <div class="preview-main">
-               <section class="description">
-                   
-               </section>
-            </div>
-            <div class="preview-sidebar">
-                <div>yes</div>
-                <div>yes</div>
-                <div>yes</div>
-                <div>yes</div>
-            </div> 
-        </div>
-    </section>
+    </div>
 </template>
 
 <script>
-
 export default {
-computed:{
-    task(){
-        console.log(this.$store.getters.currTask);
-        
-        return this.$store.getters.currTask;
-    }
-}
+    props:['topic','task'],
+    data(){
+        return{
+        }
+    },
+    methods:{
+        removeTask(taskTitle){
+            this.$emit('taskToTopicRemoveTask', {topicTitle: this.topic.title, taskTitle:taskTitle});
+        },
+        showTaskDetails(taskId){
+            this.$emit('taskToTopicShowTaskDetails', {taskId, topicTitle: this.topic.title}) 
+        }
+    },
+    components:{
+    },
 }
 </script>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Board from '../views/Board.vue'
+import TaskDetails from '../components/TaskDetails.vue'
 import TaskFloApp from '../views/TaskFloApp.vue'
 import SignIn from '../views/SignIn.vue'
 
@@ -29,9 +30,15 @@ const routes = [{
         component: About
     },
     {
-        path: '/boards/:id?',
+        path: '/boards/:boardId?',
         name: 'board',
-        component: Board
+        component: Board,
+        children: [{
+            path: 'tasks/:taskId?',
+            name: 'task',
+            props: true,
+            component: TaskDetails
+        }]
     }
 ]
 
