@@ -22,4 +22,16 @@
     }
 }
 
+.open-menu-btn{
+    margin-right: 0.4rem;
+    color: rgb(224, 224, 224);
+    border: 2px solid rgb(224, 224, 224);
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+    &:hover{
+        color: rgb(197, 197, 197);
+        cursor: pointer;
+    }
+}
+
 
