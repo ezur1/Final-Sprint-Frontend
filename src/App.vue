@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <BoardNavBar/>
+      <!-- <BoardNavBar/> -->
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/signin">SignIn</router-link> |
       <router-link to="/about">About Us</router-link> -->
@@ -12,7 +12,6 @@
 
 
 <script>
-import BoardNavBar from './components/BoardNavBar.vue'
 export default {
   data(){
     return{}
@@ -26,7 +25,6 @@ export default {
   this.$store.dispatch("loadBoards");
   },
   components: {
-     BoardNavBar
   }
 }
 </script>

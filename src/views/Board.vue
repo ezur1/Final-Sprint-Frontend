@@ -1,5 +1,6 @@
 <template>
   <section v-if="currBoard" class="flex col">
+    <BoardNavBar/>
     <TaskPreview v-if="isPreviewTask"/>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
@@ -25,6 +26,7 @@
 </template>
 
 <script>
+import BoardNavBar from '../components/BoardNavBar.vue'
 import Topic from "../components/Topic.vue";
 import TaskPreview from "@/components/TaskPreview";
 export default {
@@ -88,7 +90,8 @@ export default {
   },
   components: {
     Topic,
-    TaskPreview
+    TaskPreview,
+    BoardNavBar
   }
 };
 </script>
