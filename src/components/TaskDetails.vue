@@ -2,8 +2,8 @@
   <section v-if="task" class="task-preview flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info">
-        <h1>{{task.foundTask.title}}</h1>
-        <span>{{task.foundTask.createdBy}}</span>
+        <h1 contenteditable ref="taskTitle" v-html="task.title" @blur="updateTask" @keydown.enter="endEditTaskTitle">{{task.title}}</h1>
+        <span>{{task.createdBy}}</span>
       </div>
       <font-awesome-icon icon="times" @click="backToBoard()" />
     </div>
@@ -57,7 +57,7 @@
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('duedate')">
             <span>Due Date</span>
-            <div v-if="dueDateMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
+            <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
               <div class="flex">
                 <input type="date" />
@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import {eventBus} from '../main.js'
 export default {
   props: ["topicTitle"],
   data() {
@@ -92,7 +93,8 @@ export default {
       isDescBtns: false,
       checklistMenuOn: false,
       labelsMenuOn: false,
-      dueDateMenuOn: false
+      dueDateMenuOn: false,
+      originalTaskTitle:''
       // isTaskBtns:false,
     };
   },
@@ -122,19 +124,26 @@ export default {
     backToBoard() {
       var boardId = this.$route.params.boardId;
       this.$router.push(`/boards/${boardId}`);
+    },
+    updateTask(event) {
+      eventBus.$emit('updateTask', { oldTitle: this.originalTaskTitle, newTitle: event.target.innerHTML,topicTitle:this.topicTitle });
+      this.originalTaskTitle = event.target.innerHTML
+    },
+    endEditTaskTitle() {
+      this.$refs.taskTitle.blur();
     }
   },
   computed: {
     task() {
-      return this.$store.getters.currTask;
+      var currTask = this.$store.getters.currTask;
+      return currTask;
     }
   },
-
   created() {
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
-  }
+  },
 };
 </script>

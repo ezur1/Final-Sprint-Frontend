@@ -1,7 +1,7 @@
 <template>
   <section v-if="currBoard" class="flex col">
     <BoardNavBar/>
-    <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
+    <router-view :topicTitle="topicTitleForTaskDetails" :task="currTaskDetails"></router-view>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
       <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
@@ -16,12 +16,6 @@
         :key="topic.id"
         :topic="topic"
         :tasks="topic.tasks"
-        @removeTopic="removeTopic(topic.title)"
-        
-
-       
-
-        @showTaskDetails="showTaskDetails"
       />
     </section>
   </section>
@@ -40,7 +34,8 @@ export default {
         title: "",
         tasks: []
       },
-      topicTitleForTaskDetails: null
+      topicTitleForTaskDetails: null,
+      currTaskDetails:null
     };
   },
   name: "board",
@@ -67,6 +62,9 @@ export default {
     updateTopic(payload) {
        this.$store.dispatch({ type: "updateTopic", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
     },
+    updateTask(payload) {
+       this.$store.dispatch({ type: "updateTask", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
+    },
     addTask(payload) {
       this.$store.dispatch({ type: "addTask", board: this.boardToEdit, topicTitle: payload.topicTitle, newTask: payload.newTask });
     },
@@ -74,6 +72,7 @@ export default {
       this.$store.dispatch({ type: "removeTask", board: this.boardToEdit, topicTitle: payload.topicTitle, taskTitle: payload.taskTitle });
     },
     showTaskDetails(payload) {
+      this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
@@ -95,6 +94,7 @@ export default {
     eventBus.$on('addTask', (payload) => {this.addTask(payload)})
     eventBus.$on('removeTask', (payload) => {this.removeTask(payload)})
     eventBus.$on('showTaskDetails', (payload) => {this.showTaskDetails(payload)})
+    eventBus.$on('updateTask', (payload) => {this.updateTask(payload)})
   },
   components: {
     Topic,

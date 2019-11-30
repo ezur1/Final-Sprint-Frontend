@@ -20,7 +20,7 @@ export default {
       eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle: taskTitle });
     },
     showTaskDetails(taskId) {
-      eventBus.$emit('showTaskDetails', { taskId,topicTitle: this.topic.title });
+      eventBus.$emit('showTaskDetails', { taskId,topicTitle: this.topic.title});
     }
   },
   components: {}
