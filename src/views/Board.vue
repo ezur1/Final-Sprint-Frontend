@@ -17,10 +17,10 @@
         :topic="topic"
         :tasks="topic.tasks"
         @removeTopic="removeTopic(topic.title)"
-        @updateTopic="updateTopic"
-        @addTask="addTask"
-        @removeTask="removeTask"
-        @showPreview="showPreview"
+        
+
+       
+
         @showTaskDetails="showTaskDetails"
       />
     </section>
@@ -29,7 +29,8 @@
 
 <script>
 import BoardNavBar from '../components/BoardNavBar.vue'
-import Topic from "../components/Topic.vue";
+import Topic from '../components/Topic.vue';
+import {eventBus} from '../main.js'
 export default {
   data() {
     return {
@@ -72,17 +73,11 @@ export default {
     removeTask(payload) {
       this.$store.dispatch({ type: "removeTask", board: this.boardToEdit, topicTitle: payload.topicTitle, taskTitle: payload.taskTitle });
     },
-    showPreview() {
-      this.isPreviewTask = true;
-    },
     showTaskDetails(payload) {
       this.topicTitleForTaskDetails = payload.topicTitle
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      console.log('taskId',taskId);
-      
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`)
-      // this.isPreviewTask = true;
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
@@ -95,6 +90,11 @@ export default {
   created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
+    eventBus.$on('updateTopic', (payload) => {this.updateTopic(payload)})
+    eventBus.$on('removeTopic', (payload) => {this.removeTopic(payload)})
+    eventBus.$on('addTask', (payload) => {this.addTask(payload)})
+    eventBus.$on('removeTask', (payload) => {this.removeTask(payload)})
+    eventBus.$on('showTaskDetails', (payload) => {this.showTaskDetails(payload)})
   },
   components: {
     Topic,
