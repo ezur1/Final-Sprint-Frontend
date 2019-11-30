@@ -5,20 +5,13 @@
                 <h1>{{task.title}}</h1>
                 <span>{{task.createdBy}}</span>
             </div>
-            
+            <i class="fas fa-times"></i>
         </div>
         <div class="preview-body flex space-between">
             <div class="preview-main">
                <section class="description">
                    <h3>Description</h3>
-                   <textarea name="description" @click="showDescBtns()"></textarea>
-                   <div v-if="isDescBtns" class="descBtns">
-                       <button>Save</button>
-                       <button>X</button>
-                   </div>
-               </section>
-               <section class="tasks">
-                   <h3>Tasks</h3>
+                   <textarea name="description" placeholder="Add a description to your task.." @click="showDescBtns()"></textarea>
                    <div v-if="isDescBtns" class="descBtns">
                        <button>Save</button>
                        <button>X</button>
@@ -28,8 +21,25 @@
             <div class="preview-sidebar flex col">
                 <div class="add-to-card flex col">
                     <h3>ADD TO CARD</h3>
-                    <a href="#" title="Labels" class="prev-side-btn"><span>Labels</span></a>
-                    <a href="#" title="Check List" class="prev-side-btn"><span>Checklist</span></a>
+                    <a href="#" title="Labels" class="prev-side-btn">
+                        <span>Labels</span>
+                        <div v-if="labelsMenuOn" class="labels-menu mini-menu">
+                            <div class="blue-lable">
+                                
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" title="Check List" class="prev-side-btn" @click.prevent="openMenu('checklist')">
+                        <span>Checklist</span>
+                        <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop="">
+                            <span class="mini-menu-header">Add Checklist</span>
+                            <div class="flex ">
+                                <h3>Title</h3>
+                                <input type="text">
+                            </div>
+                            <button>Add</button>
+                        </div>
+                    </a>
                     <a href="#" title="Due Date" class="prev-side-btn"><span>Due Date</span></a>
                 </div>
                 <div class="actions-on-card flex col">
@@ -44,23 +54,27 @@
 </template>
 
 <script>
-
 export default {
     data(){
         return{
-            isDescBtns:false
+            isDescBtns:false,
+            checklistMenuOn:false,
+            // isTaskBtns:false,
         }
     },
     methods:{
     showDescBtns(){
-        console.log("fuk");
         this.isDescBtns=true;
+    },
+    openMenu(menu){
+        switch (menu) {
+            case 'checklist':
+                this.checklistMenuOn=!this.checklistMenuOn;
+        }
     }
 },
 computed:{
     task(){
-        console.log(this.$store.getters.currTask);
-        
         return this.$store.getters.currTask;
     }
 }
