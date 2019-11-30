@@ -60,6 +60,7 @@ export default {
     }
   },
   created() {
+     eventBus.$on('removeSideMenu', this.removeSideMenu);
     this.boards = this.$store.getters.boardsToShow;
     this.currBoardId = this.currBoard._id;
     console.log("this.currBoardId in created", this.currBoardId);
@@ -67,9 +68,6 @@ export default {
   },
   components: {
     SideMenu // Register your component
-  },
-  created() {
-    eventBus.$on('removeSideMenu', this.removeSideMenu);
-  },
+  }
 };
 </script>

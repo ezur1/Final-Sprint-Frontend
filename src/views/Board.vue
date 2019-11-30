@@ -147,7 +147,6 @@ export default {
     BoardNavBar,
     MainNavBar,
     Draggable,
-    Topic
   }
 };
 </script>
