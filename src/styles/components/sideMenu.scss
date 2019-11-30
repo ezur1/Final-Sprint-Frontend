@@ -1,11 +1,11 @@
 .side-menu{
   position: absolute;
-  top: 3rem;
+  top: 6rem;
   right: 0rem;
   width: 20rem;
-  height: 35rem;
+  height: 38rem;
   background-color: azure;
-  z-index: 1;
+  z-index: 1000;
 
     .side-menu-header{
       color: rgb(155, 155, 155);
@@ -16,23 +16,55 @@
     }
     .remove-btn{
       margin: 0.5rem;
-    }
     &:hover{
       cursor: pointer;
+     }
     }
+
 
     .board-description{
       h3{
         text-align: center;
       }
       textarea{
-        padding: 0.5rem;
+        font-size: .8rem;
+        letter-spacing: 1px;
         display: block;
         margin-left: auto;
         margin-right: auto;
         outline: none;
         resize: none;
+        padding: 10px;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-shadow: 1px 1px 1px #999;
 
+      }
+      p{
+        text-align: center;
+        overflow-wrap: break-word;
+      }
+      button{
+        width: 4rem;
+        padding: 0.5rem;
+        border-radius: 1rem;
+        border-style: none;
+        color: white;
+        font-size: larger;
+        background-color: lightseagreen;
+        display: block;
+        margin-top: 0.4rem;
+        margin-left: auto;
+        margin-right: auto;
+        outline: none;
+        resize: none;
+        &:hover{
+          cursor: pointer;
+        }
       }
     }
 }
+
+
+

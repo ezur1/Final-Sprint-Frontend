@@ -4,6 +4,9 @@
     background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
     .nav-bar-logo{
         margin: 0rem 0.5rem;
+        &:hover{
+            cursor: pointer;
+        }
     }
     .search-icon-container{
         margin: 0;
@@ -33,5 +36,47 @@
         cursor: pointer;
     }
 }
+
+.dropDown{
+    width: 15rem;
+    min-height: 5rem;
+    background-color: rgb(218, 218, 218);
+    position: absolute;
+    top:5.5rem;
+    left: 0.5rem;
+    z-index: 100;
+
+    .board-li{
+        text-align: center;
+        margin: 0.5rem;
+        padding: 0.5rem;
+        background-color: rgb(255, 255, 255);
+        border-radius: 3px;
+        &:hover{
+            cursor: pointer;
+            background-color: rgb(240, 240, 240);
+        }
+    }
+}
+
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .4s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+
+  .slide-fade-enter-active {
+    transition: all .3s ease ;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to {
+    transform: translateX(1000px);
+    opacity: 0;
+  }
+
 
 

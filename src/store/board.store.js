@@ -115,6 +115,11 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             board.topics[topicIdx].tasks = tasks
             context.dispatch({ type: "updateBoard", board: board });
+        },
+        updateTopicOrder(context, { topics }) {
+            var board = context.getters.getCurrBoard;
+            board.topics = topics
+            context.dispatch({ type: "updateBoard", board: board });
         }
     }
 }

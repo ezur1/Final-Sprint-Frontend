@@ -1,7 +1,8 @@
 <template>
   <section v-if="currBoard" class="flex col">
-    <BoardNavBar/>
-    <router-view :topicTitle="topicTitleForTaskDetails" :task="currTaskDetails"></router-view>
+    <MainNavBar />
+    <BoardNavBar :currBoard="currBoard" />
+    <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
       <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
@@ -10,24 +11,31 @@
         <button type="submit">Add</button>
       </form>
     </div>
-    <section class="board-lists flex wrap">
-      <topic
-        v-for="topic in currBoard.topics"
-        :key="topic.id"
-        :topic="topic"
-        :tasks="topic.tasks"
-      />
+    <section>
+      <draggable v-model="topics">
+        <transition-group class="board-lists flex wrap">
+          <topic
+            v-for="topic in currBoard.topics"
+            :key="topic.title"
+            :topic="topic"
+            :tasks="topic.tasks"
+          />
+        </transition-group>
+      </draggable>
     </section>
   </section>
 </template>
 
 <script>
-import BoardNavBar from '../components/BoardNavBar.vue'
-import Topic from '../components/Topic.vue';
-import {eventBus} from '../main.js'
+import BoardNavBar from "../components/BoardNavBar.vue";
+import MainNavBar from "../components/MainNavBar.vue";
+import Draggable from "vuedraggable";
+import Topic from "../components/Topic.vue";
+import { eventBus } from "../main.js";
 export default {
   data() {
     return {
+      val: null,
       isAddTopic: false,
       isPreviewTask: false,
       newTopic: {
@@ -43,47 +51,81 @@ export default {
     currBoard() {
       return this.$store.getters.getCurrBoard;
     },
-    boardToEdit(){
+    topics: {
+      get() {
+        return this.currBoard.topics;
+      },
+      set(newTopicOrder) {
+        this.val = newTopicOrder;
+        this.$store.dispatch({
+          type: "updateTopicOrder",
+          topics: newTopicOrder
+        });
+      }
+    },
+    boardToEdit() {
       return JSON.parse(JSON.stringify(this.currBoard));
     },
-    newTopicToEdit(){
+    newTopicToEdit() {
       return JSON.parse(JSON.stringify(this.newTopic));
     }
   },
   methods: {
     addTopic() {
-      this.$store.dispatch({ type: "addTopic", board: this.boardToEdit, newTopic: this.newTopicToEdit });
+      this.$store.dispatch({
+        type: "addTopic",
+        board: this.boardToEdit,
+        newTopic: this.newTopicToEdit
+      });
       this.newTopic.title = "";
       this.openForm();
     },
     removeTopic(topicTitle) {
-      this.$store.dispatch({ type: "removeTopic", board: this.boardToEdit, topicTitle: topicTitle });
+      this.$store.dispatch({
+        type: "removeTopic",
+        board: this.boardToEdit,
+        topicTitle: topicTitle
+      });
     },
     updateTopic(payload) {
-       this.$store.dispatch({ type: "updateTopic", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
+      this.$store.dispatch({
+        type: "updateTopic",
+        board: this.boardToEdit,
+        oldTitle: payload.oldTitle,
+        newTitle: payload.newTitle
+      });
     },
     updateTask(payload) {
        this.$store.dispatch({ type: "updateTask", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
     },
     addTask(payload) {
-      this.$store.dispatch({ type: "addTask", board: this.boardToEdit, topicTitle: payload.topicTitle, newTask: payload.newTask });
+      this.$store.dispatch({
+        type: "addTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        newTask: payload.newTask
+      });
     },
     removeTask(payload) {
-      this.$store.dispatch({ type: "removeTask", board: this.boardToEdit, topicTitle: payload.topicTitle, taskTitle: payload.taskTitle });
+      this.$store.dispatch({
+        type: "removeTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle: payload.taskTitle
+      });
     },
     showTaskDetails(payload) {
       this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      this.$router.push(`/boards/${boardId}/tasks/${taskId}`)
+      this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
     },
-    updateTaskTitle(payload){
+    updateTaskTitle(payload) {
       console.log(payload);
-      
     }
   },
   created() {
@@ -98,8 +140,9 @@ export default {
   },
   components: {
     Topic,
-     BoardNavBar
+    BoardNavBar,
+    MainNavBar,
+    Draggable,
   }
 };
-
 </script>
