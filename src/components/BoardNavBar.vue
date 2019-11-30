@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import SideMenu from "../components/SideMenu.vue";
+import {eventBus} from '../main.js'
+import SideMenu from '../components/SideMenu.vue';
 export default {
   data(){
     return{
@@ -32,6 +33,9 @@ export default {
   },
   components: {
     SideMenu // Register your component
-  }
+  },
+  created() {
+    eventBus.$on('removeSideMenu', this.removeSideMenu);
+  },
 };
 </script>
