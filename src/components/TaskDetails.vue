@@ -1,9 +1,7 @@
 <template>
   <section v-if="task" class="task-preview flex col">
     <div class="preview-header flex space-between">
-      <div class="task-mid-info">
-        <h1>{{task.foundTask.title}}</h1>
-        <span>{{task.foundTask.createdBy}}</span>
+      <div class="task-mid-info"> <h1>{{task.title}}</h1><span>{{task.createdBy}}</span>
       </div>
       <font-awesome-icon icon="times" @click="backToBoard()" />
     </div>
@@ -132,6 +130,8 @@ export default {
 
   created() {
     var boardId = this.$route.params.boardId;
+    console.log(this.$route.params);
+    
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });

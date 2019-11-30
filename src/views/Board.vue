@@ -10,30 +10,25 @@
         <button type="submit">Add</button>
       </form>
     </div>
-    <section class="board-lists flex wrap">
-      <topic
-        v-for="topic in currBoard.topics"
-        :key="topic.id"
-        :topic="topic"
-        :tasks="topic.tasks"
-        @removeTopic="removeTopic(topic.title)"
-        
-
-       
-
-        @showTaskDetails="showTaskDetails"
-      />
+    <section>
+      <draggable v-model="topics">
+        <transition-group class="board-lists flex wrap">
+          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
+        </transition-group>
+      </draggable>
     </section>
   </section>
 </template>
 
 <script>
 import BoardNavBar from '../components/BoardNavBar.vue'
+import Draggable from "vuedraggable";
 import Topic from '../components/Topic.vue';
 import {eventBus} from '../main.js'
 export default {
   data() {
     return {
+      val: null,
       isAddTopic: false,
       isPreviewTask: false,
       newTopic: {
@@ -47,6 +42,15 @@ export default {
   computed: {
     currBoard() {
       return this.$store.getters.getCurrBoard;
+      },
+    topics: {
+      get() {
+        return this.currBoard.topics;
+      },
+      set(newTopicOrder) {
+        this.val = newTopicOrder;
+        this.$store.dispatch({ type: "updateTopicOrder", topics: newTopicOrder });
+      }
     },
     boardToEdit(){
       return JSON.parse(JSON.stringify(this.currBoard));
@@ -97,8 +101,9 @@ export default {
     eventBus.$on('showTaskDetails', (payload) => {this.showTaskDetails(payload)})
   },
   components: {
-    Topic,
-     BoardNavBar
+    BoardNavBar,
+    Draggable,
+    Topic
   }
 };
 

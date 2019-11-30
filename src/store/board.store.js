@@ -9,8 +9,8 @@ export default {
         currTask: null
     },
     mutations: {
-        setCurrTask(state, task) {
-            state.currTask = task;
+        setCurrTask(state, { foundTask }) {
+            state.currTask = foundTask;
         },
 
         setBoards(state, { boards }) {
@@ -98,6 +98,11 @@ export default {
             var board = context.getters.getCurrBoard;
             var topicIdx = _findTopicIndex(board, topicTitle);
             board.topics[topicIdx].tasks = tasks
+            context.dispatch({ type: "updateBoard", board: board });
+        },
+        updateTopicOrder(context, { topics }) {
+            var board = context.getters.getCurrBoard;
+            board.topics = topics
             context.dispatch({ type: "updateBoard", board: board });
         }
     }
