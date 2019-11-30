@@ -1,7 +1,7 @@
 <template>
   <section v-if="currBoard" class="flex col">
     <BoardNavBar/>
-    <TaskPreview v-if="isPreviewTask"/>
+    <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
       <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
@@ -19,8 +19,10 @@
         @removeTopic="removeTopic(topic.title)"
         @updateTopic="updateTopic"
         @addTask="addTask"
+        @removeTask="removeTask"
         @showPreview="showPreview"
-      />     
+        @showTaskDetails="showTaskDetails"
+      />
     </section>
   </section>
 </template>
@@ -28,70 +30,72 @@
 <script>
 import BoardNavBar from '../components/BoardNavBar.vue'
 import Topic from "../components/Topic.vue";
-import TaskPreview from "@/components/TaskPreview";
 export default {
-  data(){
-    return{
-      isAddTopic:false,
+  data() {
+    return {
+      isAddTopic: false,
       isPreviewTask: false,
-      newTopic:{
-        title:'',
-      }
+      newTopic: {
+        title: "",
+        tasks: []
+      },
+      topicTitleForTaskDetails: null
     };
   },
   name: "board",
   computed: {
     currBoard() {
       return this.$store.getters.getCurrBoard;
+    },
+    boardToEdit(){
+      return JSON.parse(JSON.stringify(this.currBoard));
+    },
+    newTopicToEdit(){
+      return JSON.parse(JSON.stringify(this.newTopic));
     }
   },
   methods: {
     addTopic() {
-      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard));
-      var newTopicEdit = JSON.parse(JSON.stringify(this.newTopic));
-      boardToEdit.topics.push(newTopicEdit);
-      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
+      this.$store.dispatch({ type: "addTopic", board: this.boardToEdit, newTopic: this.newTopicToEdit });
       this.newTopic.title = "";
       this.openForm();
     },
     removeTopic(topicTitle) {
-      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard));
-      var idx = boardToEdit.topics.findIndex(
-        topic => topic.title === topicTitle
-      );
-      boardToEdit.topics.splice(idx, 1);
-      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
+      this.$store.dispatch({ type: "removeTopic", board: this.boardToEdit, topicTitle: topicTitle });
     },
     updateTopic(payload) {
-      var boardToEdit = JSON.parse(JSON.stringify(this.currBoard));
-      var idx = boardToEdit.topics.findIndex(
-        topic => topic.title === payload.oldTitle
-      );
-      boardToEdit.topics[idx].title = payload.newTitle;
-      this.$store.dispatch({ type: "updateBoard", board: boardToEdit });
+       this.$store.dispatch({ type: "updateTopic", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
     },
     addTask(payload) {
-      console.log("received from emission, this is the new task: ", payload);
-      console.log('this is the topic to add the new task in: ',payload.topic);
-      console.log('this is the new task title: ',payload.newTaskTitle);
-      
+      this.$store.dispatch({ type: "addTask", board: this.boardToEdit, topicTitle: payload.topicTitle, newTask: payload.newTask });
     },
-    showPreview(){
-      console.log('ahao');
-      this.isPreviewTask=true;
+    removeTask(payload) {
+      this.$store.dispatch({ type: "removeTask", board: this.boardToEdit, topicTitle: payload.topicTitle, taskTitle: payload.taskTitle });
+    },
+    showPreview() {
+      this.isPreviewTask = true;
+    },
+    showTaskDetails(payload) {
+      this.topicTitleForTaskDetails = payload.topicTitle
+      var boardId = this.$route.params.boardId;
+      var taskId = payload.taskId;
+      console.log('taskId',taskId);
+      
+      this.$router.push(`/boards/${boardId}/tasks/${taskId}`)
+      // this.isPreviewTask = true;
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
     }
   },
   created() {
-    var id = this.$route.params.id;
+    var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
   },
   components: {
     Topic,
-    TaskPreview,
-    BoardNavBar
+     BoardNavBar
   }
 };
+
 </script>
