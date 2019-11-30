@@ -4,11 +4,12 @@
       <!-- <div class="labels"></div> -->
       <div class="task-title">{{task.title}}</div>
       <!-- <div class="tags"></div> -->
-      <button @click.stop="removeTask(task.title)">X</button>
+      <font-awesome-icon icon="times" @click.stop="removeTask(task.title)"/>
     </div>
   </div>
 </template>
 <script>
+import {eventBus} from '../main.js'
 export default {
   props: ['topic', 'task'],
   data() {
@@ -16,16 +17,10 @@ export default {
   },
   methods: {
     removeTask(taskTitle) {
-      this.$emit("taskToTopicRemoveTask", {
-        topicTitle: this.topic.title,
-        taskTitle: taskTitle
-      });
+      eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle: taskTitle });
     },
     showTaskDetails(taskId) {
-      console.log('this is topic at taskprev',this.topic.title);
-      console.log('this is topic at taskId',taskId);
-      
-      this.$emit("taskToTopicShowTaskDetails", {taskId,topicTitle: this.topic.title});
+      eventBus.$emit('showTaskDetails', { taskId,topicTitle: this.topic.title });
     }
   },
   components: {}

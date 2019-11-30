@@ -18,6 +18,7 @@
 
 
 <script>
+import {eventBus} from '../main.js'
 export default {
   data() {
     return {
@@ -34,7 +35,7 @@ export default {
       this.isShow = false;
     },
     remove() {
-      this.$emit("removeSideMenu");
+      eventBus.$emit('removeSideMenu');
     }
   },
   components: {}

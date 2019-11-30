@@ -8,13 +8,11 @@
           <draggable v-model="tasks">
             <transition-group>
               <TaskPreview
+                class="task"
                 v-for="task in tasks"
                 :task="task"
                 :key="task.title"
                 :topic="topic"
-                class="task"
-                @taskToTopicRemoveTask="removeTask"
-                @taskToTopicShowTaskDetails="showTaskDetails"
               />
             </transition-group>
           </draggable>
@@ -39,7 +37,8 @@
 <script>
 import Draggable from "vuedraggable";
 import TaskPreview from "@/components/TaskPreview";
-import { utilService } from '../services/util.service.js';
+import {utilService} from '../services/util.service.js';
+import {eventBus} from '../main.js'
 
 export default {
   props: ["topic"],
@@ -58,14 +57,9 @@ export default {
     computed: {
     tasks: {
       get() {
-        // console.log('the val is: ', this.val);
         return this.topic.tasks;
       },
       set(newTaskOrder) {
-        // console.log('the original task order is: ',this.topic.tasks);
-        // console.log('the new task order is: ',newTaskOrder);
-        
-        // this.val = this.topic.tasks;
         this.val = newTaskOrder;
         this.$store.dispatch({ type: "updateTaskOrder", topicTitle: this.topic.title, tasks: newTaskOrder });
       }
@@ -76,23 +70,11 @@ export default {
       this.isOpenNewTask = !this.isOpenNewTask;
       this.newTask.title = "";
     },
-    removeTask(payload) {
-      this.$emit("removeTask", payload);
-    },
     removeTopic() {
-      this.$emit("removeTopic");
-    },
-    showTaskPreview() {
-      this.$emit("showPreview");
-    },
-    showTaskDetails(payload) {
-      this.$emit("showTaskDetails", payload);
+      eventBus.$emit('removeTopic')
     },
     updateTopic(event) {
-      this.$emit("updateTopic", {
-        oldTitle: this.originalTopicTitle,
-        newTitle: event.target.innerHTML
-      });
+      eventBus.$emit('updateTopic', { oldTitle: this.originalTopicTitle, newTitle: event.target.innerHTML });
       this.originalTopicTitle = event.target.innerHTML
     },
     endEditTopicTitle() {
@@ -100,9 +82,7 @@ export default {
     },
     addTask(topicTitle) {
       this.newTask.id = utilService.makeId();
-      console.log('this new task has ID: ',this.newTask.id);
-      
-      this.$emit("addTask", { topicTitle: topicTitle, newTask: this.newTask });
+      eventBus.$emit('addTask', { topicTitle: topicTitle, newTask: this.newTask });
       this.isOpenNewTask = !this.isOpenNewTask;
     }
   },
@@ -111,7 +91,6 @@ export default {
     TaskPreview
   },
   created() {
-    // this.$store.dispatch({ type: "getTasks", items: list });
     this.originalTopicTitle = this.topic.title;
     
   }
