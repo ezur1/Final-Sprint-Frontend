@@ -130,11 +130,9 @@ export default {
 
   created() {
     var boardId = this.$route.params.boardId;
-    console.log(this.$route.params);
-    
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
-    this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
+    this.$store.dispatch({ type: 'getTaskById', boardId, taskId, topicTitle });
   }
 };
 </script>
