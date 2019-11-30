@@ -86,6 +86,10 @@ export default {
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
+    },
+    updateTaskTitle(payload){
+      console.log(payload);
+      
     }
   },
   created() {

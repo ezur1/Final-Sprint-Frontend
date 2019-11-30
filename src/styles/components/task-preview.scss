@@ -81,6 +81,7 @@
         }
 
         .mini-menu {
+            cursor: default;
             position: fixed;
             z-index: 20;
             background-color: #fff;
@@ -90,11 +91,12 @@
             padding: 1rem;
             color: #172b4d;
             width: 20rem;
-            .mini-menu-header{
+
+            .mini-menu-header {
                 color: #5e6c84;
                 line-height: 40px;
-                border-bottom: 1px solid rgba(9,30,66,.13);
-                margin: 0 12px;
+                border-bottom: 1px solid rgba(9, 30, 66, .13);
+                margin: 0 12px 1rem;
                 overflow: hidden;
                 padding: 0 32px;
                 position: relative;
@@ -103,22 +105,83 @@
                 z-index: 1;
                 align-self: center;
             }
-            h3{
+
+            h3 {
                 font-weight: 900;
                 font-size: 1rem;
+                margin: 0
             }
-            input{
-                width:70%;
+
+            input {
+                width: 70%;
                 border: none;
                 border-bottom: .5px solid #172b4d;
-                padding: 1.3rem 10px 0 1rem;
+                padding: 0rem .5rem 1px;
                 outline: none;
-                margin-left: .65rem;
+                margin-left: .75rem;
                 font-size: 1rem;
             }
-            button{
-                margin-top: 1rem;
+
+            button {
+                margin-top: 1.5rem;
+                font-weight: 600;
+                font-size: 1rem;
+                background: none;
+                border-radius: 3px;
+                padding: .5rem;
+                cursor: pointer;
+                color: #172b4d;
+                border: 2px solid rgba(9, 30, 66, .13);
+
+                &:hover {
+                    border: 2px solid lightgreen;
+                    // border-top: 1px solid lightgreen;
+                }
             }
         }
     }
+
+    .labels-menu {
+        top: 19.5rem;
+
+        .label {
+            width: 90%;
+            height: 2rem;
+            margin-bottom: .3rem;
+            display: block;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .blue-label {
+            background-color: blue;
+            &:hover {
+            box-shadow: -8px 0 rgba(72, 72, 255, 0.609);
+            }
+        }
+        .orange-label {
+            background-color: rgb(255, 166, 0);
+            &:hover {
+            box-shadow: -8px 0 rgb(255, 166, 0);
+            }
+        }
+        .yello-label {
+            background-color: rgb(248, 232, 13);
+            &:hover {
+            box-shadow: -8px 0 rgb(248, 232, 13);
+            }
+        }
+        .green-label {
+            background-color: rgb(0, 255, 21);
+            &:hover {
+            box-shadow: -8px 0 rgb(0, 255, 21);
+            }
+        }
+        .red-label {
+            background-color: rgb(255, 0, 0);
+            &:hover {
+            box-shadow: -8px 0 rgb(255, 0, 0);
+            }
+        }
+    }
+
 }

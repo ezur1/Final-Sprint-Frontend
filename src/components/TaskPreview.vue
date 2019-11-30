@@ -4,7 +4,7 @@
       <!-- <div class="labels"></div> -->
       <div class="task-title">{{task.title}}</div>
       <!-- <div class="tags"></div> -->
-      <button @click.stop="removeTask(task.title)">X</button>
+      <font-awesome-icon icon="times" @click.stop="removeTask(task.title)"/>
     </div>
   </div>
 </template>
@@ -24,7 +24,6 @@ export default {
     showTaskDetails(taskId) {
       console.log('this is topic at taskprev',this.topic.title);
       console.log('this is topic at taskId',taskId);
-      
       this.$emit("taskToTopicShowTaskDetails", {taskId,topicTitle: this.topic.title});
     }
   },

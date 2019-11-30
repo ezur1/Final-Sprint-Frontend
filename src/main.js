@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import './plugins/fontawesome'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
@@ -8,6 +9,7 @@ import './styles/global.scss'
 
 Vue.config.productionTip = false
 export const bus = new Vue();
+
 new Vue({
     router,
     store,
