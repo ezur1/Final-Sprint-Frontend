@@ -1,6 +1,7 @@
 <template>
   <section v-if="currBoard" class="flex col">
-    <BoardNavBar/>
+    <MainNavBar/>
+    <BoardNavBar :currBoard="currBoard"/>
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
@@ -29,6 +30,7 @@
 
 <script>
 import BoardNavBar from '../components/BoardNavBar.vue'
+import MainNavBar from '../components/MainNavBar.vue'
 import Topic from "../components/Topic.vue";
 export default {
   data() {
@@ -94,7 +96,8 @@ export default {
   },
   components: {
     Topic,
-     BoardNavBar
+     BoardNavBar,
+     MainNavBar
   }
 };
 
