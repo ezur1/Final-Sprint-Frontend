@@ -19,6 +19,11 @@ export default {
             context.commit({ type: 'setUser', user })
             return user;
         },
+        async signup(context, { userCred }) {
+            const user = await userService.signup(userCred)
+            context.commit({ type: 'setUser', user })
+            return user;
+        },
     },
     modules: {}
 }
