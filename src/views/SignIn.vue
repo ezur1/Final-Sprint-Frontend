@@ -1,17 +1,18 @@
 <template>
   <section class="signin-container flex justify-center align-c">
     <div v-if="isShowSignin" class="signin">
-      <h1>Sign in</h1>
+      <h1>Sign Up</h1>
       <input type="text" placeholder="Username" />
       <input type="text" placeholder="password" />
-      <button class="btn">Sign in</button>
+      <button class="btn">Sign Up</button>
+      <p @click="openLogIn">Log In</p>
     </div>
     <div v-if="isShowlogin" class="login">
       <h1>Login</h1>
       <input type="text" placeholder="Username" />
       <input type="text" placeholder="password" />
       <button class="btn">Login</button>
-      <p @click="openSignin">Sign in</p>
+      <p @click="openSignUp">Sign Up</p>
     </div>
     
   </section>
@@ -28,9 +29,13 @@ export default {
     };
   },
   methods: {
-    openSignin() {
+    openSignUp() {
       this.isShowSignin = true;
       this.isShowlogin = false;
+    },
+    openLogIn() {
+      this.isShowSignin = false;
+      this.isShowlogin = true;
     }
   },
   components: {}
