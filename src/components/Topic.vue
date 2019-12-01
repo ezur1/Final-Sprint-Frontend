@@ -20,7 +20,9 @@
           />
         </form>
         <div class="list-item-composer">
-          <button @click="openNewTaskModal()">NEW-TASK</button>
+          <p v-if="isShow" @click="openNewTaskModal()"><span>+</span> add new task...</p>
+          <button v-if="isOpenNewTask" @click="addTask(topic.title)">add</button>
+          <font-awesome-icon icon="times" v-if="isOpenNewTask"/>
         </div>
       </div>
       <button @click="removeTopic()">delete</button>
@@ -38,6 +40,7 @@ export default {
   props: ["topic"],
   data() {
     return {
+      isShow:true,
       val: null,
       newTask: {
         title: "",
@@ -62,6 +65,7 @@ export default {
   methods: {
     openNewTaskModal() {
       this.isOpenNewTask = !this.isOpenNewTask;
+      this.isShow=!this.isShow;
       this.newTask.title = "";
     },
     removeTopic() {

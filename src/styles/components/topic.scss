@@ -6,6 +6,25 @@
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
+
+    .list-item-composer{
+        // padding: 1rem;
+        padding: 0rem 1rem 0rem 1rem;
+        p{
+            color: black;
+            font-size: large;
+            border-radius: 3px;
+            &:hover{
+                cursor: pointer;
+                background-color: rgb(199, 194, 194);
+            }
+            span{
+                font-weight: bold;
+                font-size: 1.8rem;
+            }
+            
+        }
+    }
 }
 .topic-content{
     background-color: #ebecf0;
@@ -15,3 +34,11 @@
     white-space: normal;
 }
 
+.list-item-details{
+    margin-top: 0.5rem;
+    padding: 0.2rem;
+    width: 85%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

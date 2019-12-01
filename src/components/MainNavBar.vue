@@ -1,5 +1,5 @@
 <template>
-  <section class="main-nav-bar-container flex align-c space-between">
+  <section class="main-nav-bar-container flex align-c space-between" >
     <div class="flex">
       <h1 @click="goToHome" class="nav-bar-logo">TaskFlow</h1>
     </div>

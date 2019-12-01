@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currBoard" class="flex col">
+  <section v-if="currBoard" class="board-container flex col">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
@@ -11,10 +11,15 @@
         <button type="submit">Add</button>
       </form>
     </div>
-    <section>
+    <section class="topics-container">
       <draggable v-model="topics">
-        <transition-group class="board-lists flex wrap">
-          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
+        <transition-group class="board-lists flex">
+          <topic
+            v-for="topic in currBoard.topics"
+            :key="topic.title"
+            :topic="topic"
+            :tasks="topic.tasks"
+          />
         </transition-group>
       </draggable>
     </section>
@@ -38,7 +43,7 @@ export default {
         tasks: []
       },
       topicTitleForTaskDetails: null,
-      currTaskDetails:null
+      currTaskDetails: null
     };
   },
   name: "board",
@@ -91,7 +96,12 @@ export default {
       });
     },
     updateTask(payload) {
-       this.$store.dispatch({ type: "updateTask", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
+      this.$store.dispatch({
+        type: "updateTask",
+        board: this.boardToEdit,
+        oldTitle: payload.oldTitle,
+        newTitle: payload.newTitle
+      });
     },
     addTask(payload) {
       this.$store.dispatch({
@@ -111,7 +121,7 @@ export default {
     },
     showTaskDetails(payload) {
       this.currTaskDetails = payload.task;
-      this.topicTitleForTaskDetails = payload.topicTitle
+      this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
@@ -126,18 +136,43 @@ export default {
   created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
-    eventBus.$on('updateTopic', (payload) => {this.updateTopic(payload)})
-    eventBus.$on('removeTopic', (payload) => {this.removeTopic(payload)})
-    eventBus.$on('addTask', (payload) => {this.addTask(payload)})
-    eventBus.$on('removeTask', (payload) => {this.removeTask(payload)})
-    eventBus.$on('showTaskDetails', (payload) => {this.showTaskDetails(payload)})
-    eventBus.$on('updateTask', (payload) => {this.updateTask(payload)})
+    eventBus.$on("updateTopic", payload => {
+      this.updateTopic(payload);
+    });
+    eventBus.$on("removeTopic", payload => {
+      this.removeTopic(payload);
+    });
+    eventBus.$on("addTask", payload => {
+      this.addTask(payload);
+    });
+    eventBus.$on("removeTask", payload => {
+      this.removeTask(payload);
+    });
+    eventBus.$on("showTaskDetails", payload => {
+      this.showTaskDetails(payload);
+    });
+    eventBus.$on("updateTask", payload => {
+      this.updateTask(payload);
+    });
   },
   components: {
     Topic,
     BoardNavBar,
     MainNavBar,
-    Draggable,
+    Draggable
   }
 };
 </script>
+
+<style lang="scss" scoped>
+
+body {
+  background: url('../assets/board-hero.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100vh;
+  width: 100;
+}
+</style>

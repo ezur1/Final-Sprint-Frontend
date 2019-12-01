@@ -1,5 +1,9 @@
 .board-container{
-    padding-right: 0rem;
-    padding-left: 0rem;
-    margin: 0rem;
+    background: url(../assets/board-hero.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 100vh;
+    // width: 100;
 }
