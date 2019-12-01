@@ -6,12 +6,13 @@
     vertical-align: top;
     white-space: nowrap;
     .list-item-composer {
-        // padding: 1rem;
         padding: 0rem 1rem 0rem 1rem;
+        margin: 1rem 0rem 1rem 0rem;
         p {
-            color: black;
+            color: rgb(39, 39, 39);
             font-size: large;
             border-radius: 3px;
+            width: 100%;
             &:hover {
                 cursor: pointer;
                 background-color: rgb(199, 194, 194);
@@ -21,12 +22,34 @@
                 font-size: 1.8rem;
             }
         }
+        .add-topic-btn {
+            color: white;
+            font-size: larger;
+            width: 5rem;
+            height: 2rem;
+            border-radius: 0.2rem;
+            border-style: none;
+            background-color: rgb(107, 211, 38);
+            &:hover {
+                cursor: pointer;
+                background-color: rgb(92, 179, 34);
+            }
+            &:focus {
+                outline: 0;
+            }
+        }
+        .exit-btn {
+            margin-left: 1rem;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 }
 
 .topic-content {
     background-color: #ebecf0;
-    border-radius: 3px;
+    border-radius: 5px;
     max-height: 100%;
     position: relative;
     white-space: normal;
@@ -95,4 +118,10 @@
     border-radius: 2px;
     background-color: lightyellow;
     margin: 2px;
+}
+
+.topicTitle {
+    padding: 1rem;
+    font-size: large;
+    font-weight: bold;
 }

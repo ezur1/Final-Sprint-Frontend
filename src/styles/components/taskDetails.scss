@@ -149,14 +149,23 @@
 
     .tags-menu {
         top: 19.5rem;
+        .selected-tag::before{
+            content: "\2713"
+        }
 
         .tag {
             width: 90%;
             height: 2rem;
-            margin-bottom: .3rem;
+            margin-bottom: .4rem;
             display: block;
             border-radius: 3px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding-right:.3rem; 
             cursor: pointer;
+            color: #f4f5f7;
+            font-size: 1.6rem;
         }
         .blue-tag {
             background-color:$clrTag1;

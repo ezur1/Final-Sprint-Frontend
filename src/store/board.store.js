@@ -105,13 +105,16 @@ export default {
         updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            // console.log(context);
-            // console.log(label);
+            var currTagIdx = board.topics[topicIdx].tasks[taskIdx].tags.findIndex(currTag => currTag === tag);
+            console.log(currTagIdx);
 
-            board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
-            context.dispatch({ type: "updateBoard", board: board });
-
-            console.log(board.topics[topicIdx].tasks[taskIdx]);
+            if (currTagIdx === -1) {
+                board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
+                context.dispatch({ type: "updateBoard", board: board });
+            } else {
+                board.topics[topicIdx].tasks[taskIdx].tags.splice(currTagIdx, 1);
+                context.dispatch({ type: "updateBoard", board: board });
+            }
         },
         addTask(context, { board, topicTitle, newTask }) {
             console.log('the new task is: ', newTask);
