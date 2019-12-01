@@ -5,15 +5,9 @@
       <div class="topic-content flex col">
         <div contenteditable ref="topicTitle" v-html="topic.title" @blur="updateTopic" @keydown.enter="endEditTopicTitle"></div>
         <div class="topic-tasks">
-          <draggable v-model="tasks">
+          <draggable v-model="tasks" group="tasks">
             <transition-group>
-              <TaskPreview
-                class="task"
-                v-for="task in tasks"
-                :task="task"
-                :key="task.title"
-                :topic="topic"
-              />
+              <TaskPreview class="task" v-for="task in tasks" :task="task" :key="task.title" :topic="topic" />
             </transition-group>
           </draggable>
         </div>
