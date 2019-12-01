@@ -94,8 +94,8 @@ export default {
       checklistMenuOn: false,
       labelsMenuOn: false,
       dueDateMenuOn: false,
-      originalTaskTitle:''
-      // isTaskBtns:false,
+      originalTaskTitle:'',
+      currTopicTitle: null
     };
   },
   methods: {
@@ -126,6 +126,7 @@ export default {
       this.$router.push(`/boards/${boardId}`);
     },
     updateTask(event) {
+
       eventBus.$emit('updateTask', { oldTitle: this.originalTaskTitle, newTitle: event.target.innerHTML,topicTitle:this.topicTitle });
       this.originalTaskTitle = event.target.innerHTML
     },
@@ -143,7 +144,14 @@ export default {
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
+    // if (!this.currTopicTitle) {
+    //   console.log('the topicTitle is: ', this.topicTitle);
+      
+    //     var topicTitle = this.topicTitle;
+    //     }
+    //     else topicTitle = this.$store.getters.getCurrTopicTitle
     this.$store.dispatch({ type: 'getTaskById', boardId, taskId, topicTitle });
+    // this.$store.dispatch({ type: 'getTaskById', boardId, task, taskId });
   }
 };
 </script>

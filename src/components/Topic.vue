@@ -82,6 +82,7 @@ export default {
     },
     addTask(topicTitle) {
       this.newTask.id = utilService.makeId();
+      this.newTask.parentTopicTitle = topicTitle;
       eventBus.$emit('addTask', { topicTitle: topicTitle, newTask: this.newTask });
       this.isOpenNewTask = !this.isOpenNewTask;
     }
