@@ -1,19 +1,14 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <!-- <router-link to="/board/">MyBoards</router-link> -->
-      <section class="board">
-          <BoardsPreview v-for="board in boards" :key=board._id :board="board"/>
-          <!-- <board v-for="board in boards" :key=board._id :board="board" :topics="board.topics"> </board> -->
-      </section>
-    </div>
+  <section id="app">
+    <MainNavBar />
+    <BoardsPreview v-for="board in boards" :key=board._id :board="board"/>
     <router-view/>
-  </div>
+  </section>
 </template>
 
 <script>
+import MainNavBar from "../components/MainNavBar.vue";  
 import BoardsPreview from '../components/BoardsPreview.vue';
-
 export default {
   data(){
     return{}
@@ -27,7 +22,8 @@ export default {
   this.$store.dispatch("loadBoards");
   },
   components: {
-     BoardsPreview
+    MainNavBar,
+    BoardsPreview
   }
 }
 </script>

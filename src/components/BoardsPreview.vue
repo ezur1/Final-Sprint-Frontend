@@ -11,6 +11,6 @@ export default {
     gotoBoard(boardId) {
       this.$router.push(`/boards/${boardId}`);
     }
-  }
+  },
 };
 </script>

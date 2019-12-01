@@ -63,13 +63,11 @@ export default {
                     var topicIdx = _findTopicIndex(board, topicTitle);
                     var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
                     console.log('this is the foundTask: ', foundTask);
-                    context.commit({type:'setCurrTopicTitle',topicTitle});
+                    context.commit({ type: 'setCurrTopicTitle', topicTitle });
                     context.commit({ type: 'setCurrTask', foundTask });
                 })
         },
         updateBoard(context, { board }) {
-            console.log(board);
-            
             return boardService.update(board)
                 .then(() => {
                     return boardService.getById(board._id)
@@ -92,27 +90,27 @@ export default {
             board.topics[idx].title = newTitle;
             context.dispatch({ type: "updateBoard", board: board });
         },
-        updateTaskTitle(context, { board, topicTitle, newTitle ,oldTitle}) {
+        updateTaskTitle(context, { board, topicTitle, newTitle, oldTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, oldTitle );
+            var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
             board.topics[topicIdx].tasks[taskIdx].title = newTitle;
             context.dispatch({ type: "updateBoard", board: board });
         },
-        updateTaskDescription(context,{board,topicTitle,taskTitle,taskDescription}){
+        updateTaskDescription(context, { board, topicTitle, taskTitle, taskDescription }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle );
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             board.topics[topicIdx].tasks[taskIdx].description = taskDescription;
             context.dispatch({ type: "updateBoard", board: board });
         },
-        updateTaskTags(context,{board,topicTitle,taskTitle,tag}){
+        updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle );
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             // console.log(context);
             // console.log(label);
-            
+
             board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
             context.dispatch({ type: "updateBoard", board: board });
-            
+
             console.log(board.topics[topicIdx].tasks[taskIdx]);
         },
         addTask(context, { board, topicTitle, newTask }) {

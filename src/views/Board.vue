@@ -6,7 +6,6 @@
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
       <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
-        add topic title:
         <input type="text" v-model="newTopic.title" />
         <button type="submit">Add</button>
       </form>
