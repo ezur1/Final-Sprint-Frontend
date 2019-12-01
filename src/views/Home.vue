@@ -4,7 +4,7 @@
     <div class="home-header-container ">
       <div class="flex space-between">
         <h1 class="logo">TaskFlo</h1>
-        <button class="login-btn">Login</button>
+        <button @click="goToLogin" class="login-btn">Login</button>
       </div>
 
       
@@ -19,10 +19,7 @@
           </div>
           <img src="@/assets/hero.jpg" alt="">
       </div>
-      <button class="start-now-btn" to="/taskfloapp">
-        <router-link to="/taskfloapp">
-        Start now</router-link>
-      </button>
+      <button @click="goToBoards" class="start-now-btn" to="/taskfloapp">Start now</button>
 
     </div>
 
@@ -39,6 +36,14 @@
 
 export default {
   name: 'home',
+  methods:{
+    goToBoards(){
+      this.$router.push('/taskfloapp');
+    },
+    goToLogin(){
+      this.$router.push('/signin');
+    }
+  },
   components: {
   }
 }
