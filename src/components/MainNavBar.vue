@@ -1,7 +1,7 @@
 <template>
   <section class="main-nav-bar-container flex align-c space-between">
     <div class="flex">
-      <h1 class="nav-bar-logo">TaskFlo</h1>
+      <h1 @click="goToHome" class="nav-bar-logo">TaskFlow</h1>
     </div>
     
     <div class="links">
@@ -17,7 +17,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    goToHome(){
+      this.$router.push(`/`);
+    }
+  },
   created() { }
 };
 </script>
