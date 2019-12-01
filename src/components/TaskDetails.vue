@@ -2,7 +2,13 @@
   <section v-if="task" class="task-preview flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info">
-        <h1 contenteditable ref="taskTitle" v-html="task.title" @blur="updateTask" @keydown.enter="endEditTaskTitle">{{task.title}}</h1>
+        <h1
+          contenteditable
+          ref="taskTitle"
+          v-html="task.title"
+          @blur="updateTaskTitle"
+          @keydown.enter="endEditTaskTitle"
+        >{{task.title}}</h1>
         <span>{{task.createdBy}}</span>
       </div>
       <font-awesome-icon icon="times" @click="backToBoard()" />
@@ -12,15 +18,12 @@
       <div class="preview-main">
         <section class="description">
           <h3>Description</h3>
-          <textarea
-            name="description"
-            placeholder="Add a description to your task.."
-            @click="showDescBtns()"
-          ></textarea>
-          <div v-if="isDescBtns" class="descBtns">
-            <button>Save</button>
-            <button>X</button>
-          </div>
+          <span
+            contenteditable
+            ref="taskDescription"
+            v-html="task.description"
+            @blur="updateTaskDescription"
+          ></span>
         </section>
       </div>
 
@@ -28,16 +31,16 @@
         <div class="add-to-card flex col">
           <h3>ADD TO CARD</h3>
 
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('labels')">
-            <span>Labels</span>
-            <div v-if="labelsMenuOn" class="labels-menu mini-menu flex col" @click.stop>
-              <span class="mini-menu-header">Labels</span>
+          <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
+            <span>Tags</span>
+            <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
+              <span class="mini-menu-header">Tags</span>
               <div class="flex col">
-                <div class="blue-label label"></div>
-                <div class="orange-label label"></div>
-                <div class="yello-label label"></div>
-                <div class="green-label label"></div>
-                <div class="red-label label"></div>
+                <div ref="blue-tag" class="blue-tag tag" @click="addTag('blue-tag')"></div>
+                <div ref="orange-tag" class="orange-tag tag" @click="addTag('orange-tag')"></div>
+                <div ref="yello-tag" class="yello-tag tag" @click="addTag('yello-tag')"></div>
+                <div ref="green-tag" class="green-tag tag" @click="addTag('green-tag')"></div>
+                <div ref="red-tag" class="red-tag tag" @click="addTag('red-tag')"></div>
               </div>
               <button>Add</button>
             </div>
@@ -92,34 +95,32 @@ export default {
   props: ["topicTitle"],
   data() {
     return {
+      val: null,
       isDescBtns: false,
       checklistMenuOn: false,
-      labelsMenuOn: false,
+      tagsMenuOn: false,
       dueDateMenuOn: false,
-      originalTaskTitle:'',
+      taskDescription: "",
       currTopicTitle: null
     };
   },
   methods: {
-    showDescBtns() {
-      this.isDescBtns = true;
-    },
     openMenu(menu) {
       switch (menu) {
         case "checklist":
           this.checklistMenuOn = !this.checklistMenuOn;
-          this.labelsMenuOn = false;
+          this.tagsMenuOn = false;
           this.dueDateMenuOn = false;
           break;
-        case "labels":
-          this.labelsMenuOn = !this.labelsMenuOn;
+        case "tags":
+          this.tagsMenuOn = !this.tagsMenuOn;
           this.checklistMenuOn = false;
           this.dueDateMenuOn = false;
           break;
         case "duedate":
           this.dueDateMenuOn = !this.dueDateMenuOn;
           this.checklistMenuOn = false;
-          this.labelsMenuOn = false;
+          this.tagsMenuOn = false;
           break;
       }
     },
@@ -127,33 +128,62 @@ export default {
       var boardId = this.$route.params.boardId;
       this.$router.push(`/boards/${boardId}`);
     },
-    updateTask(event) {
-
-      eventBus.$emit('updateTask', { oldTitle: this.originalTaskTitle, newTitle: event.target.innerHTML,topicTitle:this.topicTitle });
-      this.originalTaskTitle = event.target.innerHTML
+    updateTaskTitle(event) {
+      var oldTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("updateTaskTitle", {
+        oldTaskTitle,
+        newTitle: event.target.innerHTML,
+        topicTitle: this.topicTitle
+      });
+      this.originalTaskTitle = event.target.innerHTML;
     },
     endEditTaskTitle() {
       this.$refs.taskTitle.blur();
+    },
+    updateTaskDescription(event) {
+      var currTaskTitle = this.originalTaskTitle;
+      var newDescription = event.target.innerHTML;
+      if (newDescription === "") {
+        newDescription = "Empty, click here to edit!";
+        event.target.innerHTML = "Empty, click here to edit!";
+      }
+      eventBus.$emit("updateTaskDescription", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        description: newDescription
+      });
+    },
+    addTag(tag){
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("updateTaskTags", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        tag
+      });
     }
   },
   computed: {
     task() {
-      var currTask = this.$store.getters.currTask;
-      return currTask;
+      var task = this.$store.getters.currTask;
+      return task;
+    },
+    originalTaskTitle: {
+      get() {
+        var taskTitle = this.$store.getters.currTask;
+        taskTitle = taskTitle.title;
+        console.log("taskTitle at computed:", taskTitle);
+        return taskTitle;
+      },
+      set(value) {
+        this.val = value;
+      }
     }
   },
   created() {
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
-    // if (!this.currTopicTitle) {
-    //   console.log('the topicTitle is: ', this.topicTitle);
-      
-    //     var topicTitle = this.topicTitle;
-    //     }
-    //     else topicTitle = this.$store.getters.getCurrTopicTitle
-    this.$store.dispatch({ type: 'getTaskById', boardId, taskId, topicTitle });
-    // this.$store.dispatch({ type: 'getTaskById', boardId, task, taskId });
+    this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
   }
 };
 </script>
