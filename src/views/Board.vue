@@ -14,12 +14,7 @@
     <section class="topics-container">
       <draggable v-model="topics">
         <transition-group class="board-lists flex">
-          <topic
-            v-for="topic in currBoard.topics"
-            :key="topic.title"
-            :topic="topic"
-            :tasks="topic.tasks"
-          />
+          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
         </transition-group>
       </draggable>
     </section>
@@ -130,8 +125,34 @@ export default {
       this.isAddTopic = !this.isAddTopic;
     },
     updateTaskTitle(payload) {
-      console.log(payload);
+      this.$store.dispatch({
+        type: "updateTaskTitle",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        newTitle: payload.newTitle,
+        oldTitle: payload.oldTaskTitle
+      });
+    },
+    updateTaskDescription(payload){
+        this.$store.dispatch({
+        type: "updateTaskDescription",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        taskDescription:payload.description
+      });
+    },
+    updateTaskTags(payload){
+      console.log("description payload at board.vue", payload);
+        this.$store.dispatch({
+        type: "updateTaskTags",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        tag:payload.tag
+      });
     }
+
   },
   created() {
     var id = this.$route.params.boardId;
@@ -151,8 +172,14 @@ export default {
     eventBus.$on("showTaskDetails", payload => {
       this.showTaskDetails(payload);
     });
-    eventBus.$on("updateTask", payload => {
-      this.updateTask(payload);
+    eventBus.$on("updateTaskTitle", payload => {
+      this.updateTaskTitle(payload);
+    });
+    eventBus.$on("updateTaskDescription", payload => {
+      this.updateTaskDescription(payload);
+    });
+    eventBus.$on("updateTaskTags", payload => {
+      this.updateTaskTags(payload);
     });
   },
   components: {

@@ -63,8 +63,8 @@ export default {
      eventBus.$on('removeSideMenu', this.removeSideMenu);
     this.boards = this.$store.getters.boardsToShow;
     this.currBoardId = this.currBoard._id;
-    console.log("this.currBoardId in created", this.currBoardId);
-    console.log("boards", this.boards);
+    // console.log("this.currBoardId in created", this.currBoardId);
+    // console.log("boards", this.boards);
   },
   components: {
     SideMenu // Register your component

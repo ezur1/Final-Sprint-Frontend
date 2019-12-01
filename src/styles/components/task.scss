@@ -30,11 +30,32 @@
 }
 
 .task-title {
-    // clear: both;
     display: block;
     margin: 0 0 .5rem;
     overflow: hidden;
     text-decoration: none;
     word-wrap: break-word;
     color: #172b4d;
+}
+
+.tag-preview{
+    height: 1rem;
+    width: 1rem;
+    border-radius: 3px;
+    margin: 0 2px;
+    &.blue-tag {
+        background-color:$clrTag1;
+    }
+    &.orange-tag {
+        background-color:$clrTag2;
+    }
+    &.yello-tag {
+        background-color:$clrTag3;
+    }
+    &.green-tag {
+        background-color:$clrTag4;
+    }
+    &.red-tag {
+        background-color:$clrTag5;
+    }
 }

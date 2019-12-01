@@ -1,13 +1,13 @@
 import axios from 'axios'
 import router from '../router/index.js'
 
-function _handleError(err) {
-    console.log('Err:', err);
-    if (err.response.status === 401) {
-        sessionStorage.clear();
-        router.push('/');
-    }
-    throw err;
+
+
+export const httpService = {
+    get,
+    delete: remove,
+    post,
+    put
 }
 
 function get(url) {
@@ -26,16 +26,19 @@ function post(url, data) {
         .then(res => res.data)
         .catch(_handleError)
 }
+
 function put(url, data) {
     return axios.put(url, data)
         .then(res => res.data)
         .catch(_handleError)
 }
 
+function _handleError(err) {
+    console.log('Err:', err.response.data.error);
 
-export const httpService = {
-    get,
-    delete: remove,
-    post,
-    put
-} 
+    if (err.response.status === 401) {
+        sessionStorage.clear();
+        router.push('/');
+    }
+    throw err; //// this line ensures that only a successfull login will advance.
+}

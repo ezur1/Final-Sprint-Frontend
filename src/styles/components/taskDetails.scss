@@ -147,10 +147,10 @@
         top: 24.7rem;
     }
 
-    .labels-menu {
+    .tags-menu {
         top: 19.5rem;
 
-        .label {
+        .tag {
             width: 90%;
             height: 2rem;
             margin-bottom: .3rem;
@@ -158,34 +158,34 @@
             border-radius: 3px;
             cursor: pointer;
         }
-        .blue-label {
-            background-color: blue;
+        .blue-tag {
+            background-color:$clrTag1;
             &:hover {
-            box-shadow: -8px 0 rgba(72, 72, 255, 0.609);
+            box-shadow: -10px 0 rgba(72, 72, 255, 0.6);
             }
         }
-        .orange-label {
-            background-color: rgb(255, 166, 0);
+        .orange-tag {
+            background-color:$clrTag2;
             &:hover {
-            box-shadow: -8px 0 rgb(255, 166, 0);
+            box-shadow: -10px 0 rgba(255, 166, 0, 0.6);
             }
         }
-        .yello-label {
-            background-color: rgb(248, 232, 13);
+        .yello-tag {
+            background-color:$clrTag3;
             &:hover {
-            box-shadow: -8px 0 rgb(248, 232, 13);
+            box-shadow: -10px 0 rgba(255, 238, 8, 0.5);
             }
         }
-        .green-label {
-            background-color: rgb(0, 255, 21);
+        .green-tag {
+            background-color:$clrTag4;
             &:hover {
-            box-shadow: -8px 0 rgb(0, 255, 21);
+            box-shadow: -10px 0 #11cb21c5;
             }
         }
-        .red-label {
-            background-color: rgb(255, 0, 0);
+        .red-tag {
+            background-color:$clrTag5;
             &:hover {
-            box-shadow: -8px 0 rgb(255, 0, 0);
+            box-shadow: -10px 0 #f82e2eb4;
             }
         }
     }
