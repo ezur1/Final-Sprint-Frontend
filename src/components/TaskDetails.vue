@@ -99,8 +99,6 @@ export default {
       tagsMenuOn: false,
       dueDateMenuOn: false,
       taskDescription: "",
-      // isTaskBtns:false,
-      originalTaskTitle:'',
       currTopicTitle: null
     };
   },
