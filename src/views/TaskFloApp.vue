@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <div id="nav">
-      <!-- <router-link to="/board/">MyBoards</router-link> -->
-      <section class="board">
+
+    <MainNavBar />
+      
+      <section class="board flex wrap">
           <BoardsPreview v-for="board in boards" :key=board._id :board="board"/>
           <!-- <board v-for="board in boards" :key=board._id :board="board" :topics="board.topics"> </board> -->
       </section>
@@ -13,6 +15,7 @@
 
 <script>
 import BoardsPreview from '../components/BoardsPreview.vue';
+import MainNavBar from "../components/MainNavBar.vue";
 
 export default {
   data(){
@@ -27,7 +30,8 @@ export default {
   this.$store.dispatch("loadBoards");
   },
   components: {
-     BoardsPreview
+     BoardsPreview,
+     MainNavBar
   }
 }
 </script>
