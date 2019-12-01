@@ -150,6 +150,14 @@ export default {
         taskTitle:payload.taskTitle,
         tag:payload.tag
       });
+    },
+    updateTopicColor(payload){
+      this.$store.dispatch({
+        type: "updateTopicColor",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        color:payload.color
+      });
     }
 
   },
@@ -179,6 +187,9 @@ export default {
     });
     eventBus.$on("updateTaskTags", payload => {
       this.updateTaskTags(payload);
+    });
+    eventBus.$on("updateTopicColor", payload => {
+      this.updateTopicColor(payload);
     });
   },
   components: {

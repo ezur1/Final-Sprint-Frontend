@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="topic-wraper">
-      <div class="topic-content flex col">
+      <div class="topic-content flex col" :style="{ 'background-color': topic.color }">
         <div class="topic-content-header flex space-between">
           <div class="topic-title" contenteditable ref="topicTitle" v-html="topic.title" @blur="updateTopic" @keydown.enter="endEditTopicTitle"></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
@@ -9,11 +9,11 @@
             <div v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
               <button @click="openColorDropDown()">Topic Color</button>
                     <div v-if="isColorDropDownOpen" class="flex col">
-                      <div class="topic-color-light-blue" @click="setTopicColor(topic.title, 'lightBlue')"></div>
-                      <div class="topic-color-light-red" @click="setTopicColor(topic.title, 'lightRed')"></div>
-                      <div class="topic-color-light-green" @click="setTopicColor(topic.title, 'lightGreen')"></div>
-                      <div class="topic-color-light-pink" @click="setTopicColor(topic.title, 'lightPink')"></div>
-                      <div class="topic-color-light-yellow" @click="setTopicColor(topic.title, 'lightYellow')"></div>
+                      <div class="topic-color-light-blue" @click="updateTopicColor(topic.title, 'lightblue')"></div>
+                      <div class="topic-color-light-red" @click="updateTopicColor(topic.title, 'lightcoral')"></div>
+                      <div class="topic-color-light-green" @click="updateTopicColor(topic.title, 'lightseagreen')"></div>
+                      <div class="topic-color-light-pink" @click="updateTopicColor(topic.title, 'lightpink')"></div>
+                      <div class="topic-color-light-yellow" @click="updateTopicColor(topic.title, 'lightyellow')"></div>
                     </div>            
               <button @click="removeTopic(topic.title)">Delete</button>
             </div>
@@ -142,12 +142,9 @@ export default {
     openColorDropDown() {
       this.isColorDropDownOpen = !this.isColorDropDownOpen;
     },
-    setTopicColor(topicTitle, color){
-      console.log('got here, with topicTitle and color: ',topicTitle, color);
-      // switch (color) {
-      //   case "lightBlue":
-      //     eventBus.$emit('changeTopicColor', {topicTitle, color: 'hex value'})
-      //     break;
+    updateTopicColor(topicTitle, color){
+      eventBus.$emit('updateTopicColor', {topicTitle, color})
+      this.openColorDropDown()
       }
   },
   components: {

@@ -90,6 +90,11 @@ export default {
             board.topics[idx].title = newTitle;
             context.dispatch({ type: "updateBoard", board: board });
         },
+        updateTopicColor(context, { board, topicTitle, color }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            board.topics[topicIdx].color = color;
+            context.dispatch({ type: "updateBoard", board: board });
+        },
         updateTaskTitle(context, { board, topicTitle, newTitle, oldTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
