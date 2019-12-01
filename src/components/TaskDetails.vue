@@ -98,8 +98,10 @@ export default {
       checklistMenuOn: false,
       tagsMenuOn: false,
       dueDateMenuOn: false,
-      taskDescription: ""
+      taskDescription: "",
       // isTaskBtns:false,
+      originalTaskTitle:'',
+      currTopicTitle: null
     };
   },
   methods: {

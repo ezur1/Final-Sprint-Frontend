@@ -14,12 +14,7 @@
     <section>
       <draggable v-model="topics">
         <transition-group class="board-lists flex wrap">
-          <topic
-            v-for="topic in currBoard.topics"
-            :key="topic.title"
-            :topic="topic"
-            :tasks="topic.tasks"
-          />
+          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
         </transition-group>
       </draggable>
     </section>

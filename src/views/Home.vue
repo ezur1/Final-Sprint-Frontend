@@ -4,10 +4,8 @@
     <div class="home-header-container ">
       <div class="flex space-between">
         <h1 class="logo">TaskFlo</h1>
-        <button class="login-btn">Login</button>
+        <button @click="goToLogin" class="login-btn">Login</button>
       </div>
-
-      
       <div class="greet flex justify-center space-around">
         <div>
         <h1>TaskFlo lets you work more </h1>
@@ -19,11 +17,7 @@
           </div>
           <img src="@/assets/hero.jpg" alt="">
       </div>
-      <button class="start-now-btn" to="/taskfloapp">
-        <router-link to="/taskfloapp">
-        Start now</router-link>
-      </button>
-
+      <button class="start-now-btn" @click="startAsGuest">Try Now !</button>
     </div>
 
     <div class="features">
@@ -39,6 +33,18 @@
 
 export default {
   name: 'home',
+  methods: {
+    startAsGuest() {
+      const cred = {userName: "guest", password: "guest"}
+      return this.$store.dispatch({type :'login', userCred:cred})
+      .then (() =>{
+        this.$router.push('/boards/3b44c9c13368cbfb8f1bf4b4');
+      })
+    },
+    goToLogin(){
+      this.$router.push('/signin');
+    }
+  },
   components: {
   }
 }

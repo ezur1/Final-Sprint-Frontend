@@ -7,11 +7,10 @@ export default {
         boards: [],
         currBoard: null,
         currTask: null,
-        currTopicTitle:null
+        currTopicTitle: null
     },
     mutations: {
-        setCurrTask(state, {foundTask}) {
-            console.log('setting currTask:',foundTask);
+        setCurrTask(state, { foundTask }) {
             state.currTask = foundTask;
         },
 
@@ -22,9 +21,7 @@ export default {
         setCurrBoard(state, { board }) {
             state.currBoard = board
         },
-        setCurrTopicTitle(state,topicTitle){
-            console.log('setting CurrTopicTitle:',topicTitle);
-
+        setCurrTopicTitle(state, topicTitle) {
             state.currTopicTitle = topicTitle;
         }
     },
@@ -38,7 +35,7 @@ export default {
         getCurrBoard(state) {
             return state.currBoard
         },
-        getCurrTopicTitle(state){
+        getCurrTopicTitle(state) {
             return state.currTopicTitle
         }
     },
@@ -119,6 +116,8 @@ export default {
             console.log(board.topics[topicIdx].tasks[taskIdx]);
         },
         addTask(context, { board, topicTitle, newTask }) {
+            console.log('the new task is: ', newTask);
+
             var idx = _findTopicIndex(board, topicTitle);
             board.topics[idx].tasks.push(newTask);
             context.dispatch({ type: "updateBoard", board: board });
@@ -148,7 +147,6 @@ function _findTopicIndex(board, term) {
 }
 
 function _findTaskIndex(board, topicIdx, term) {
-    console.log('term',term);
-    
+    console.log('this is the requested task.title: ', term);
     return board.topics[topicIdx].tasks.findIndex(task => task.title === term);
 }
