@@ -43,7 +43,7 @@ export default {
         tasks: []
       },
       topicTitleForTaskDetails: null,
-      currTaskDetails:null
+      currTaskDetails: null
     };
   },
   name: "board",
@@ -95,9 +95,7 @@ export default {
         newTitle: payload.newTitle
       });
     },
-    updateTask(payload) {
-       this.$store.dispatch({ type: "updateTask", board: this.boardToEdit, oldTitle: payload.oldTitle, newTitle: payload.newTitle });
-    },
+    // updateTask(payload) {},
     addTask(payload) {
       this.$store.dispatch({
         type: "addTask",
@@ -116,7 +114,7 @@ export default {
     },
     showTaskDetails(payload) {
       this.currTaskDetails = payload.task;
-      this.topicTitleForTaskDetails = payload.topicTitle
+      this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
@@ -125,24 +123,68 @@ export default {
       this.isAddTopic = !this.isAddTopic;
     },
     updateTaskTitle(payload) {
-      console.log(payload);
+      this.$store.dispatch({
+        type: "updateTaskTitle",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        newTitle: payload.newTitle,
+        oldTitle: payload.oldTaskTitle
+      });
+    },
+    updateTaskDescription(payload){
+        this.$store.dispatch({
+        type: "updateTaskDescription",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        taskDescription:payload.description
+      });
+    },
+    updateTaskTags(payload){
+      console.log("description payload at board.vue", payload);
+        this.$store.dispatch({
+        type: "updateTaskTags",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        tag:payload.tag
+      });
     }
+
   },
   created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
-    eventBus.$on('updateTopic', (payload) => {this.updateTopic(payload)})
-    eventBus.$on('removeTopic', (payload) => {this.removeTopic(payload)})
-    eventBus.$on('addTask', (payload) => {this.addTask(payload)})
-    eventBus.$on('removeTask', (payload) => {this.removeTask(payload)})
-    eventBus.$on('showTaskDetails', (payload) => {this.showTaskDetails(payload)})
-    eventBus.$on('updateTask', (payload) => {this.updateTask(payload)})
+    eventBus.$on("updateTopic", payload => {
+      this.updateTopic(payload);
+    });
+    eventBus.$on("removeTopic", payload => {
+      this.removeTopic(payload);
+    });
+    eventBus.$on("addTask", payload => {
+      this.addTask(payload);
+    });
+    eventBus.$on("removeTask", payload => {
+      this.removeTask(payload);
+    });
+    eventBus.$on("showTaskDetails", payload => {
+      this.showTaskDetails(payload);
+    });
+    eventBus.$on("updateTaskTitle", payload => {
+      this.updateTaskTitle(payload);
+    });
+    eventBus.$on("updateTaskDescription", payload => {
+      this.updateTaskDescription(payload);
+    });
+    eventBus.$on("updateTaskTags", payload => {
+      this.updateTaskTags(payload);
+    });
   },
   components: {
     Topic,
     BoardNavBar,
     MainNavBar,
-    Draggable,
+    Draggable
   }
 };
 </script>
