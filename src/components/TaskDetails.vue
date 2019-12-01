@@ -36,13 +36,12 @@
             <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Tags</span>
               <div class="flex col">
-                <div ref="blue-tag" class="blue-tag tag" @click="addTag('blue-tag')"></div>
-                <div ref="orange-tag" class="orange-tag tag" @click="addTag('orange-tag')"></div>
-                <div ref="yello-tag" class="yello-tag tag" @click="addTag('yello-tag')"></div>
-                <div ref="green-tag" class="green-tag tag" @click="addTag('green-tag')"></div>
-                <div ref="red-tag" class="red-tag tag" @click="addTag('red-tag')"></div>
+                <div ref="blue-tag" class="blue-tag tag" :class="{'selected-tag':task.tags.includes('blue-tag')}" @click="addTag('blue-tag')"></div>
+                <div ref="orange-tag" class="orange-tag tag" :class="{'selected-tag':task.tags.includes('orange-tag')}" @click="addTag('orange-tag')"></div>
+                <div ref="yello-tag" class="yello-tag tag" :class="{'selected-tag':task.tags.includes('yello-tag')}" @click="addTag('yello-tag')"></div>
+                <div ref="green-tag" class="green-tag tag" :class="{'selected-tag':task.tags.includes('green-tag')}" @click="addTag('green-tag')"></div>
+                <div ref="red-tag" class="red-tag tag" :class="{'selected-tag':task.tags.includes('red-tag')}" @click="addTag('red-tag')"></div>
               </div>
-              <button>Add</button>
             </div>
           </a>
 
@@ -96,12 +95,12 @@ export default {
   data() {
     return {
       val: null,
-      isDescBtns: false,
       checklistMenuOn: false,
       tagsMenuOn: false,
       dueDateMenuOn: false,
+      currTopicTitle: null,
       taskDescription: "",
-      currTopicTitle: null
+
     };
   },
   methods: {
@@ -155,6 +154,16 @@ export default {
     },
     addTag(tag){
       var currTaskTitle = this.originalTaskTitle;
+      var isSelected = event.target.className.includes("selected-tag");
+      console.log(isSelected);
+      if(isSelected){
+        var classStr = event.target.className
+        classStr = classStr.replace(' selected-tag','');
+        console.log(classStr);
+        event.target.className = classStr;
+      }
+      else event.target.className += ' selected-tag';
+       
       eventBus.$emit("updateTaskTags", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
