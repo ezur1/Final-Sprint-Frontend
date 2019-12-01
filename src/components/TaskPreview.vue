@@ -1,7 +1,7 @@
 <template>
   <div v-if="task" class="task" @click="showTaskDetails(task.id)">
     <div class="task-details flex col space-between">
-      <div v-if="task.tags.length!=0" class="tags flex">
+      <div v-if="task.tags.length!==0" class="tags flex">
         <div v-for="tag in task.tags" :key="tag" :class="tag" class="tag-preview">
         </div>
       </div> 
