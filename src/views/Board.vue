@@ -164,6 +164,7 @@ export default {
   created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
+    
     eventBus.$on("updateTopic", payload => {
       this.updateTopic(payload);
     });
@@ -210,6 +211,6 @@ body {
   -o-background-size: cover;
   background-size: cover;
   height: 100vh;
-  width: 100;
+  width: 100vw;
 }
 </style>

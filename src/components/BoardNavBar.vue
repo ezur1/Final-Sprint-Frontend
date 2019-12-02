@@ -14,6 +14,11 @@
       <div class="search-icon-container">
         <img src="@/assets/search-24.png" />
       </div>
+      <section v-if="usersOnBoard.length>0" class="connectedUsers">
+        <div v-for="user in usersOnBoard" :key="user._id">
+          <div class="user-on-board">{{user.userName}}</div>
+        </div>
+      </section>
     </div>
     <div>
       <p class="open-menu-btn" @click="openSideMenu">Open Menu</p>
@@ -40,6 +45,11 @@ export default {
       show: true
     };
   },
+  computed: {
+    usersOnBoard() {
+      return this.$store.getters.usersOnBoard;
+    }
+  },
   methods: {
     openDropDown() {
       this.isOpenDropDown = !this.isOpenDropDown;
@@ -60,14 +70,15 @@ export default {
     }
   },
   created() {
-     eventBus.$on('removeSideMenu', this.removeSideMenu);
+    eventBus.$on('removeSideMenu', this.removeSideMenu);
     this.boards = this.$store.getters.boardsToShow;
     this.currBoardId = this.currBoard._id;
+    // this.usersOnBoard = this.$store.getters.usersOnBoard;
     // console.log("this.currBoardId in created", this.currBoardId);
     // console.log("boards", this.boards);
   },
   components: {
-    SideMenu // Register your component
+    SideMenu
   }
 };
 </script>

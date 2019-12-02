@@ -13,14 +13,15 @@ export default {
         setCurrTask(state, { foundTask }) {
             state.currTask = foundTask;
         },
-
         setBoards(state, { boards }) {
             state.boards = boards;
         },
-
         setCurrBoard(state, { board }) {
             state.currBoard = board
         },
+        // removeUserFromBoard(state, { userIdxInState }) {
+        //     state.usersOnBoard.splice(userIdxInState, 1);
+        // },
         setCurrTopicTitle(state, topicTitle) {
             state.currTopicTitle = topicTitle;
         }
@@ -32,10 +33,17 @@ export default {
         currTask(state) {
             return state.currTask;
         },
-        getCurrBoard(state) {
+        // getBoards(state) { //// take off the "get"
+        //     return state.Boards
+        // },
+        getCurrBoard(state) { //// take off the "get"
             return state.currBoard
         },
-        getCurrTopicTitle(state) {
+        usersOnBoard(state) {
+            // console.log('these are the usersOnBoard: ', state.currBoard.usersOnBoard);
+            return state.currBoard.usersOnBoard
+        },
+        getCurrTopicTitle(state) { //// take off the "get"
             return state.currTopicTitle
         }
     },
@@ -50,19 +58,23 @@ export default {
             return boardService.getById(boardId)
                 .then(board => {
                     context.commit({ type: 'setCurrBoard', board })
+                    const loggedInUser = JSON.parse(sessionStorage.user);
+
+                    if (loggedInUser) { ///// "IF" becuase what happens if someone got to this URL in another way...
+                        var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(board.usersOnBoard, loggedInUser._id);
+                        if (userIdxInUsersOnBoard === -1) {
+                            board.usersOnBoard.push(loggedInUser)
+                            context.dispatch({ type: "updateBoard", board: board });
+                        }
+                    }
                 })
         },
         getTaskById(context, { boardId, taskId, topicTitle }) {
             return boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
                 .then(board => {
-                    console.log('this is the Board ID: ', boardId);
-                    console.log('this is the topicTitle: ', topicTitle);
-                    console.log('this is the taskID: ', taskId);
-                    // var board = context.getters.getCurrBoard; ///// but what if someone tries to access a taskDetails URL?
-                    ////// DONT KNOW WHERE TO GET THE "topicTitle" FROM IN SUCH A CASE! ///////
+                    ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
                     var topicIdx = _findTopicIndex(board, topicTitle);
                     var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
-                    console.log('this is the foundTask: ', foundTask);
                     context.commit({ type: 'setCurrTopicTitle', topicTitle });
                     context.commit({ type: 'setCurrTask', foundTask });
                 })
@@ -111,7 +123,6 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             var currTagIdx = board.topics[topicIdx].tasks[taskIdx].tags.findIndex(currTag => currTag === tag);
-            console.log(currTagIdx);
 
             if (currTagIdx === -1) {
                 board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
@@ -122,8 +133,6 @@ export default {
             }
         },
         addTask(context, { board, topicTitle, newTask }) {
-            console.log('the new task is: ', newTask);
-
             var idx = _findTopicIndex(board, topicTitle);
             board.topics[idx].tasks.push(newTask);
             context.dispatch({ type: "updateBoard", board: board });
@@ -144,6 +153,21 @@ export default {
             var board = context.getters.getCurrBoard;
             board.topics = topics
             context.dispatch({ type: "updateBoard", board: board });
+        },
+        removeUserFromBoards(context) {
+            var loggedInUserId = context.getters.loggedInUser._id;
+            boardService.query()
+                .then(boards => {
+                    boards.forEach(board => {
+                        var usersOnBoard = board.usersOnBoard;
+                        var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
+                        if (userIdxInUsersOnBoard !== -1) {
+                            // console.log('found this user in thie board, and am removing from the usersOnBoard Array');
+                            board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
+                            context.dispatch({ type: "updateBoard", board: board });
+                        }
+                    })
+                });
         }
     }
 }
@@ -153,6 +177,9 @@ function _findTopicIndex(board, term) {
 }
 
 function _findTaskIndex(board, topicIdx, term) {
-    console.log('this is the requested task.title: ', term);
     return board.topics[topicIdx].tasks.findIndex(task => task.title === term);
+}
+
+function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {
+    return usersOnBoard.findIndex(user => user._id === loggedInUserId);
 }

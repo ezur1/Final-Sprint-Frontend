@@ -11,7 +11,12 @@ export default {
     mutations: {
         setUser(state, { user }) {
             state.loggedinUser = user;
-        },
+        }
+    },
+    getters: {
+        loggedInUser(state) {
+            return state.loggedinUser
+        }
     },
     actions: {
         async login(context, { userCred }) {
@@ -25,10 +30,12 @@ export default {
             return user;
         },
         async logout(context) {
+            await context.dispatch({ type: "removeUserFromBoards" });
             await userService.logout()
-                // context.commit({type: 'setUsers', users: []})
             context.commit({ type: 'setUser', user: null })
-        }
+                ///// logout also needs to remove this user from the usersOnBoard array in the board object
+        },
+
     },
     modules: {}
 }
