@@ -19,9 +19,6 @@ export default {
         setCurrBoard(state, { board }) {
             state.currBoard = board
         },
-        // removeUserFromBoard(state, { userIdxInState }) {
-        //     state.usersOnBoard.splice(userIdxInState, 1);
-        // },
         setCurrTopicTitle(state, topicTitle) {
             state.currTopicTitle = topicTitle;
         }
@@ -33,14 +30,10 @@ export default {
         currTask(state) {
             return state.currTask;
         },
-        // getBoards(state) { //// take off the "get"
-        //     return state.Boards
-        // },
         getCurrBoard(state) { //// take off the "get"
             return state.currBoard
         },
         usersOnBoard(state) {
-            // console.log('these are the usersOnBoard: ', state.currBoard.usersOnBoard);
             return state.currBoard.usersOnBoard
         },
         getCurrTopicTitle(state) { //// take off the "get"

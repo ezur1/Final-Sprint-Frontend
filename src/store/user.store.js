@@ -33,7 +33,6 @@ export default {
             await context.dispatch({ type: "removeUserFromBoards" });
             await userService.logout()
             context.commit({ type: 'setUser', user: null })
-                ///// logout also needs to remove this user from the usersOnBoard array in the board object
         },
 
     },
