@@ -158,7 +158,17 @@ export default {
         topicTitle: payload.topicTitle,
         color:payload.color
       });
+    },
+    addCheckList(payload){
+      this.$store.dispatch({
+        type:"addCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkList: payload.checkList
+      });
     }
+    
 
   },
   created() {
@@ -191,6 +201,9 @@ export default {
     });
     eventBus.$on("updateTopicColor", payload => {
       this.updateTopicColor(payload);
+    });
+    eventBus.$on("addCheckList", payload => {
+      this.addCheckList(payload);
     });
   },
   components: {
