@@ -190,9 +190,9 @@ export default {
             
             var todoIdx=_findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)
             
-            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone=true;
+            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone=!board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone;
             context.dispatch({ type: "updateBoard", board: board });
-            
+            console.log('todos[todoIdx].isDone in store',board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone);
         }
     }
 }
