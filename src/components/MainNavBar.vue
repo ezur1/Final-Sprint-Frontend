@@ -1,14 +1,14 @@
 <template>
   <section class="main-nav-bar-container flex align-c space-between" >
     <div class="flex">
-      <h1 @click="goToHome" class="nav-bar-logo">TaskFlow</h1>
+      <img class="logo" @click="goToHome" src="@/assets/logo_transparent.png">
     </div>
 
-    <div class="links flex">
+    <div class="links flex align-c">
       <router-link to="/">Home</router-link>
       <router-link to="/taskfloapp">boards</router-link>
       <router-link to="/about">About Us</router-link>
-      <p class="nav-bar-logo" @click="doLogout">Logout</p>
+      <p class="nav-bar-logot" @click="doLogout">Logout</p>
     </div>
   </section>
 </template>

@@ -1,15 +1,17 @@
 .main-nav-bar-container{
     height: 3rem;
+    padding: .5rem 1rem;
     background: rgba(190, 190, 190, 0.7);
 
-    .nav-bar-logo{
-        margin: 0rem 0.5rem;
-        &:hover{
-            cursor: pointer;
-        }
+    .nav-bar-logot{
+        &:hover{cursor: pointer;}
     }
     .links > *{
-        margin: 1rem;
+        margin-left: 1rem;
+        &:hover{
+            border-bottom:1px white solid;
+            font-weight: 700;
+        }
     }
     
 }

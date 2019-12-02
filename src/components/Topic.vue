@@ -9,12 +9,12 @@
             <div v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
               <button @click="openColorDropDown()">Topic Color</button>
                     <div v-if="isColorDropDownOpen" class="flex col">
-                      <div class="topic-color-light-blue" @click="updateTopicColor(topic.title, 'lightblue')"></div>
-                      <div class="topic-color-light-red" @click="updateTopicColor(topic.title, 'lightcoral')"></div>
-                      <div class="topic-color-light-green" @click="updateTopicColor(topic.title, 'lightseagreen')"></div>
-                      <div class="topic-color-light-pink" @click="updateTopicColor(topic.title, 'lightpink')"></div>
-                      <div class="topic-color-light-yellow" @click="updateTopicColor(topic.title, 'lightyellow')"></div>
-                      <div class="topic-color-none" @click="updateTopicColor(topic.title, '#ebecf0')">reset</div>
+                      <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
+                      <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
+                      <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(32, 178, 171, 0.9)')"></div>
+                      <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
+                      <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
+                      <div class="topic-color none" @click="updateTopicColor(topic.title, '#ebecf0d3')">reset</div>
                     </div>            
               <button @click="removeTopic(topic.title)">Delete</button>
             </div>
