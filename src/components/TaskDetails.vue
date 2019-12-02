@@ -190,6 +190,7 @@ export default {
       });
     },
     addCheckList() {
+      this.checklistMenuOn=!this.checklistMenuOn
       var currTaskTitle = this.originalTaskTitle;
       console.log("this is the checklist being sent: ", this.checkList);
 
@@ -200,6 +201,7 @@ export default {
       });
     },
     addDueDate() {
+      this.dueDateMenuOn=!this.dueDateMenuOn
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
         taskTitle: currTaskTitle,
