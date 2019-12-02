@@ -95,7 +95,7 @@
 <script>
 import {eventBus} from '../main.js'
 // import {uploadImg} from '../services/img.service.js'
-
+import CheckList from './CheckList.vue'
 export default {
   props: ["topicTitle"],
   data() {
@@ -221,6 +221,7 @@ export default {
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
-  }
+  },
+  components: {}
 };
 </script>
