@@ -129,11 +129,13 @@ export default {
             }
         },
         addTask(context, { board, topicTitle, newTask }) {
+            console.log('the add task action thinks that the board is:',board.title);
             var idx = _findTopicIndex(board, topicTitle);
             board.topics[idx].tasks.push(newTask);
             context.dispatch({ type: "updateBoard", board: board });
         },
         removeTask(context, { board, topicTitle, taskTitle }) {
+            
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             board.topics[topicIdx].tasks.splice(taskIdx, 1);

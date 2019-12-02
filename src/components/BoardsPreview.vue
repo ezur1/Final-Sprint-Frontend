@@ -1,6 +1,6 @@
 <template>
   <section class="boards-preview ">
-    <div class="board-card" @click="gotoBoard(board._id)">{{board.title}}</div>
+    <div class="board-card" @click="goToBoard(board._id)">{{board.title}}</div>
   </section>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   props: ["board"],
   methods: {
-    gotoBoard(boardId) {
+    goToBoard(boardId) {
       this.$router.push(`/boards/${boardId}`);
     }
   },

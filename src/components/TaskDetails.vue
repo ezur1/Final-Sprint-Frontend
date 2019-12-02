@@ -184,6 +184,8 @@ export default {
   },
   computed: {
     task() {
+      console.log('aha');
+      
       var task = this.$store.getters.currTask;
       return task;
     },
