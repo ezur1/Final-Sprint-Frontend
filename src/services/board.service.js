@@ -1,23 +1,25 @@
 import { httpService } from '../services/http.service.js';
 
+const ROUTE = "/board"
+
 function query() {
-    return httpService.get('http://localhost:3001/api/board')
+    return httpService.get(ROUTE)
 }
 
 function update(board) {
-    return httpService.put(`http://localhost:3001/api/board/${board._id}`, board)
+    return httpService.put(`${ROUTE}/${board._id}`, board)
 }
 
 function getById(id) {
-    return httpService.get(`http://localhost:3001/api/board/${id}`)
+    return httpService.get(`${ROUTE}/${id}`)
 }
 
 function remove(id) {
-    return httpService.delete(`http://localhost:300/api/board/${id}`)
+    return httpService.delete(`${ROUTE}/${id}`)
 }
 
 function add(added) {
-    return httpService.post(`http://localhost:3001/api/boards`, added)
+    return httpService.post(ROUTE, added)
 }
 
 export default {

@@ -1,6 +1,6 @@
 import { httpService } from '../services/http.service.js';
 
-const URL_KEY = 'http://localhost:3001/api'
+const ROUTE = '/auth'
 
 export default {
     login,
@@ -9,17 +9,17 @@ export default {
 }
 
 async function login(userCred) {
-    const user = await httpService.post(`${URL_KEY}/auth/login`, userCred)
+    const user = await httpService.post(`${ROUTE}/login`, userCred)
     return _handleLogin(user)
 }
 
 async function signup(userCred) {
-    const user = await httpService.post(`${URL_KEY}/auth/signup`, userCred)
+    const user = await httpService.post(`${ROUTE}/signup`, userCred)
     return _handleLogin(user)
 }
 
 async function logout() {
-    await httpService.post(`${URL_KEY}/auth/logout`);
+    await httpService.post(`${ROUTE}/logout`);
     sessionStorage.clear();
 }
 

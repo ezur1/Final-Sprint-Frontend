@@ -33,10 +33,13 @@ export default {
             return state.currTask;
         },
         getCurrBoard(state) {
-            return state.currBoard
+            return state.currBoard;
         },
         getCurrTopicTitle(state) {
-            return state.currTopicTitle
+            return state.currTopicTitle;
+        },
+        getCurrTaskTags(state){
+            return state.currTask.tags;
         }
     },
     actions: {
@@ -153,6 +156,5 @@ function _findTopicIndex(board, term) {
 }
 
 function _findTaskIndex(board, topicIdx, term) {
-    console.log('this is the requested task.title: ', term);
     return board.topics[topicIdx].tasks.findIndex(task => task.title === term);
 }
