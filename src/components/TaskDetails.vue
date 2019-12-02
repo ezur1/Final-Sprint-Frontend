@@ -222,6 +222,6 @@ export default {
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
   },
-  components: {}
+  components: {CheckList}
 };
 </script>
