@@ -164,6 +164,15 @@ export default {
                         }
                     })
                 });
+        },
+        addCheckList(context, { board, topicTitle, taskTitle, checkList }) {
+            console.log('this is the checkList: ', checkList);
+            
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+
+            board.topics[topicIdx].tasks[taskIdx].checkLists.push(checkList);
+            context.dispatch({ type: "updateBoard", board: board });
         }
     }
 }
