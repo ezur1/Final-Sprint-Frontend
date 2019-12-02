@@ -23,7 +23,9 @@
     z-index: 0;
     &:hover {
         cursor: pointer;
-        background-color: rgb(235, 235, 235);
+        // background-color: rgb(235, 235, 235);
+        font-weight: 900;
+        box-shadow: -3.5px 0px 0px  rgba(44, 44, 35, 0.733),0 1px 0 rgba(9, 30, 66, .25);
     }
 }
 
@@ -44,10 +46,10 @@
 }
 
 .tag-preview {
-    height: 1rem;
-    width: 1rem;
+    height: .5rem;
+    width: 1.5rem;
     border-radius: 3px;
-    margin: 0 2px;
+    margin-right: 4px;
     &.blue-tag {
         background-color: $clrTag1;
     }

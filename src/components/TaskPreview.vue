@@ -7,7 +7,7 @@
       </div> 
       <div class="flex space-between">
         <div class="task-title">{{task.title}}</div>
-        <font-awesome-icon icon="times" @click.stop="removeTask(task.title)"/>
+        <font-awesome-icon class="hidden" icon="times" @click.stop="removeTask(task.title)"/>
       </div>
   
     </div>

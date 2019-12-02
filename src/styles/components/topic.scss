@@ -5,6 +5,12 @@
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
+    &:hover{
+        .topic-title{
+            font-weight: 900;
+            // box-shadow: -2px 0px 0px  rgba(255, 255, 255, 0.931), 2px 0px 0px  rgba(255, 255, 255, 0.931)
+        }
+    }
     .list-item-composer {
         padding: 0rem 1rem 0rem 1rem;
         margin: 1rem 0rem 1rem 0rem;
@@ -48,7 +54,7 @@
 }
 
 .topic-content {
-    background-color: #ebecf0;
+    background-color: #ebecf0d3;
     border-radius: 5px;
     max-height: 100%;
     position: relative;
@@ -80,53 +86,58 @@
     box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
 }
 
-.topic-color-light-blue {
+.topic-color  {
     height: 20px;
     border: none;
     border-radius: 2px;
-    background-color: lightblue;
     margin: 2px;
+    &.light-blue{background-color: rgba(173, 216, 230, 0.8);}
+    &.light-red{background-color: rgba(240, 128, 128, 0.8);}
+    &.light-green{background-color: rgba(32, 178, 171, 0.8);}
+    &.light-pink{background-color: rgba(255, 182, 193, 0.8);}
+    &.light-yellow{background-color: rgba(255, 255, 224, 0.9);}
+    &.none{background-color: #ebecf0be;}
 }
 
-.topic-color-light-red {
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    background-color: lightcoral;
-    margin: 2px;
-}
+// .topic-color {
+//     height: 20px;
+//     border: none;
+//     border-radius: 2px;
+//     background-color: lightcoral;
+//     margin: 2px;
+// }
 
-.topic-color-light-green {
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    background-color: lightseagreen;
-    margin: 2px;
-}
+// .topic-color-light-green {
+//     height: 20px;
+//     border: none;
+//     border-radius: 2px;
+//     background-color: lightseagreen;
+//     margin: 2px;
+// }
 
-.topic-color-light-pink {
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    background-color: lightpink;
-    margin: 2px;
-}
+// .topic-color-light-pink {
+//     height: 20px;
+//     border: none;
+//     border-radius: 2px;
+//     background-color: lightpink;
+//     margin: 2px;
+// }
 
-.topic-color-light-yellow {
-    height: 20px;
-    border: none;
-    border-radius: 2px;
-    background-color: lightyellow;
-    margin: 2px;
-}
+// .topic-color-light-yellow {
+//     height: 20px;
+//     border: none;
+//     border-radius: 2px;
+//     background-color: lightyellow;
+//     margin: 2px;
+// }
 
-.topic-color-none {
-    height: 20px;
-    border: 1px solid lightgray;
-    border-radius: 2px;
-    background-color: none;
-    margin: 2px;
-}
+// .topic-color-none {
+//     height: 20px;
+//     border: 1px solid lightgray;
+//     border-radius: 2px;
+//     background-color: none;
+//     margin: 2px;
+// }
 
 .topicTitle {
     padding: 1rem;

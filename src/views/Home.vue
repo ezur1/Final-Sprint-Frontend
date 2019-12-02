@@ -3,7 +3,7 @@
 
     <div class="home-header-container ">
       <div class="flex space-between">
-        <h1 class="logo">TaskFlo</h1>
+        <img class="logo-home-page" src="@/assets/logo_transparent.png">
         <button @click="goToLogin" class="login-btn">Login</button>
       </div>
       <div class="greet flex justify-center space-around">
