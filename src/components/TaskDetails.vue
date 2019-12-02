@@ -28,6 +28,8 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
+
+          <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList"/>
         </section>
       </div>
 
