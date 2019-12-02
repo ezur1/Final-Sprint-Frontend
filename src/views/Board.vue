@@ -268,9 +268,6 @@ export default {
   destroyed(){
     eventBus.$off();
   },
-  destroyed(){
-  eventBus.$off()
-  },
   components: {
     Topic,
     BoardNavBar,
