@@ -38,6 +38,9 @@ export default {
         },
         getCurrTopicTitle(state) { //// take off the "get"
             return state.currTopicTitle
+        },
+        currTaskTags(state){
+            return state.currTask.tags
         }
     },
     actions: {

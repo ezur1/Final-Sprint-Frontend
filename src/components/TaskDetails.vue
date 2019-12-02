@@ -16,7 +16,7 @@
 
     <div class="preview-body flex space-between">
       <div class="preview-main" @click="closeMiniMenu()">
-        <section v-if="tags.length!==0" class="taskTags flex">
+        <section v-if="tags" class="taskTags flex">
           <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview"/>
         </section>
         <section class="description">
@@ -180,7 +180,6 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
-      this.tags();
     }
   },
   computed: {
@@ -200,7 +199,7 @@ export default {
       }
     },
     tags(){
-      var tags = this.$store.getters.getCurrTaskTags;
+      var tags = this.$store.getters.currTaskTags;
       console.log(tags);
       return tags;
     }

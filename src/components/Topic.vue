@@ -33,7 +33,7 @@
             </transition-group>
           </draggable>
         </div>
-        <form v-show="isOpenNewTask" @submit.prevent="addTask(topic.title)" class="card edit-card">
+        <form v-show="isAddNewTask" @submit.prevent="addTask(topic.title)" class="card edit-card">
           <input
             class="list-item-details"
             ref="input"
@@ -46,12 +46,12 @@
           <p v-if="isShow" @click="openNewTaskModal()">
             <span>+</span> add new task...
           </p>
-          <button class="add-topic-btn" v-if="isOpenNewTask" @click="addTask(topic.title)">add</button>
+          <button class="add-topic-btn" v-if="isAddNewTask" @click="addTask(topic.title)">add</button>
           <font-awesome-icon
             class="exit-btn"
             @click="exit"
             icon="times"
-            v-if="isOpenNewTask"
+            v-if="isAddNewTask"
             size="2x"
           />
         </div>
@@ -76,7 +76,7 @@ export default {
         title: "",
         id: null
       },
-      isOpenNewTask: false,
+      isAddNewTask: false,
       isShowForm: false,
       originalTopicTitle: null,
       TopicMenuOn: false,
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     openNewTaskModal() {
-      this.isOpenNewTask = !this.isOpenNewTask;
+      this.isAddNewTask = !this.isAddNewTask;
       this.isShow = !this.isShow;
       this.newTask.title = "";
       setTimeout(()=>{
@@ -131,11 +131,11 @@ export default {
         topicTitle: topicTitle,
         newTask: this.newTask
       });
-      this.isOpenNewTask = !this.isOpenNewTask;
+      this.isAddNewTask = !this.isAddNewTask;
       this.isShow = !this.isShow;
     },
     exit() {
-      this.isOpenNewTask = !this.isOpenNewTask;
+      this.isAddNewTask = !this.isAddNewTask;
       this.isShow=!this.isShow;
     },
     openMenu() {
