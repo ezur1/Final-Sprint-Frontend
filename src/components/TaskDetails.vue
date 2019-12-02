@@ -182,6 +182,16 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
+    },
+    addCheckList() {
+      var currTaskTitle = this.originalTaskTitle;
+      console.log("this is the checklist being sent: ", this.checkList);
+
+      eventBus.$emit("addCheckList", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        checkList: this.checkList
+      });
     }
   },
   computed: {
