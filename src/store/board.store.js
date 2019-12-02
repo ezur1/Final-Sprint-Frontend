@@ -36,6 +36,9 @@ export default {
         usersOnBoard(state) {
             return state.currBoard.usersOnBoard
         },
+        currTaskTags(state) {
+            return state.currTask.tags
+        }
     },
     actions: {
         async loadBoards(context) {
@@ -127,9 +130,8 @@ export default {
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
-            console.log('this is the board: ', board.title);
-
-            console.log('this is the index: ', idx);
+            // console.log('this is the board: ', board.title);
+            // console.log('this is the index: ', idx);
             board.topics[idx].tasks.push(newTask);
             await context.dispatch({ type: "updateBoard", board: board });
             return board

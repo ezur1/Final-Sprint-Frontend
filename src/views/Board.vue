@@ -98,6 +98,8 @@ export default {
       });
     },
     addTask(payload) {
+      console.log('task!!',payload.newTask.title);
+      
       this.$store.dispatch({
         type: "addTask",
         board: this.boardToEdit,
@@ -114,6 +116,7 @@ export default {
       });
     },
     showTaskDetails(payload) {
+      
       this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
@@ -163,6 +166,8 @@ export default {
 
   },
   created() {
+    console.log('created');
+    
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
     
@@ -173,6 +178,7 @@ export default {
       this.removeTopic(payload);
     });
     eventBus.$on("addTask", payload => {
+      console.log('i heard you!');
       this.addTask(payload);
     });
     eventBus.$on("removeTask", payload => {

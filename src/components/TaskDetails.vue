@@ -184,11 +184,12 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
-      // this.tags();
     }
   },
   computed: {
     task() {
+      console.log('aha');
+      
       var task = this.$store.getters.currTask;
       return task;
     },
@@ -204,8 +205,8 @@ export default {
       }
     },
     tags(){
-      var tags = this.$store.getters.getCurrTaskTags;
-      // console.log(tags);
+      var tags = this.$store.getters.currTaskTags;
+      console.log(tags);
       return tags;
     }
   },
