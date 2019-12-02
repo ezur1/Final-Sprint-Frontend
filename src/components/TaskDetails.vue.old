@@ -16,7 +16,7 @@
 
     <div class="preview-body flex space-between">
       <div class="preview-main" @click="closeMiniMenu()">
-        <section v-if="tags" class="taskTags flex">
+        <section v-if="tags.length!==0" class="taskTags flex">
           <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview"/>
         </section>
         <section class="description">
@@ -82,7 +82,7 @@
             <span>Copy</span>
           </a>
           <a href="#" class="prev-side-btn">
-            <span @click.stop="removeTask(task.title)">Delete</span>
+            <span>Delete</span>
           </a>
         </div>
       </div>
@@ -163,18 +163,14 @@ export default {
         description: newDescription
       });
     },
-    removeTask(taskTitle) {    
-      eventBus.$emit('removeTask', { topicTitle: this.topicTitle, taskTitle: taskTitle });
-      this.backToBoard()
-    },
     addTag(tag){
       var currTaskTitle = this.originalTaskTitle;
       var isSelected = event.target.className.includes("selected-tag");
-      // console.log(isSelected);
+      console.log(isSelected);
       if(isSelected){
         var classStr = event.target.className
         classStr = classStr.replace(' selected-tag','');
-        // console.log(classStr);
+        console.log(classStr);
         event.target.className = classStr;
       }
       else event.target.className += ' selected-tag';
@@ -184,7 +180,7 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
-      // this.tags();
+      this.tags();
     }
   },
   computed: {
@@ -196,7 +192,7 @@ export default {
       get() {
         var taskTitle = this.$store.getters.currTask;
         taskTitle = taskTitle.title;
-        // console.log("taskTitle at computed:", taskTitle);
+        console.log("taskTitle at computed:", taskTitle);
         return taskTitle;
       },
       set(value) {
@@ -205,7 +201,7 @@ export default {
     },
     tags(){
       var tags = this.$store.getters.getCurrTaskTags;
-      // console.log(tags);
+      console.log(tags);
       return tags;
     }
   },

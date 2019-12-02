@@ -127,6 +127,8 @@ export default {
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
       this.newTask.todos = [];
+      console.log('the Topic.vue is emiting');
+      
       eventBus.$emit("addTask", {
         topicTitle: topicTitle,
         newTask: this.newTask

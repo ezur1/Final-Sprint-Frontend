@@ -43,7 +43,7 @@ export default {
   name: "board",
   computed: {
     currBoard() {
-      return this.$store.getters.currBoard;
+      return this.$store.getters.getCurrBoard;
     },
     topics: {
       get() {
@@ -118,7 +118,6 @@ export default {
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      // console.log('BOARD.VUE is about to router PUSH to the taskDetails');
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
     },
     openForm() {
@@ -143,7 +142,7 @@ export default {
       });
     },
     updateTaskTags(payload){
-      // console.log("description payload at board.vue", payload);
+      console.log("description payload at board.vue", payload);
         this.$store.dispatch({
         type: "updateTaskTags",
         board: this.boardToEdit,
@@ -193,9 +192,6 @@ export default {
     eventBus.$on("updateTopicColor", payload => {
       this.updateTopicColor(payload);
     });
-  },
-  destroyed(){
-  eventBus.$off()
   },
   components: {
     Topic,

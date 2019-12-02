@@ -34,10 +34,12 @@
 export default {
   name: 'home',
   methods: {
-    async startAsGuest() {
+    startAsGuest() {
       const cred = {userName: "guest", password: "guest"}
-      await this.$store.dispatch({type :'login', userCred:cred})
-      this.$router.push('/boards/3b44c9c13368cbfb8f1bf4b4');
+      return this.$store.dispatch({type :'login', userCred:cred})
+      .then (() =>{
+        this.$router.push('/boards/3b44c9c13368cbfb8f1bf4b4');
+      })
     },
     goToLogin(){
       this.$router.push('/signin');
