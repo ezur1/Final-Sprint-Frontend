@@ -1,5 +1,5 @@
 <template>
-  <section v-if="task" class="task-details flex col">
+  <section v-on-clickaway="backToBoard" v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info">
         <h1
@@ -42,7 +42,7 @@
               <div class="flex col">
                 <div ref="blue-tag" class="blue-tag tag" :class="{'selected-tag':task.tags.includes('blue-tag')}" @click="addTag('blue-tag')"></div>
                 <div ref="orange-tag" class="orange-tag tag" :class="{'selected-tag':task.tags.includes('orange-tag')}" @click="addTag('orange-tag')"></div>
-                <div ref="yello-tag" class="yello-tag tag" :class="{'selected-tag':task.tags.includes('yello-tag')}" @click="addTag('yello-tag')"></div>
+                <div ref="yellow-tag" class="yellow-tag tag" :class="{'selected-tag':task.tags.includes('yellow-tag')}" @click="addTag('yellow-tag')"></div>
                 <div ref="green-tag" class="green-tag tag" :class="{'selected-tag':task.tags.includes('green-tag')}" @click="addTag('green-tag')"></div>
                 <div ref="red-tag" class="red-tag tag" :class="{'selected-tag':task.tags.includes('red-tag')}" @click="addTag('red-tag')"></div>
               </div>
@@ -92,10 +92,13 @@
 
 <script>
 import {eventBus} from '../main.js'
-// import {uploadImg} from '../services/img.service.js'
+import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
   props: ["topicTitle"],
+    directives: {
+    onClickaway: onClickaway,
+  },
   data() {
     return {
       val: null,
@@ -170,15 +173,12 @@ export default {
     addTag(tag){
       var currTaskTitle = this.originalTaskTitle;
       var isSelected = event.target.className.includes("selected-tag");
-      // console.log(isSelected);
       if(isSelected){
         var classStr = event.target.className
         classStr = classStr.replace(' selected-tag','');
-        // console.log(classStr);
         event.target.className = classStr;
       }
       else event.target.className += ' selected-tag';
-       
       eventBus.$emit("updateTaskTags", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
@@ -188,8 +188,6 @@ export default {
   },
   computed: {
     task() {
-      console.log('aha');
-      
       var task = this.$store.getters.currTask;
       return task;
     },
@@ -197,7 +195,6 @@ export default {
       get() {
         var taskTitle = this.$store.getters.currTask;
         taskTitle = taskTitle.title;
-        // console.log("taskTitle at computed:", taskTitle);
         return taskTitle;
       },
       set(value) {
@@ -206,7 +203,6 @@ export default {
     },
     tags(){
       var tags = this.$store.getters.currTaskTags;
-      console.log(tags);
       return tags;
     }
   },
