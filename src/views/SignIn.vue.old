@@ -39,19 +39,24 @@ export default {
     },
     async doLogin() {
       const cred = this.userCred;
-      if (!cred.userName || !cred.password) return (this.msg = "Please enter user/password");
+      if (!cred.userName || !cred.password)
+        return (this.msg = "Please enter user/password");
       this.userCred = {};
       await this.$store.dispatch({ type: "login", userCred: cred })
-      this.$router.push("/taskfloapp");
-
+      .then(() => {
+        this.$router.push("/taskfloapp");
+      });
     },
-    async doSignup() {
+    doSignup() {
       const cred = this.userCred;
-      if (!cred.userName || !cred.password) return (this.msg = "Please enter user/password");
+      if (!cred.userName || !cred.password)
+        return (this.msg = "Please enter user/password");
       this.userCred = {};
-      await this.$store.dispatch({ type: "signup", userCred: cred })
+      this.$store.dispatch({ type: "signup", userCred: cred })
+      .then(() => {
         ////// this actually needs to lead to an empty board !
         this.$router.push("/boards/3b44c9c13368cbfb8f1bf4b4");
+      });
     }
   },
   components: {}
