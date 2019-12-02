@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from '../router/index.js'
 
-
+const BASE_URL = "http://localhost:3001/api"
 
 export const httpService = {
     get,
@@ -10,25 +10,25 @@ export const httpService = {
     put
 }
 
-function get(url) {
-    return axios.get(url)
+function get(route) {
+    return axios.get(BASE_URL + route)
         .then(res => res.data)
         .catch(_handleError)
 }
 
-function remove(url) {
-    return axios.delete(url)
+function remove(route) {
+    return axios.delete(BASE_URL + route)
         .catch(_handleError)
 }
 
-function post(url, data) {
-    return axios.post(url, data)
+function post(route, data) {
+    return axios.post(BASE_URL + route, data)
         .then(res => res.data)
         .catch(_handleError)
 }
 
-function put(url, data) {
-    return axios.put(url, data)
+function put(route, data) {
+    return axios.put(BASE_URL + route, data)
         .then(res => res.data)
         .catch(_handleError)
 }

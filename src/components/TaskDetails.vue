@@ -9,13 +9,16 @@
           @blur="updateTaskTitle"
           @keydown.enter="endEditTaskTitle"
         >{{task.title}}</h1>
-        <span>{{task.createdBy}}</span>
+        <!-- <span>{{task.createdBy}}</span> -->
       </div>
       <font-awesome-icon icon="times" @click="backToBoard()" />
     </div>
 
     <div class="preview-body flex space-between">
-      <div class="preview-main">
+      <div class="preview-main" @click="closeMiniMenu()">
+        <section v-if="tags.length!==0" class="taskTags flex">
+          <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview"/>
+        </section>
         <section class="description">
           <h3>Description</h3>
           <span
@@ -23,6 +26,7 @@
             ref="taskDescription"
             v-html="task.description"
             @blur="updateTaskDescription"
+            @keydown.enter="endEditDescription"
           ></span>
         </section>
       </div>
@@ -98,7 +102,6 @@ export default {
       checklistMenuOn: false,
       tagsMenuOn: false,
       dueDateMenuOn: false,
-      currTopicTitle: null,
       taskDescription: "",
 
     };
@@ -127,6 +130,11 @@ export default {
       var boardId = this.$route.params.boardId;
       this.$router.push(`/boards/${boardId}`);
     },
+    closeMiniMenu(){
+        this.checklistMenuOn = false;
+        this.tagsMenuOn = false;
+        this.dueDateMenuOn = false;
+    },
     updateTaskTitle(event) {
       var oldTaskTitle = this.originalTaskTitle;
       eventBus.$emit("updateTaskTitle", {
@@ -138,6 +146,9 @@ export default {
     },
     endEditTaskTitle() {
       this.$refs.taskTitle.blur();
+    },
+    endEditDescription() {
+      this.$refs.taskDescription.blur();
     },
     updateTaskDescription(event) {
       var currTaskTitle = this.originalTaskTitle;
@@ -169,6 +180,7 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
+      this.tags();
     }
   },
   computed: {
@@ -186,6 +198,11 @@ export default {
       set(value) {
         this.val = value;
       }
+    },
+    tags(){
+      var tags = this.$store.getters.getCurrTaskTags;
+      console.log(tags);
+      return tags;
     }
   },
   created() {
