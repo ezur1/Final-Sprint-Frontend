@@ -1,5 +1,5 @@
 <template>
-  <section v-if="task" class="task-preview flex col">
+  <section v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info">
         <h1

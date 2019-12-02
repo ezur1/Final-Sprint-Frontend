@@ -1,4 +1,4 @@
-.topic-tasks{
+.topic-tasks {
     // flex: 1 1 auto;
     margin-bottom: 0;
     overflow-y: auto;
@@ -8,10 +8,11 @@
     z-index: 1;
     min-height: 0;
 }
-.task{
+
+.task {
     background-color: #fff;
     border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(9,30,66,.25);
+    box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
     cursor: pointer;
     display: block;
     margin-bottom: .5rem;
@@ -20,13 +21,13 @@
     position: relative;
     text-decoration: none;
     z-index: 0;
-    &:hover{
+    &:hover {
         cursor: pointer;
         background-color: rgb(235, 235, 235);
     }
 }
 
-.task-details {
+.task-preview {
     overflow: hidden;
     padding: 6px 8px 2px;
     position: relative;
@@ -42,24 +43,24 @@
     color: #172b4d;
 }
 
-.tag-preview{
+.tag-preview {
     height: 1rem;
     width: 1rem;
     border-radius: 3px;
     margin: 0 2px;
     &.blue-tag {
-        background-color:$clrTag1;
+        background-color: $clrTag1;
     }
     &.orange-tag {
-        background-color:$clrTag2;
+        background-color: $clrTag2;
     }
     &.yello-tag {
-        background-color:$clrTag3;
+        background-color: $clrTag3;
     }
     &.green-tag {
-        background-color:$clrTag4;
+        background-color: $clrTag4;
     }
     &.red-tag {
-        background-color:$clrTag5;
+        background-color: $clrTag5;
     }
 }

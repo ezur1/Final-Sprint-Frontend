@@ -14,6 +14,7 @@
                       <div class="topic-color-light-green" @click="updateTopicColor(topic.title, 'lightseagreen')"></div>
                       <div class="topic-color-light-pink" @click="updateTopicColor(topic.title, 'lightpink')"></div>
                       <div class="topic-color-light-yellow" @click="updateTopicColor(topic.title, 'lightyellow')"></div>
+                      <div class="topic-color-none" @click="updateTopicColor(topic.title, '#ebecf0')">reset</div>
                     </div>            
               <button @click="removeTopic(topic.title)">Delete</button>
             </div>
