@@ -173,9 +173,30 @@ export default {
 
             board.topics[topicIdx].tasks[taskIdx].checkLists.push(checkList);
             context.dispatch({ type: "updateBoard", board: board });
+        },
+        addTodo(context, { board, topicTitle, taskTitle, checkListTitle, todo }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            console.log('log in store');
+            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+        
+            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.push(todo);
+            context.dispatch({ type: "updateBoard", board: board });
+        },
+        toggleIsDoneCheckList(context, { board, topicTitle, taskTitle, checkListTitle,currTodoTxt }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+            
+            var todoIdx=_findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)
+            
+            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone=true;
+            context.dispatch({ type: "updateBoard", board: board });
+            
         }
     }
 }
+
 
 function _findTopicIndex(board, term) {
     return board.topics.findIndex(topic => topic.title === term);
@@ -183,6 +204,14 @@ function _findTopicIndex(board, term) {
 
 function _findTaskIndex(board, topicIdx, term) {
     return board.topics[topicIdx].tasks.findIndex(task => task.title === term);
+}
+
+function _findCheckListIndex(board, topicIdx, taskIdx, term) {
+    return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.title === term);
+}
+
+function _findTodoIdx(board, topicIdx, taskIdx,checkListIdx, term) {
+    return board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.findIndex(todo => todo.txt === term);
 }
 
 function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {

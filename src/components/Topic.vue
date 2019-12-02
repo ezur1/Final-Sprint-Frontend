@@ -126,7 +126,7 @@ export default {
       this.newTask.id = utilService.makeId();
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
-      this.newTask.todos = [];
+      this.newTask.checkLists = [];
       eventBus.$emit("addTask", {
         topicTitle: topicTitle,
         newTask: this.newTask

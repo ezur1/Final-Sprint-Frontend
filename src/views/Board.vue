@@ -167,6 +167,28 @@ export default {
         taskTitle:payload.taskTitle,
         checkList: payload.checkList
       });
+    },
+    addTodo(payload){
+      console.log('log in board methods');
+      this.$store.dispatch({
+        type:"addTodo",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        todo: payload.todo
+      });
+    },
+    toggleIsDoneCheckList(payload){
+      
+      this.$store.dispatch({
+        type:"toggleIsDoneCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        currTodoTxt: payload.currTodoTxt
+      });
     }
     
 
@@ -205,6 +227,15 @@ export default {
     eventBus.$on("addCheckList", payload => {
       this.addCheckList(payload);
     });
+    eventBus.$on("addTodo", payload => {
+      this.addTodo(payload);
+    });
+    eventBus.$on("toggleIsDoneCheckList", payload => {
+      this.toggleIsDoneCheckList(payload);
+    });
+  },
+  destroyed(){
+    eventBus.$off();
   },
   components: {
     Topic,

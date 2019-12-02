@@ -29,7 +29,7 @@
             @keydown.enter="endEditDescription"
           ></span>
 
-          <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList"/>
+          <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList" :originalTaskTitle="originalTaskTitle" :topicTitle="topicTitle"/>
         </section>
       </div>
 
@@ -57,9 +57,9 @@
               <span class="mini-menu-header">Add Checklist</span>
               <div class="flex">
                 <h3>Title:</h3>
-                <input type="text" />
+                <input type="text" v-model="checkList.title"/>
               </div>
-              <button>Add</button>
+              <button @click="addCheckList">Add</button>
             </div>
           </a>
 
@@ -100,6 +100,10 @@ export default {
   props: ["topicTitle"],
   data() {
     return {
+      checkList:{
+        title:'',
+        todos:[]
+      },
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
@@ -203,7 +207,6 @@ export default {
       get() {
         var taskTitle = this.$store.getters.currTask;
         taskTitle = taskTitle.title;
-        console.log("taskTitle at computed:", taskTitle);
         return taskTitle;
       },
       set(value) {
@@ -212,7 +215,6 @@ export default {
     },
     tags(){
       var tags = this.$store.getters.currTaskTags;
-      console.log(tags);
       return tags;
     }
   },
