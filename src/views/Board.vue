@@ -180,7 +180,6 @@ export default {
       });
     },
     toggleIsDoneCheckList(payload){
-      
       this.$store.dispatch({
         type:"toggleIsDoneCheckList",
         board: this.boardToEdit,
@@ -188,6 +187,25 @@ export default {
         taskTitle:payload.taskTitle,
         checkListTitle: payload.checkListTitle,
         currTodoTxt: payload.currTodoTxt
+      });
+    },
+    removeCheckList(payload){
+      this.$store.dispatch({
+        type:"removeCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        
+      });
+    },
+    addDueDate(payload){
+      this.$store.dispatch({
+        type:"addDueDate",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        dueDate: payload.dueDate
       });
     }
     
@@ -232,6 +250,12 @@ export default {
     });
     eventBus.$on("toggleIsDoneCheckList", payload => {
       this.toggleIsDoneCheckList(payload);
+    });
+    eventBus.$on("removeCheckList", payload => {
+      this.removeCheckList(payload);
+    });
+    eventBus.$on("addDueDate", payload => {
+      this.addDueDate(payload);
     });
   },
   destroyed(){

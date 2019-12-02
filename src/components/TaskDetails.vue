@@ -30,6 +30,7 @@
           ></span>
 
           <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList" :originalTaskTitle="originalTaskTitle" :topicTitle="topicTitle"/>
+          {{dueDate}}
         </section>
       </div>
 
@@ -68,9 +69,9 @@
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
               <div class="flex">
-                <input type="date" />
+                <input type="date" v-model="dueDate" />
               </div>
-              <button>Add</button>
+              <button @click="addDueDate">Add</button>
             </div>
           </a>
         </div>
@@ -100,6 +101,7 @@ export default {
   props: ["topicTitle"],
   data() {
     return {
+      dueDate:null,
       checkList:{
         title:'',
         todos:[]
@@ -196,7 +198,16 @@ export default {
         topicTitle: this.topicTitle,
         checkList: this.checkList
       });
+    },
+    addDueDate() {
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("addDueDate", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        dueDate: this.dueDate
+      });
     }
+    
   },
   computed: {
     task() {

@@ -193,7 +193,23 @@ export default {
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone=!board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone;
             context.dispatch({ type: "updateBoard", board: board });
             console.log('todos[todoIdx].isDone in store',board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone);
-        }
+        },
+        removeCheckList(context, { board, topicTitle, taskTitle, checkListTitle }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+        
+            board.topics[topicIdx].tasks[taskIdx].checkLists.splice(checkListIdx, 1);
+            context.dispatch({ type: "updateBoard", board: board });
+        },
+        addDueDate(context, { board, topicTitle, taskTitle, dueDate }) {            
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            console.log('dueDate',dueDate);
+            console.log('board.topics[topicIdx].tasks[taskIdx]',board.topics[topicIdx].tasks[taskIdx]);
+            board.topics[topicIdx].tasks[taskIdx].dueDate=dueDate;
+            context.dispatch({ type: "updateBoard", board: board });
+        },
     }
 }
 

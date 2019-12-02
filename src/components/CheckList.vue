@@ -1,16 +1,19 @@
 <template>
   <section class="checkList-container">
-    <h3 v-if="checkList" class="checkList-title">{{checkList.title}}</h3>
-
+    <div class="flex space-between align-c">
+      <h3 v-if="checkList" class="checkList-title">{{checkList.title}}</h3>
+      <button @click="removeCheckList">remove checkList</button>
+    </div>
     <input type="text" placeholder="add a todo" v-model="todo.txt" />
     <button @click="addTodo">add</button>
-    <div v-for="currTodo in checkList.todos" :key="currTodo.txt">
+    <div v-for="currTodo in checkList.todos" :key="currTodo.txt" class="flex align-c">
       <input @click="toggleIsDoneCheckList(currTodo.txt)" type="checkbox" />
       <p :class="{ active: currTodo.isDone }">{{currTodo.txt}}</p>
-      <!-- currTodo.isDone:{{currTodo.isDone}} -->
     </div>
   </section>
 </template>
+
+
 
 <script>
 import { eventBus } from "../main.js";
@@ -20,7 +23,6 @@ export default {
   props: ["checkList", "topicTitle", "originalTaskTitle"],
   data() {
     return {
-      isActive: false,
       todo: {
         txt: "",
         isDone: false
@@ -29,12 +31,6 @@ export default {
   },
   methods: {
     addTodo() {
-      //   console.log("newTodo", this.todo);
-      //   console.log('this.topicTitle',this.topicTitle);
-      //   console.log('this.originalTaskTitle',this.originalTaskTitle);
-      //   console.log('this.checkList.title',this.checkList.title);
-      // console.log('log in CheckList ');
-
       eventBus.$emit("addTodo", {
         topicTitle: this.topicTitle,
         taskTitle: this.originalTaskTitle,
@@ -49,7 +45,14 @@ export default {
         checkListTitle: this.checkList.title,
         currTodoTxt: currTodoTxt
       });
-      this.isActive = !this.isActive;
+    },
+    removeCheckList() {
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("removeCheckList", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        checkListTitle: this.checkList.title
+      });
     }
   },
   created() {
