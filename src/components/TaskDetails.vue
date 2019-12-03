@@ -92,7 +92,6 @@
 
 <script>
 import {eventBus} from '../main.js'
-// import {uploadImg} from '../services/img.service.js'
 
 export default {
   props: ["topicTitle"],

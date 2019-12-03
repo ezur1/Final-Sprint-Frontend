@@ -74,6 +74,9 @@ export default {
       let id = this.$route.params.boardId;
       this.$store.dispatch({ type: "getBoardById", boardId: id });
     },
+    clearLog(){
+      this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
+    },
     addTopic() {
       this.$store.dispatch({
         type: "addTopic",
@@ -208,6 +211,7 @@ export default {
     eventBus.$on("updateTopicColor", payload => {
       this.updateTopicColor(payload);
     });
+    eventBus.$on("clearLog", this.clearLog);
   },
   destroyed(){
     socketService.off('chat addMsg', this.addMsg)

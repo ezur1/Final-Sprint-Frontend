@@ -28,11 +28,17 @@ export default {
         boardsToShow(state) {
             return state.boards
         },
-        currTask(state) {
-            return state.currTask;
-        },
         currBoard(state) {
             return state.currBoard
+        },
+        currLog(state) {
+            console.log('this is the currBoard: ', state.currBoard.title);
+            console.log('these are the activities: ', state.currBoard.activityLog);
+
+            return state.currBoard.activityLog
+        },
+        currTask(state) {
+            return state.currTask;
         },
         usersOnBoard(state) {
             return state.currBoard.usersOnBoard
@@ -68,6 +74,10 @@ export default {
             _broadcastUpdate()
             return updatedBoard
         },
+        async clearLog(context, { board }) {
+            board.activityLog = [];
+            await context.dispatch({ type: "updateBoard", board: board });
+        },
         async getTaskById(context, { boardId, taskId, topicTitle }) {
             var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
                 ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
@@ -79,18 +89,24 @@ export default {
         },
         async addTopic(context, { board, newTopic }) {
             board.topics.push(newTopic)
+            var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
         async removeTopic(context, { board, topicTitle }) {
             var idx = _findTopicIndex(board, topicTitle);
             board.topics.splice(idx, 1);
+            var newLogEntry = _makeLogEntry(topicTitle, 'topic', 'removed', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
         async updateTopic(context, { board, oldTitle, newTitle }) {
             var idx = _findTopicIndex(board, oldTitle);
             board.topics[idx].title = newTitle;
+            var newLogEntry = _makeLogEntry(oldTitle, 'topic', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -104,6 +120,8 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
             board.topics[topicIdx].tasks[taskIdx].title = newTitle;
+            var newLogEntry = _makeLogEntry(oldTitle, 'task', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -132,6 +150,8 @@ export default {
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
             board.topics[idx].tasks.push(newTask);
+            var newLogEntry = _makeLogEntry(newTask.title, 'task', 'added', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -139,6 +159,8 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             board.topics[topicIdx].tasks.splice(taskIdx, 1);
+            var newLogEntry = _makeLogEntry(taskTitle, 'task', 'removed', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -185,4 +207,12 @@ function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {
 function _broadcastUpdate() {
     const msg = (' has been updated!');
     socketService.emit('boardUpdated', msg);
+}
+
+function _makeLogEntry(name, type, action, loggedInUser) {
+    return {
+        title: ` has ${action} the "${name}" ${type}`,
+        user: loggedInUser,
+        timeStamp: Date.now()
+    }
 }

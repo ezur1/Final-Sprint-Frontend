@@ -12,6 +12,16 @@
         /> 
         <button v-if="isShow" @click="addDescription">add</button>
         <p>{{descriptionTxt}}</p>
+        <h3>Activity Log:</h3>
+        <section v-if="activities" class="connectedUsers">
+          <ul class="activity" v-for="activity in activities" :activity="activity" :key="activity.title">
+            <li class="clean"><img :src="activity.user.imgUrl"/> 
+            {{activity.user.userName}} has 
+            {{activity.title}}
+            {{activity.timeStamp | moment("from", "now") }}</li>
+          </ul>
+        </section>
+        <button @click="clearLog">Clear</button>
       </div>
     </section>
 </template>
@@ -36,7 +46,15 @@ export default {
     },
     remove() {
       eventBus.$emit('removeSideMenu');
+    },
+    clearLog() {
+      eventBus.$emit('clearLog')
     }
+  },
+  computed: {
+    activities() {
+      return this.$store.getters.currLog;
+    },
   },
   components: {}
 };
