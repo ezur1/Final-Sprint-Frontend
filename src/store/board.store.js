@@ -1,6 +1,7 @@
 'use strict'
 
 import boardService from '../services/board.service.js'
+import socketService from '../services/socket.service.js';
 
 export default {
     state: {
@@ -28,11 +29,17 @@ export default {
         boardsToShow(state) {
             return state.boards
         },
-        currTask(state) {
-            return state.currTask;
-        },
         currBoard(state) {
             return state.currBoard
+        },
+        currLog(state) {
+            console.log('this is the currBoard: ', state.currBoard.title);
+            console.log('these are the activities: ', state.currBoard.activityLog);
+
+            return state.currBoard.activityLog
+        },
+        currTask(state) {
+            return state.currTask;
         },
         usersOnBoard(state) {
             return state.currBoard.usersOnBoard
@@ -51,7 +58,7 @@ export default {
             var board = await boardService.getById(boardId)
             context.commit({ type: 'setCurrBoard', board })
             const loggedInUser = JSON.parse(sessionStorage.user);
-            if (loggedInUser) { ///// "IF" becuase what happens if someone got to this URL in another way...
+            if (loggedInUser) { ///// what happens if someone got to this URL in another way...
                 var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(board.usersOnBoard, loggedInUser._id);
                 if (userIdxInUsersOnBoard === -1) {
                     board.usersOnBoard.push(loggedInUser)
@@ -60,6 +67,17 @@ export default {
                 }
             }
             return board
+        },
+        async updateBoard(context, { board }) {
+            await boardService.update(board)
+            var updatedBoard = await boardService.getById(board._id)
+            context.commit({ type: 'setCurrBoard', board: updatedBoard })
+            _broadcastUpdate()
+            return updatedBoard
+        },
+        async clearLog(context, { board }) {
+            board.activityLog = [];
+            await context.dispatch({ type: "updateBoard", board: board });
         },
         async getTaskById(context, { boardId, taskId, topicTitle }) {
             var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
@@ -71,27 +89,26 @@ export default {
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
-
-        async updateBoard(context, { board }) {
-            await boardService.update(board)
-            var updatedBoard = await boardService.getById(board._id)
-            context.commit({ type: 'setCurrBoard', board: updatedBoard })
-            return updatedBoard
-        },
         async addTopic(context, { board, newTopic }) {
             board.topics.push(newTopic)
+            var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
         async removeTopic(context, { board, topicTitle }) {
             var idx = _findTopicIndex(board, topicTitle);
             board.topics.splice(idx, 1);
+            var newLogEntry = _makeLogEntry(topicTitle, 'topic', 'removed', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
         async updateTopic(context, { board, oldTitle, newTitle }) {
             var idx = _findTopicIndex(board, oldTitle);
             board.topics[idx].title = newTitle;
+            var newLogEntry = _makeLogEntry(oldTitle, 'topic', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -105,6 +122,8 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
             board.topics[topicIdx].tasks[taskIdx].title = newTitle;
+            var newLogEntry = _makeLogEntry(oldTitle, 'task', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -134,9 +153,9 @@ export default {
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
-            // console.log('this is the board: ', board.title);
-            // console.log('this is the index: ', idx);
             board.topics[idx].tasks.push(newTask);
+            var newLogEntry = _makeLogEntry(newTask.title, 'task', 'added', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -144,6 +163,8 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             board.topics[topicIdx].tasks.splice(taskIdx, 1);
+            var newLogEntry = _makeLogEntry(taskTitle, 'task', 'removed', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
@@ -220,19 +241,14 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             console.log('dueDate',dueDate);
-            console.log('board.topics[topicIdx].tasks[taskIdx]',board.topics[topicIdx].tasks[taskIdx]);
             board.topics[topicIdx].tasks[taskIdx].dueDate=dueDate;
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
             await context.dispatch({ type: "updateBoard", board: board });
             return board;
-        }
-           
+        },
     }
 }
-
-
-
 function _findTopicIndex(board, term) {
     return board.topics.findIndex(topic => topic.title === term);
 }
@@ -245,10 +261,23 @@ function _findCheckListIndex(board, topicIdx, taskIdx, term) {
     return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.title === term);
 }
 
-function _findTodoIdx(board, topicIdx, taskIdx,checkListIdx, term) {
+function _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, term) {
     return board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.findIndex(todo => todo.txt === term);
 }
 
 function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {
     return usersOnBoard.findIndex(user => user._id === loggedInUserId);
+}
+
+function _broadcastUpdate() {
+    const msg = (' has been updated!');
+    socketService.emit('boardUpdated', msg);
+}
+
+function _makeLogEntry(name, type, action, loggedInUser) {
+    return {
+        title: ` has ${action} the "${name}" ${type}`,
+        user: loggedInUser,
+        timeStamp: Date.now()
+    }
 }
