@@ -168,19 +168,6 @@ export default {
                 }
             })
         },
-        //     boardService.query()
-        //         .then(boards => {
-        //             boards.forEach(board => {
-        //                 var usersOnBoard = board.usersOnBoard;
-        //                 var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
-        //                 if (userIdxInUsersOnBoard !== -1) {
-        //                     // console.log('found this user in thie board, and am removing from the usersOnBoard Array');
-        //                     board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
-        //                     context.dispatch({ type: "updateBoard", board: board });
-        //                 }
-        //             })
-        //         });
-        // },
         addCheckList(context, { board, topicTitle, taskTitle, checkList }) {
             console.log('this is the checkList: ', checkList);
             
