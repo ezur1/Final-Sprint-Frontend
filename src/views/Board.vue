@@ -77,6 +77,13 @@ export default {
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
+    updateBoardDescription(payload) {
+      this.$store.dispatch({
+        type: "updateBoardDescription",
+        board: this.boardToEdit,
+        newBoardDescription: payload.newBoardDescription
+      });
+    },
     addTopic() {
       this.$store.dispatch({
         type: "addTopic",
@@ -234,6 +241,9 @@ export default {
     socketService.emit('gotOnBoard', id)
     socketService.on('boardUpdated', this.updateBoard) //// listening to "boardUpdated" in sockets
 
+    eventBus.$on("updateBoardDescription", payload => {
+      this.updateBoardDescription(payload);
+    });
     eventBus.$on("updateTopic", payload => {
       this.updateTopic(payload);
     });

@@ -14,7 +14,7 @@
     </div>
     <div class="board-menu-section flex align-c space-between">
       <font-awesome-icon class="icon" icon="chalkboard" @click="openDropDown" />
-      <p class="open-menu-btn" @click="openSideMenu">Open Menu</p>
+      <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
       <transition name="fade">
         <div class="dropDown" v-if="isOpenDropDown">
           <div v-for="board in boards" :key="board._id">
