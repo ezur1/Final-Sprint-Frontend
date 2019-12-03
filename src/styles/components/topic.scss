@@ -2,14 +2,12 @@
     width: 15.5rem;
     margin: 1rem 1rem;
     height: 100%;
-    z-index: 101;
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
     &:hover{
         .topic-title{
             font-weight: 900;
-            position: relative;
         }
     }
     .task-composer {
@@ -58,20 +56,18 @@
                 font-family: 'Muli', sans-serif;
                 outline-color:#67b4a2; 
                 box-shadow: 0 1px 0 rgba(9, 30, 66, .25);
-
             }
 
         }
     }
 }
-
 .topic-content {
     background-color: #ebecf0d3;
     border-radius: 5px;
     max-height: 100%;
     white-space: normal;
+    position: relative;
 }
-
 
 .topic-content-header {
     margin: 10px;
@@ -136,7 +132,7 @@
     text-align: center;
     &.light-blue{background-color: rgba(173, 216, 230, 0.8);}
     &.light-red{background-color: rgba(240, 128, 128, 0.8);}
-    &.light-green{background-color: rgba(32, 178, 171, 0.8);}
+    &.light-green{background-color: #a3f7bfd7;}
     &.light-pink{background-color: rgba(255, 182, 193, 0.8);}
     &.light-yellow{background-color: rgba(255, 255, 224, 0.9);}
     &.none{background-color: #ebecf0be;}
