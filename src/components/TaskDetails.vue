@@ -17,7 +17,7 @@
     <div class="preview-body flex space-between">
       <div class="preview-main" @click="closeMiniMenu()">
         <section v-if="tags" class="taskTags flex">
-          <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview"/>
+          <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
         </section>
         <section class="description">
           <h3>Description</h3>
@@ -28,9 +28,16 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
+          <h3>Due date</h3>
+          <span>{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
 
-          <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList" :originalTaskTitle="originalTaskTitle" :topicTitle="topicTitle"/>
-          {{dueDate}}
+          <CheckList
+            v-for="checkList in task.checkLists"
+            :key="checkList.title"
+            :checkList="checkList"
+            :originalTaskTitle="originalTaskTitle"
+            :topicTitle="topicTitle"
+          />
         </section>
       </div>
 
@@ -43,11 +50,36 @@
             <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Tags</span>
               <div class="flex col">
-                <div ref="blue-tag" class="blue-tag tag" :class="{'selected-tag':task.tags.includes('blue-tag')}" @click="addTag('blue-tag')"></div>
-                <div ref="orange-tag" class="orange-tag tag" :class="{'selected-tag':task.tags.includes('orange-tag')}" @click="addTag('orange-tag')"></div>
-                <div ref="yellow-tag" class="yellow-tag tag" :class="{'selected-tag':task.tags.includes('yellow-tag')}" @click="addTag('yellow-tag')"></div>
-                <div ref="green-tag" class="green-tag tag" :class="{'selected-tag':task.tags.includes('green-tag')}" @click="addTag('green-tag')"></div>
-                <div ref="red-tag" class="red-tag tag" :class="{'selected-tag':task.tags.includes('red-tag')}" @click="addTag('red-tag')"></div>
+                <div
+                  ref="blue-tag"
+                  class="blue-tag tag"
+                  :class="{'selected-tag':task.tags.includes('blue-tag')}"
+                  @click="addTag('blue-tag')"
+                ></div>
+                <div
+                  ref="orange-tag"
+                  class="orange-tag tag"
+                  :class="{'selected-tag':task.tags.includes('orange-tag')}"
+                  @click="addTag('orange-tag')"
+                ></div>
+                <div
+                  ref="yellow-tag"
+                  class="yellow-tag tag"
+                  :class="{'selected-tag':task.tags.includes('yellow-tag')}"
+                  @click="addTag('yellow-tag')"
+                ></div>
+                <div
+                  ref="green-tag"
+                  class="green-tag tag"
+                  :class="{'selected-tag':task.tags.includes('green-tag')}"
+                  @click="addTag('green-tag')"
+                ></div>
+                <div
+                  ref="red-tag"
+                  class="red-tag tag"
+                  :class="{'selected-tag':task.tags.includes('red-tag')}"
+                  @click="addTag('red-tag')"
+                ></div>
               </div>
             </div>
           </a>
@@ -58,9 +90,9 @@
               <span class="mini-menu-header">Add Checklist</span>
               <div class="flex">
                 <h3>Title:</h3>
-                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle"/>
+                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" />
               </div>
-              <button  @click="addCheckList">Add</button>
+              <button @click="addCheckList">Add</button>
             </div>
           </a>
 
@@ -68,9 +100,9 @@
             <span>Due Date</span>
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
-              <div class="flex">
-                <input type="date" v-model="dueDate" />
-              </div>
+
+              <input type="date" v-model="dueDate" />
+
               <button @click="addDueDate">Add</button>
             </div>
           </a>
@@ -94,20 +126,20 @@
 </template>
 
 <script>
-import {eventBus} from '../main.js'
+import { eventBus } from "../main.js";
 // import {uploadImg} from '../services/img.service.js'
-import CheckList from './CheckList.vue'
-import { directive as onClickaway } from 'vue-clickaway';
+import CheckList from "./CheckList.vue";
+import { directive as onClickaway } from "vue-clickaway";
 
 export default {
-  name:"TaskDetails",
+  name: "TaskDetails",
   props: ["topicTitle"],
-    directives: {
-    onClickaway: onClickaway,
+  directives: {
+    onClickaway: onClickaway
   },
   data() {
     return {
-      dueDate:null,
+      dueDate: null,
       // checkList:{
       //   title:'',
       //   todos:[]
@@ -116,8 +148,7 @@ export default {
       checklistMenuOn: false,
       tagsMenuOn: false,
       dueDateMenuOn: false,
-      taskDescription: "",
-
+      taskDescription: ""
     };
   },
   methods: {
@@ -144,10 +175,10 @@ export default {
       var boardId = this.$route.params.boardId;
       this.$router.push(`/boards/${boardId}`);
     },
-    closeMiniMenu(){
-        this.checklistMenuOn = false;
-        this.tagsMenuOn = false;
-        this.dueDateMenuOn = false;
+    closeMiniMenu() {
+      this.checklistMenuOn = false;
+      this.tagsMenuOn = false;
+      this.dueDateMenuOn = false;
     },
     updateTaskTitle(event) {
       var oldTaskTitle = this.originalTaskTitle;
@@ -177,39 +208,41 @@ export default {
         description: newDescription
       });
     },
-    removeTask(taskTitle) {    
-      eventBus.$emit('removeTask', { topicTitle: this.topicTitle, taskTitle: taskTitle });
-      this.backToBoard()
+    removeTask(taskTitle) {
+      eventBus.$emit("removeTask", {
+        topicTitle: this.topicTitle,
+        taskTitle: taskTitle
+      });
+      this.backToBoard();
     },
-    addTag(tag){
+    addTag(tag) {
       var currTaskTitle = this.originalTaskTitle;
       var isSelected = event.target.className.includes("selected-tag");
-      if(isSelected){
-        var classStr = event.target.className
-        classStr = classStr.replace(' selected-tag','');
+      if (isSelected) {
+        var classStr = event.target.className;
+        classStr = classStr.replace(" selected-tag", "");
         event.target.className = classStr;
-      }
-      else event.target.className += ' selected-tag';
+      } else event.target.className += " selected-tag";
       eventBus.$emit("updateTaskTags", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
         tag
       });
-      console.log('this.tags:', this.tags)
+      console.log("this.tags:", this.tags);
     },
     addCheckList() {
-      this.checklistMenuOn=!this.checklistMenuOn
+      this.checklistMenuOn = !this.checklistMenuOn;
       var checkListTitle = this.$refs.checklistTitle.value;
       console.log(checkListTitle);
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
-        checkList:{checkListTitle:checkListTitle,todos:[]} 
+        checkList: { checkListTitle: checkListTitle, todos: [] }
       });
     },
     addDueDate() {
-      this.dueDateMenuOn=!this.dueDateMenuOn
+      this.dueDateMenuOn = !this.dueDateMenuOn;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
         taskTitle: currTaskTitle,
@@ -217,7 +250,6 @@ export default {
         dueDate: this.dueDate
       });
     }
-    
   },
   computed: {
     task() {
@@ -234,7 +266,7 @@ export default {
         this.val = value;
       }
     },
-    tags(){
+    tags() {
       var tags = this.$store.getters.currTaskTags;
       return tags;
     }
@@ -245,6 +277,6 @@ export default {
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
   },
-  components: {CheckList}
+  components: { CheckList }
 };
 </script>
