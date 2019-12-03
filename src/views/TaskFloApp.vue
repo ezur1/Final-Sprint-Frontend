@@ -1,17 +1,22 @@
 <template>
-  <section id="app">
+  <section id="app" class="main-app-container">
     <MainNavBar />
-    <BoardsPreview v-for="board in boards" :key=board._id :board="board"/>
-    <router-view/>
+    <div class="main-content-container">
+      <div class="flex space-around">
+        <h1>Boards</h1>
+        <BoardsPreview v-for="board in boards" :key="board._id" :board="board" />
+      </div>
+      <router-view />
+    </div>
   </section>
 </template>
 
 <script>
-import MainNavBar from "../components/MainNavBar.vue";  
-import BoardsPreview from '../components/BoardsPreview.vue';
+import MainNavBar from "../components/MainNavBar.vue";
+import BoardsPreview from "../components/BoardsPreview.vue";
 export default {
-  data(){
-    return{}
+  data() {
+    return {};
   },
   computed: {
     boards() {
@@ -19,11 +24,11 @@ export default {
     }
   },
   created() {
-  this.$store.dispatch("loadBoards");
+    this.$store.dispatch("loadBoards");
   },
   components: {
     MainNavBar,
     BoardsPreview
   }
-}
+};
 </script>
