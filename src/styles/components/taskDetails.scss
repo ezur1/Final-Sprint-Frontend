@@ -186,3 +186,26 @@
         }
     }
 }
+.remove-checklist{
+    display: none;
+}
+.checklist-container{
+    p{
+        margin: 0;
+    }
+    margin-bottom: 1rem;
+    .active{
+        text-decoration: line-through;
+    }
+    .checklist-header{
+        align-items:baseline; 
+    }
+    // padding: 
+    &:hover{
+        .remove-checklist{
+            display: block;
+            cursor: pointer;
+            &:hover{color:#d05555}
+        }
+    }
+}

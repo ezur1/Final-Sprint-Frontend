@@ -58,9 +58,9 @@
               <span class="mini-menu-header">Add Checklist</span>
               <div class="flex">
                 <h3>Title:</h3>
-                <input type="text" v-model="checkList.title"/>
+                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle"/>
               </div>
-              <button @click="addCheckList">Add</button>
+              <button  @click="addCheckList">Add</button>
             </div>
           </a>
 
@@ -108,10 +108,10 @@ export default {
   data() {
     return {
       dueDate:null,
-      checkList:{
-        title:'',
-        todos:[]
-      },
+      // checkList:{
+      //   title:'',
+      //   todos:[]
+      // },
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
@@ -199,13 +199,13 @@ export default {
     },
     addCheckList() {
       this.checklistMenuOn=!this.checklistMenuOn
+      var checkListTitle = this.$refs.checklistTitle.value;
+      console.log(checkListTitle);
       var currTaskTitle = this.originalTaskTitle;
-      console.log("this is the checklist being sent: ", this.checkList);
-
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
-        checkList: this.checkList
+        checkList:{checkListTitle:checkListTitle,todos:[]} 
       });
     },
     addDueDate() {

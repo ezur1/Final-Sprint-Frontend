@@ -207,7 +207,7 @@ export default {
         async addTodo(context, { board, topicTitle, taskTitle, checkListTitle, todo }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            console.log('log in store');
+            console.log('log in store',checkListTitle );
             var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.push(todo);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
@@ -258,7 +258,7 @@ function _findTaskIndex(board, topicIdx, term) {
 }
 
 function _findCheckListIndex(board, topicIdx, taskIdx, term) {
-    return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.title === term);
+    return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.checkListTitle === term);
 }
 
 function _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, term) {
