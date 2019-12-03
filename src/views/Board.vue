@@ -2,6 +2,7 @@
   <section v-if="currBoard" class="board-container flex col">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
+    {{refreshCount}}
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <div class="actions flex">
       <button @click="openForm()">Add Topic</button>
@@ -26,6 +27,7 @@ import MainNavBar from "../components/MainNavBar.vue";
 import Draggable from "vuedraggable";
 import Topic from "../components/Topic.vue";
 import { eventBus } from "../main.js";
+import socketService from '../services/socket.service.js';
 export default {
   data() {
     return {
@@ -62,9 +64,16 @@ export default {
     },
     newTopicToEdit() {
       return JSON.parse(JSON.stringify(this.newTopic));
+    },
+    refreshCount(){
+      return this.$store.getters.refreshCount;
     }
   },
   methods: {
+    updateBoard() {
+      let id = this.$route.params.boardId;
+      this.$store.dispatch({ type: "getBoardById", boardId: id });
+    },
     addTopic() {
       this.$store.dispatch({
         type: "addTopic",
@@ -98,8 +107,6 @@ export default {
       });
     },
     addTask(payload) {
-      console.log('task!!',payload.newTask.title);
-      
       this.$store.dispatch({
         type: "addTask",
         board: this.boardToEdit,
@@ -165,12 +172,15 @@ export default {
     }
 
   },
-  created() {
-    console.log('created');
-    
+
+  async created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
-    
+  
+    socketService.setup();
+    socketService.emit('gotOnBoard', id)
+    socketService.on('boardUpdated', this.updateBoard) //// listening to "boardUpdated" in sockets
+
     eventBus.$on("updateTopic", payload => {
       this.updateTopic(payload);
     });
@@ -178,7 +188,6 @@ export default {
       this.removeTopic(payload);
     });
     eventBus.$on("addTask", payload => {
-      console.log('i heard you!');
       this.addTask(payload);
     });
     eventBus.$on("removeTask", payload => {
@@ -201,7 +210,9 @@ export default {
     });
   },
   destroyed(){
-  eventBus.$off()
+    socketService.off('chat addMsg', this.addMsg)
+    socketService.terminate();
+    eventBus.$off()
   },
   components: {
     Topic,

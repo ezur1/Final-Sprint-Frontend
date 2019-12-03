@@ -188,8 +188,6 @@ export default {
   },
   computed: {
     task() {
-      console.log('aha');
-      
       var task = this.$store.getters.currTask;
       return task;
     },
@@ -197,7 +195,6 @@ export default {
       get() {
         var taskTitle = this.$store.getters.currTask;
         taskTitle = taskTitle.title;
-        // console.log("taskTitle at computed:", taskTitle);
         return taskTitle;
       },
       set(value) {
@@ -206,7 +203,6 @@ export default {
     },
     tags(){
       var tags = this.$store.getters.currTaskTags;
-      console.log(tags);
       return tags;
     }
   },

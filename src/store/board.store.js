@@ -1,6 +1,7 @@
 'use strict'
 
 import boardService from '../services/board.service.js'
+import socketService from '../services/socket.service.js';
 
 export default {
     state: {
@@ -50,7 +51,7 @@ export default {
             var board = await boardService.getById(boardId)
             context.commit({ type: 'setCurrBoard', board })
             const loggedInUser = JSON.parse(sessionStorage.user);
-            if (loggedInUser) { ///// "IF" becuase what happens if someone got to this URL in another way...
+            if (loggedInUser) { ///// what happens if someone got to this URL in another way...
                 var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(board.usersOnBoard, loggedInUser._id);
                 if (userIdxInUsersOnBoard === -1) {
                     board.usersOnBoard.push(loggedInUser)
@@ -60,6 +61,13 @@ export default {
             }
             return board
         },
+        async updateBoard(context, { board }) {
+            await boardService.update(board)
+            var updatedBoard = await boardService.getById(board._id)
+            context.commit({ type: 'setCurrBoard', board: updatedBoard })
+            _broadcastUpdate()
+            return updatedBoard
+        },
         async getTaskById(context, { boardId, taskId, topicTitle }) {
             var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
                 ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
@@ -68,13 +76,6 @@ export default {
             context.commit({ type: 'setCurrTopicTitle', topicTitle });
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
-        },
-
-        async updateBoard(context, { board }) {
-            await boardService.update(board)
-            var updatedBoard = await boardService.getById(board._id)
-            context.commit({ type: 'setCurrBoard', board: updatedBoard })
-            return updatedBoard
         },
         async addTopic(context, { board, newTopic }) {
             board.topics.push(newTopic)
@@ -130,8 +131,6 @@ export default {
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
-            // console.log('this is the board: ', board.title);
-            // console.log('this is the index: ', idx);
             board.topics[idx].tasks.push(newTask);
             await context.dispatch({ type: "updateBoard", board: board });
             return board
@@ -167,7 +166,7 @@ export default {
                     context.dispatch({ type: "updateBoard", board: board });
                 }
             })
-        }
+        },
     }
 }
 
@@ -181,4 +180,9 @@ function _findTaskIndex(board, topicIdx, term) {
 
 function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {
     return usersOnBoard.findIndex(user => user._id === loggedInUserId);
+}
+
+function _broadcastUpdate() {
+    const msg = (' has been updated!');
+    socketService.emit('boardUpdated', msg);
 }
