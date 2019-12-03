@@ -100,6 +100,7 @@ import CheckList from './CheckList.vue'
 import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
+  name:"TaskDetails",
   props: ["topicTitle"],
     directives: {
     onClickaway: onClickaway,
@@ -194,6 +195,7 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
+      console.log('this.tags:', this.tags)
     },
     addCheckList() {
       this.checklistMenuOn=!this.checklistMenuOn

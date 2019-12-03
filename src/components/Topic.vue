@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="index">
     <div class="topic-wraper">
       <div class="topic-content flex col" :style="{ 'background-color': topic.color }">
         <div class="topic-content-header flex space-between">
@@ -11,7 +11,7 @@
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
                   <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
-                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(32, 178, 171, 0.9)')"></div>
+                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, '#a3f7bfd7')"></div>
                   <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
                   <div class="topic-color none flex " @click="updateTopicColor(topic.title, '#ebecf0d3')">reset</div>
@@ -49,7 +49,7 @@
               <font-awesome-icon
                   class="exit-btn"
                   @click="exit"
-                  icon="trash-alt"
+                  icon="times"
                   size="2x"
               />
           </div>
@@ -106,8 +106,7 @@ export default {
       this.newTask.title = "";
       setTimeout(()=>{
         this.$refs.input.focus();
-      },10)
-        
+      },10) 
     },
     removeTopic(topicTitle) {
       eventBus.$emit('removeTopic', topicTitle)
@@ -133,10 +132,10 @@ export default {
         topicTitle: topicTitle,
         newTask: this.newTask
       });
-      this.isAddTask = !this.isAddTask;
+      this.isAddTask = true;
     },
     exit() {
-      this.isAddTask=!this.isAddTask;
+      this.isAddTask=true;
     },
     openMenu() {
       this.TopicMenuOn = !this.TopicMenuOn;

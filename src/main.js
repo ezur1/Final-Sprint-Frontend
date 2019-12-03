@@ -7,6 +7,7 @@ import store from './store/index'
 
 
 import './styles/global.scss'
+Vue.use(require('vue-moment'));
 
 
 Vue.config.productionTip = false

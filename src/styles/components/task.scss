@@ -1,11 +1,9 @@
 .topic-tasks {
-    // flex: 1 1 auto;
     margin-bottom: 0;
     overflow-y: auto;
     overflow-x: hidden;
     margin: 0 .5rem;
-    padding: 0 .5rem;
-    z-index: 1;
+    padding: 0 .3rem;
     min-height: 0;
 }
 
@@ -18,12 +16,9 @@
     margin-bottom: .5rem;
     max-width: 18rem;
     min-height: 1.5rem;
-    position: relative;
     text-decoration: none;
-    z-index: 0;
     &:hover {
         cursor: pointer;
-        // background-color: rgb(235, 235, 235);
         font-weight: 900;
         box-shadow: -3.5px 0px 0px  rgba(44, 44, 35, 0.733),0 1px 0 rgba(9, 30, 66, .25);
     }
@@ -32,8 +27,6 @@
 .task-preview {
     overflow: hidden;
     padding: 6px 8px 2px;
-    position: relative;
-    z-index: 10;
 }
 
 .task-title {

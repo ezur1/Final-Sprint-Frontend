@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app">
     <div id="nav">
       <!-- <BoardNavBar/> -->
       <!-- <router-link to="/">Home</router-link> |
