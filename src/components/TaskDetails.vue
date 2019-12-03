@@ -28,7 +28,7 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
-          <h3>Due date</h3>
+          <h3 v-if="showDueDate">Due date</h3>
           <span>{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
 
           <CheckList
@@ -140,6 +140,7 @@ export default {
   data() {
     return {
       dueDate: null,
+      showDueDate:false,
       // checkList:{
       //   title:'',
       //   todos:[]
@@ -242,6 +243,7 @@ export default {
       });
     },
     addDueDate() {
+      this.showDueDate=!this.showDueDate
       this.dueDateMenuOn = !this.dueDateMenuOn;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
