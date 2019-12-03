@@ -6,17 +6,17 @@
           <div class="topic-title" contenteditable ref="topicTitle" v-html="topic.title" @blur="updateTopic" @keydown.enter="endEditTopicTitle"></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
             <font-awesome-icon icon="ellipsis-h" :style="{ color: 'grey' }"/>
-            <div v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
-              <button @click="openColorDropDown()">Topic Color</button>
-                <div v-if="isColorDropDownOpen" class="flex col">
+            <div v-on-clickaway="openMenu" v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
+              <span @click="openColorDropDown()">Topic Color</span>
+                <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
                   <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
                   <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(32, 178, 171, 0.9)')"></div>
                   <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
-                  <div class="topic-color none" @click="updateTopicColor(topic.title, '#ebecf0d3')">reset</div>
+                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, '#ebecf0d3')">reset</div>
                 </div>            
-              <button @click="removeTopic(topic.title)">Delete</button>
+              <span @click="removeTopic(topic.title)">Delete</span>
             </div>
           </a>
         </div>
@@ -44,11 +44,12 @@
                 placeholder="Task title"
                 v-model="newTask.title"
                 @keyup.enter="addTask(topic.title)"
+                @blur="exit"
               />
               <font-awesome-icon
                   class="exit-btn"
                   @click="exit"
-                  icon="times"
+                  icon="trash-alt"
                   size="2x"
               />
           </div>
@@ -63,9 +64,13 @@ import Draggable from "vuedraggable";
 import TaskPreview from "@/components/TaskPreview";
 import { utilService } from "../services/util.service.js";
 import { eventBus } from "../main.js";
+import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
   props: ["topic"],
+  directives: {
+    onClickaway: onClickaway,
+  },
   data() {
     return {
       isAddTask: true,
@@ -122,7 +127,8 @@ export default {
       this.newTask.id = utilService.makeId();
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
-      this.newTask.todos = [];
+      this.newTask.checkLists = [];
+      this.newTask.dueDate = null;
       eventBus.$emit("addTask", {
         topicTitle: topicTitle,
         newTask: this.newTask
@@ -141,6 +147,7 @@ export default {
     updateTopicColor(topicTitle, color){
       eventBus.$emit('updateTopicColor', {topicTitle, color})
       this.openColorDropDown()
+      this.openMenu()
       }
   },
   components: {

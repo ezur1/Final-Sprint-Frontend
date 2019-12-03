@@ -172,7 +172,57 @@ export default {
         topicTitle: payload.topicTitle,
         color:payload.color
       });
+    },
+    addCheckList(payload){
+      this.$store.dispatch({
+        type:"addCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkList: payload.checkList
+      });
+    },
+    addTodo(payload){
+      console.log('log in board methods');
+      this.$store.dispatch({
+        type:"addTodo",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        todo: payload.todo
+      });
+    },
+    toggleIsDoneCheckList(payload){
+      this.$store.dispatch({
+        type:"toggleIsDoneCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        currTodoTxt: payload.currTodoTxt
+      });
+    },
+    removeCheckList(payload){
+      this.$store.dispatch({
+        type:"removeCheckList",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        
+      });
+    },
+    addDueDate(payload){
+      this.$store.dispatch({
+        type:"addDueDate",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        dueDate: payload.dueDate
+      });
     }
+    
 
   },
 
@@ -211,9 +261,24 @@ export default {
     eventBus.$on("updateTopicColor", payload => {
       this.updateTopicColor(payload);
     });
+    eventBus.$on("addCheckList", payload => {
+      this.addCheckList(payload);
+    });
+    eventBus.$on("addTodo", payload => {
+      this.addTodo(payload);
+    });
+    eventBus.$on("toggleIsDoneCheckList", payload => {
+      this.toggleIsDoneCheckList(payload);
+    });
+    eventBus.$on("removeCheckList", payload => {
+      this.removeCheckList(payload);
+    });
+    eventBus.$on("addDueDate", payload => {
+      this.addDueDate(payload);
+    });
     eventBus.$on("clearLog", this.clearLog);
   },
-  destroyed(){
+destroyed(){
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()

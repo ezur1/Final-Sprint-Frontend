@@ -9,6 +9,7 @@
     &:hover{
         .topic-title{
             font-weight: 900;
+            position: relative;
         }
     }
     .task-composer {
@@ -80,30 +81,63 @@
 .topic-mini-menu {
     cursor: default;
     position: absolute;
-    z-index: 20 !important;
+    z-index: 20;
     background-color: #fff;
     border-radius: 3px;
     overflow: hidden;
     padding: 1rem;
-    width: 10rem;
+    width: 12rem;
     box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
+    >*{
+        cursor: pointer;
+        font-weight: 600;
+        padding:0 .5rem; 
+        &:hover{
+            transition: all .2s ease;
+            border-radius: 3px;
+            box-shadow:-2.5px 0 0 rgb(103, 180, 162),2.5px 0 0 rgb(103, 180, 162);
+        }
+        &:not(:last-child){
+            margin-bottom:.5rem; 
+        }
+    }
+    .light-blue:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .light-red:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .light-green:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .light-pink:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .light-yellow:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .none:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
+    .none{justify-content: center}
 }
 
 .topic-color  {
-    height: 20px;
+    height: 22px;
     border: none;
     border-radius: 2px;
     margin: 2px;
+    text-align: center;
     &.light-blue{background-color: rgba(173, 216, 230, 0.8);}
     &.light-red{background-color: rgba(240, 128, 128, 0.8);}
     &.light-green{background-color: rgba(32, 178, 171, 0.8);}
     &.light-pink{background-color: rgba(255, 182, 193, 0.8);}
     &.light-yellow{background-color: rgba(255, 255, 224, 0.9);}
     &.none{background-color: #ebecf0be;}
-}
-
-.topicTitle {
-    padding: 1rem;
-    font-size: large;
-    font-weight: bold;
 }

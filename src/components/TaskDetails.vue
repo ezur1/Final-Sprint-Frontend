@@ -1,5 +1,5 @@
 <template>
-  <section v-if="task" class="task-details flex col">
+  <section v-on-clickaway="backToBoard" v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info">
         <h1
@@ -28,6 +28,9 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
+
+          <CheckList v-for="checkList in task.checkLists" :key="checkList.title" :checkList="checkList" :originalTaskTitle="originalTaskTitle" :topicTitle="topicTitle"/>
+          {{dueDate}}
         </section>
       </div>
 
@@ -42,7 +45,7 @@
               <div class="flex col">
                 <div ref="blue-tag" class="blue-tag tag" :class="{'selected-tag':task.tags.includes('blue-tag')}" @click="addTag('blue-tag')"></div>
                 <div ref="orange-tag" class="orange-tag tag" :class="{'selected-tag':task.tags.includes('orange-tag')}" @click="addTag('orange-tag')"></div>
-                <div ref="yello-tag" class="yello-tag tag" :class="{'selected-tag':task.tags.includes('yello-tag')}" @click="addTag('yello-tag')"></div>
+                <div ref="yellow-tag" class="yellow-tag tag" :class="{'selected-tag':task.tags.includes('yellow-tag')}" @click="addTag('yellow-tag')"></div>
                 <div ref="green-tag" class="green-tag tag" :class="{'selected-tag':task.tags.includes('green-tag')}" @click="addTag('green-tag')"></div>
                 <div ref="red-tag" class="red-tag tag" :class="{'selected-tag':task.tags.includes('red-tag')}" @click="addTag('red-tag')"></div>
               </div>
@@ -55,9 +58,9 @@
               <span class="mini-menu-header">Add Checklist</span>
               <div class="flex">
                 <h3>Title:</h3>
-                <input type="text" />
+                <input type="text" v-model="checkList.title"/>
               </div>
-              <button>Add</button>
+              <button @click="addCheckList">Add</button>
             </div>
           </a>
 
@@ -66,9 +69,9 @@
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
               <div class="flex">
-                <input type="date" />
+                <input type="date" v-model="dueDate" />
               </div>
-              <button>Add</button>
+              <button @click="addDueDate">Add</button>
             </div>
           </a>
         </div>
@@ -92,11 +95,22 @@
 
 <script>
 import {eventBus} from '../main.js'
+// import {uploadImg} from '../services/img.service.js'
+import CheckList from './CheckList.vue'
+import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
   props: ["topicTitle"],
+    directives: {
+    onClickaway: onClickaway,
+  },
   data() {
     return {
+      dueDate:null,
+      checkList:{
+        title:'',
+        todos:[]
+      },
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
@@ -169,21 +183,39 @@ export default {
     addTag(tag){
       var currTaskTitle = this.originalTaskTitle;
       var isSelected = event.target.className.includes("selected-tag");
-      // console.log(isSelected);
       if(isSelected){
         var classStr = event.target.className
         classStr = classStr.replace(' selected-tag','');
-        // console.log(classStr);
         event.target.className = classStr;
       }
       else event.target.className += ' selected-tag';
-       
       eventBus.$emit("updateTaskTags", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
         tag
       });
+    },
+    addCheckList() {
+      this.checklistMenuOn=!this.checklistMenuOn
+      var currTaskTitle = this.originalTaskTitle;
+      console.log("this is the checklist being sent: ", this.checkList);
+
+      eventBus.$emit("addCheckList", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        checkList: this.checkList
+      });
+    },
+    addDueDate() {
+      this.dueDateMenuOn=!this.dueDateMenuOn
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("addDueDate", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        dueDate: this.dueDate
+      });
     }
+    
   },
   computed: {
     task() {
@@ -210,6 +242,7 @@ export default {
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
-  }
+  },
+  components: {CheckList}
 };
 </script>
