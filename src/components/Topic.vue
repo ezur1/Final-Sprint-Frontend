@@ -5,7 +5,7 @@
         <div class="topic-content-header flex space-between">
           <div class="topic-title" contenteditable ref="topicTitle" v-html="topic.title" @blur="updateTopic" @keydown.enter="endEditTopicTitle"></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
-            <font-awesome-icon icon="ellipsis-h" :style="{ color: 'grey' }"/>
+            <font-awesome-icon icon="ellipsis-h"/>
             <div v-on-clickaway="openMenu" v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
               <span @click="openColorDropDown()">Topic Color</span>
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
