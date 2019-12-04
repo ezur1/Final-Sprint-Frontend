@@ -51,12 +51,9 @@ export default {
       this.$refs.boardDescription.blur();
     },
     async changeBoardBGImg(ev) {
-      console.log('1st step');
       var res = await imgService.uploadImg(ev)
-      console.log('this is the res: ',res);
       eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
     },
-
     gotoUserPage(userId){
       console.log('this is the requested userId: ',userId); /// future development
     },
