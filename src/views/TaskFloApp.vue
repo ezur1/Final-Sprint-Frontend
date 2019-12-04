@@ -4,7 +4,7 @@
     <div class="main-content-container">
       <div class="flex space-around">
         <h1>Boards</h1>
-        <BoardsPreview v-for="board in boards" :key="board._id" :board="board" />
+        <BoardsPreview v-for="board in boards" :key="board._id" :board="board" @removeBoard="removeBoard" />
     </div>
       <router-view />
     </div>
@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { eventBus } from "../main.js";
 import MainNavBar from "../components/MainNavBar.vue";
 import BoardsPreview from "../components/BoardsPreview.vue";
 export default {
@@ -65,10 +64,6 @@ export default {
   },
   created() {
     this.$store.dispatch("loadBoards");
-    
-    eventBus.$on("removeBoard", payload => {
-      this.removeBoard(payload);
-    });
   },
   components: {
     MainNavBar,
