@@ -237,6 +237,9 @@ export default {
         taskTitle:payload.taskTitle,
         dueDate: payload.dueDate
       });
+    },
+    openTaskDeatils(){
+
     }
     
 
