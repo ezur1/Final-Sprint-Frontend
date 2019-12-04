@@ -6,7 +6,7 @@
 
     <div class="links flex align-c">
       <router-link to="/">Home</router-link>
-      <router-link to="/taskfloapp">boards</router-link>
+      <router-link to="/taskfloapp">Boards</router-link>
       <router-link to="/about">About Us</router-link>
       <p class="nav-bar-logot" @click="doLogout">Logout</p>
     </div>
