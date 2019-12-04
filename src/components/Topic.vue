@@ -50,8 +50,10 @@
               <span @click="showConfirm=!showConfirm">Delete</span>
               <div v-if="showConfirm" class="confirmation-modal">
                 <p>are you sure?</p>
-                <button @click="removeTopic(topic.title)" class="confirm-btn">yes</button>
-                <button @click="showConfirm=!showConfirm" class="cancel">no</button>
+                <div class="flex space-between">
+                  <button @click="removeTopic(topic.title)" class="confirm-btn">yes</button>
+                  <button @click="showConfirm=!showConfirm" class="cancel-btn">no</button>
+                </div>
               </div>
             </div>
           </a>
@@ -176,6 +178,7 @@ export default {
     },
     openMenu() {
       this.TopicMenuOn = !this.TopicMenuOn;
+      this.showConfirm=false
     },
     openColorDropDown() {
       this.isColorDropDownOpen = !this.isColorDropDownOpen;
