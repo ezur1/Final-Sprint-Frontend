@@ -21,7 +21,7 @@
           </a>
         </div>
         <div class="topic-tasks">
-          <draggable v-model="tasks" group="tasks">
+          <draggable v-model="tasks" group="tasks" :emptyInsertThreshold="100">
             <transition-group>
               <TaskPreview
                 class="task"
