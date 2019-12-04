@@ -8,9 +8,12 @@
     margin-top: 10rem;
     align-self: center;
     padding: 1.5rem 1.5rem;
-    color: #172b4d;
-    h3 {
-        margin: 1rem 0 0 0;
+    color: #222222;
+        section {
+            margin: 1rem 0 0 0;
+            h3{
+                margin-left: 0.5rem;
+            }
     }
 }
 
@@ -24,6 +27,8 @@
 }
 
 .description {
+    margin-top: 0.5rem;
+    
     textarea {
         width: 100%;
         max-width: 100%;
@@ -51,8 +56,11 @@
         margin-top: 1.5rem;
         margin-left: .3rem;
     }
+    span{
+        margin-left: 0.5rem;
+    }
     .prev-side-btn {
-        background-color: rgba(9, 30, 66, .04);
+        background-color: rgba(19, 19, 19, 0.04);
         border-radius: 3px;
         cursor: pointer;
         display: block;
@@ -208,4 +216,8 @@
             &:hover{color:#d05555}
         }
     }
+}
+
+.icon{
+    color: rgb(66, 66, 66);
 }

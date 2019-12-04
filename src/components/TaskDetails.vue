@@ -9,9 +9,8 @@
           @blur="updateTaskTitle"
           @keydown.enter="endEditTaskTitle"
         >{{task.title}}</h1>
-        <!-- <span>{{task.createdBy}}</span> -->
       </div>
-      <font-awesome-icon icon="times" @click="backToBoard()" />
+      <font-awesome-icon class="icon" icon="times" @click="backToBoard()" />
     </div>
 
     <div class="preview-body flex space-between">
@@ -20,7 +19,10 @@
           <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
         </section>
         <section class="description">
-          <h3>Description</h3>
+          <div class="flex align-c">
+            <font-awesome-icon class="icon" icon="align-left" />
+            <h3>Description</h3>
+          </div>
           <span
             contenteditable
             ref="taskDescription"
@@ -31,11 +33,15 @@
         </section>
 
         <section class="due-date">
-          <h3 v-if="task.dueDate">Due date</h3>
+          <div v-if="task.dueDate" class="flex  align-c">
+            <font-awesome-icon class="icon" icon="clock" />
+            <h3 >Due date</h3>
+          </div>
           <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
         </section>
 
-        <section class="Check-list">
+        <section class="Check-list flex align-c">
+          <font-awesome-icon class="icon" icon="list-alt" />
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
@@ -51,6 +57,7 @@
           <h3>ADD TO CARD</h3>
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
+            <font-awesome-icon class="icon" icon="tags" />
             <span>Tags</span>
             <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Tags</span>
@@ -90,6 +97,7 @@
           </a>
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('checklist')">
+            <font-awesome-icon class="icon" icon="list-alt" />
             <span>Checklist</span>
             <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Add Checklist</span>
@@ -102,6 +110,7 @@
           </a>
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('duedate')">
+            <font-awesome-icon class="icon" icon="clock" />
             <span>Due Date</span>
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
@@ -116,17 +125,20 @@
         <div class="actions-on-card flex col">
           <h3>ACTIONS</h3>
           <div class="prev-side-btn">
+            <font-awesome-icon class="icon" icon="chevron-right" />
             <span>Move</span>
           </div>
           <div class="prev-side-btn">
+            <font-awesome-icon class="icon" icon="copy"/>
             <span>Copy</span>
           </div>
           <div @click="showConfirm=!showConfirm" class="prev-side-btn">
+            <font-awesome-icon class="icon" icon="trash-alt"/>
             <span v-if="!showConfirm">Delete</span>
             <div v-if="showConfirm" class="flex space-between">
               <span>are you sure?</span>
-              <font-awesome-icon @click="removeTask(task.title)" icon="check" />
-              <font-awesome-icon @click="showConfirm = true" icon="times" />
+              <font-awesome-icon class="icon" @click="removeTask(task.title)" icon="check" />
+              <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
             </div>
           </div>
         </div>
