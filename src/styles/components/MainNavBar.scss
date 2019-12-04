@@ -1,11 +1,11 @@
 .main-nav-bar-container{
     height: 3rem;
     padding: .5rem 1rem;
-    background: rgba(23, 43, 38, 0.8);
-    &:hover{
-        transition: all .3s ease-in-out;
-        background: rgba(23, 43, 38, 0.9);
-    }
+    background: rgba(23, 43, 38, 0.85);
+    // &:hover{
+    //     transition: all .3s ease-in-out;
+    //     background: rgba(23, 43, 38, 0.9);
+    // }
     .nav-bar-logot{
         &:hover{cursor: pointer;}
     }
