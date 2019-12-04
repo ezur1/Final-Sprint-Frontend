@@ -46,11 +46,12 @@
                   @click="updateTopicColor(topic.title, '#ebecf0d3')"
                 >reset</div>
               </div>
-              <span @click="removeTopic(topic.title)">Delete</span>
-              <div v-if="showConfirmationModal" class="confirmation-modal">
+              <!-- <span @click="removeTopic(topic.title)">Delete</span> -->
+              <span @click="showConfirm=!showConfirm">Delete</span>
+              <div v-if="showConfirm" class="confirmation-modal">
                 <p>are you sure?</p>
-                <button>yes</button>
-                <button>no</button>
+                <button @click="removeTopic(topic.title)" class="confirm-btn">yes</button>
+                <button @click="showConfirm=!showConfirm" class="cancel">no</button>
               </div>
             </div>
           </a>
@@ -105,6 +106,9 @@ export default {
   },
   data() {
     return {
+      yes:false,
+      no:false,
+      showConfirm:false,
       isAddTask: true,
       val: null,
       newTask: {
@@ -115,7 +119,7 @@ export default {
       originalTopicTitle: null,
       TopicMenuOn: false,
       isColorDropDownOpen: false,
-      showConfirmationModal:false
+      
     };
   },
   computed: {
@@ -141,9 +145,7 @@ export default {
         this.$refs.input.focus();
       }, 10);
     },
-    confirmRemoveTopic(){}
     removeTopic(topicTitle) {
-      // this.showConfirmationModal=!this.showConfirmationModal
       eventBus.$emit("removeTopic", topicTitle);
     },
     updateTopic(event) {
