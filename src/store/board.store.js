@@ -266,7 +266,7 @@ function _findTaskIndex(board, topicIdx, term) {
 }
 
 function _findCheckListIndex(board, topicIdx, taskIdx, term) {
-    return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.title === term);
+    return board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(checkList => checkList.checkListTitle === term);
 }
 
 function _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, term) {
