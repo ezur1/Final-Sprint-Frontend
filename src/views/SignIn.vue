@@ -51,7 +51,7 @@ export default {
       this.userCred = {};
       await this.$store.dispatch({ type: "signup", userCred: cred })
         ////// this actually needs to lead to an empty board !
-        this.$router.push("/boards/3b44c9c13368cbfb8f1bf4b4");
+        this.$router.push("/boards/5de684f15564fb54d8768cff");
     }
   },
   components: {}

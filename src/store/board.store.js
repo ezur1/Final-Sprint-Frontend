@@ -12,7 +12,6 @@ export default {
     },
     mutations: {
         setCurrTask(state, { foundTask }) {
-            console.log(foundTask);
             state.currTask = foundTask;
         },
         setBoards(state, { boards }) {
@@ -33,9 +32,6 @@ export default {
             return state.currBoard
         },
         currLog(state) {
-            console.log('this is the currBoard: ', state.currBoard.title);
-            console.log('these are the activities: ', state.currBoard.activityLog);
-
             return state.currBoard.activityLog
         },
         currTask(state) {
@@ -83,11 +79,26 @@ export default {
             var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
                 ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
             var topicIdx = _findTopicIndex(board, topicTitle);
-            console.log('topicIdx:',topicIdx);
             var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
             context.commit({ type: 'setCurrTopicTitle', topicTitle });
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
+        },
+        async updateBoardDescription(context, { board, newBoardDescription }) {
+            board.description = newBoardDescription;
+            var newLogEntry = _makeLogEntry(board.title, 'board-description', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
+        async changeBoardBGImg(context, { board, boardImgUrl }) {
+            console.log('got into the STORE with this payload URL: ', boardImgUrl);
+
+            board.imgUrl = boardImgUrl;
+            // var newLogEntry = _makeLogEntry(board.title, 'board-Background', 'changed', context.getters.loggedInUser)
+            // board.activityLog.push(newLogEntry)
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
         },
         async addTopic(context, { board, newTopic }) {
             board.topics.push(newTopic)
@@ -195,7 +206,6 @@ export default {
             return boards;
         },
         async addCheckList(context, { board, topicTitle, taskTitle, checkList }) {
-            console.log('this is the checkList: ', checkList);
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
@@ -207,41 +217,38 @@ export default {
         async addTodo(context, { board, topicTitle, taskTitle, checkListTitle, todo }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            console.log('log in store',checkListTitle );
-            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+            var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.push(todo);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
             await context.dispatch({ type: "updateBoard", board: board });
             return board;
         },
-        async toggleIsDoneCheckList(context, { board, topicTitle, taskTitle, checkListTitle,currTodoTxt }) {
+        async toggleIsDoneCheckList(context, { board, topicTitle, taskTitle, checkListTitle, currTodoTxt }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
-            var todoIdx=_findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)
-            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone=!board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone;
+            var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+            var todoIdx = _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)
+            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone = !board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone;
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
             await context.dispatch({ type: "updateBoard", board: board });
-            console.log('todos[todoIdx].isDone in store',board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone);
             return board;
         },
         async removeCheckList(context, { board, topicTitle, taskTitle, checkListTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var checkListIdx=_findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+            var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             board.topics[topicIdx].tasks[taskIdx].checkLists.splice(checkListIdx, 1);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
             await context.dispatch({ type: "updateBoard", board: board });
             return board;
         },
-        async addDueDate(context, { board, topicTitle, taskTitle, dueDate }) {            
+        async addDueDate(context, { board, topicTitle, taskTitle, dueDate }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            console.log('dueDate',dueDate);
-            board.topics[topicIdx].tasks[taskIdx].dueDate=dueDate;
+            board.topics[topicIdx].tasks[taskIdx].dueDate = dueDate;
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
             await context.dispatch({ type: "updateBoard", board: board });
@@ -249,6 +256,7 @@ export default {
         },
     }
 }
+
 function _findTopicIndex(board, term) {
     return board.topics.findIndex(topic => topic.title === term);
 }
