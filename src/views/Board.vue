@@ -11,7 +11,7 @@
         <button type="submit">Add</button>
       </form>
     </div>
-    <section class="topics-container">
+    <section v-if="topics" class="topics-container">
       <draggable v-model="topics">
         <transition-group class="board-lists flex">
           <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
@@ -77,6 +77,9 @@ export default {
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
+    // addBoard(payload) {
+    //   this.$store.dispatch({ type: "addBoard", newBoard: payload.newBoard });
+    // },
     updateBoardDescription(payload) {
       this.$store.dispatch({
         type: "updateBoardDescription",
@@ -254,8 +257,6 @@ export default {
       this.updateBoardDescription(payload);
     });
     eventBus.$on("changeBoardBGImg", payload => {
-      console.log('got here!!!!!!!!');
-      
       this.changeBoardBGImg(payload);
     });
     eventBus.$on("updateTopic", payload => {

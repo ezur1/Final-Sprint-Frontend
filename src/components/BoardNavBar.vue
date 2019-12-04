@@ -2,8 +2,8 @@
   <section class="board-nav-bar-container flex align-c space-between">
     <div class="board-search-section flex">
       <!-- <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1> -->
-      <section v-if="usersOnBoard.length>0" class="connectedUsers">
-        <div v-for="user in usersOnBoard" :key="user._id">
+      <section v-if="currBoard.usersOnBoard.length>0" class="connectedUsers">
+        <div v-for="user in currBoard.usersOnBoard" :key="user._id">
           <div class="user-on-board">{{user.userName}}</div>
         </div>
       </section>

@@ -84,6 +84,17 @@ export default {
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
+        async addBoard(context, { newBoard }) {
+            var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
+            newBoard.activityLog.push(newLogEntry)
+            await boardService.add(newBoard)
+            context.dispatch({ type: "loadBoards" });
+            return newBoard
+        },
+        async removeBoard(context, { boardId }) {
+            await boardService.remove(boardId)
+            context.dispatch({ type: "loadBoards" });
+        },
         async updateBoardDescription(context, { board, newBoardDescription }) {
             board.description = newBoardDescription;
             var newLogEntry = _makeLogEntry(board.title, 'board-description', 'updated', context.getters.loggedInUser)
@@ -92,11 +103,7 @@ export default {
             return board
         },
         async changeBoardBGImg(context, { board, boardImgUrl }) {
-            console.log('got into the STORE with this payload URL: ', boardImgUrl);
-
             board.imgUrl = boardImgUrl;
-            // var newLogEntry = _makeLogEntry(board.title, 'board-Background', 'changed', context.getters.loggedInUser)
-            // board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
