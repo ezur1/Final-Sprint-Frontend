@@ -20,33 +20,15 @@
               @click.stop
             >
               <span @click="openColorDropDown()">Topic Color</span>
-              <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
-                <div
-                  class="topic-color light-blue"
-                  @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"
-                ></div>
-                <div
-                  class="topic-color light-red"
-                  @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"
-                ></div>
-                <div
-                  class="topic-color light-green"
-                  @click="updateTopicColor(topic.title, '#a3f7bfd7')"
-                ></div>
-                <div
-                  class="topic-color light-pink"
-                  @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"
-                ></div>
-                <div
-                  class="topic-color light-yellow"
-                  @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"
-                ></div>
-                <div
-                  class="topic-color none flex"
-                  @click="updateTopicColor(topic.title, '#ebecf0d3')"
-                >reset</div>
-              </div>
-              <!-- <span @click="removeTopic(topic.title)">Delete</span> -->
+                <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
+                  <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
+                  <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
+                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, '#a3f7bfd7')"></div>
+                  <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
+                  <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
+                  <div class="topic-color light-gray flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')"></div>
+                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')">reset</div>
+                </div>            
               <span @click="showConfirm=!showConfirm">Delete</span>
               <div v-if="showConfirm" class="confirmation-modal">
                 <p>are you sure?</p>

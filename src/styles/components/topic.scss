@@ -18,7 +18,7 @@
         p {
             margin: 0;
             padding: 1rem 0;
-            color: rgb(39, 39, 39);
+            color: #0a1e3f;
             border-radius: 3px;
             width: 100%;
             span {font-size: 1.5rem;}
@@ -63,7 +63,7 @@
     }
 }
 .topic-content {
-    background-color: #ebecf0d3;
+    background-color: rgba(187, 229, 220, 0.74);
     border-radius: 5px;
     max-height: 100%;
     white-space: normal;
@@ -118,6 +118,10 @@
         transition: all .2s ease-in-out;
         box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
     }
+    .light-gray:hover{
+        transition: all .2s ease-in-out;
+        box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+    }
     .none:hover{
         transition: all .2s ease-in-out;
         box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
@@ -163,3 +167,6 @@
     }
 }
 
+    &.light-gray{background-color: rgba(228, 235, 234, 0.596);}
+    &.none{background-color: rgba(187, 229, 220, 0.74);}
+}
