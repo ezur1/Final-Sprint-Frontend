@@ -8,8 +8,7 @@
       <router-link to="/">Home</router-link>
       <router-link to="/taskfloapp">Boards</router-link>
       <router-link to="/about">About Us</router-link>
-      <!-- <p class="nav-bar-logot" @click="doLogout">Logout</p> -->
-      <p class="open-menu-btn" @click="toggleUserMenu">USER-MENU</p>
+      <div class="avatar" @click="toggleUserMenu"><Avatar :size="40" :username=user.fullName></Avatar></div>
     </div>
     <transition name="slide-fade" >
       <UserMenu v-if="isOpenUserMenu"/>
@@ -18,12 +17,18 @@
 </template>
 
 <script>
+import Avatar from 'vue-avatar'
 import UserMenu from '../components/UserMenu.vue';
 export default {
   data() {
     return {
       isOpenUserMenu: false,
     };
+  },
+  computed: {
+    user(){
+      return this.$store.getters.loggedInUser
+    }
   },
   methods: {
     toggleUserMenu() {
@@ -38,7 +43,8 @@ export default {
   },
   created() {},
     components: {
-    UserMenu
+    UserMenu,
+    Avatar
   }
 };
 </script>
