@@ -1,7 +1,7 @@
 <template>
   <section class="main-nav-bar-container flex align-c space-between" >
     <div class="flex">
-      <img class="logo" @click="goToHome" src="@/assets/logo_transparent.png">
+      <img class="logo" @click="goToHome" src="@/assets/only_logo_transparent.png">
     </div>
 
     <div class="links flex align-c">
