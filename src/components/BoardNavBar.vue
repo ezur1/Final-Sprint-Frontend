@@ -9,33 +9,38 @@
       </div>
     </section>
     <div class="board-menu-section flex align-c">
-      <div class="board-search flex">
-        <font-awesome-icon class="search-icon" icon="search"/>
-        <!-- <input type="text" placeholder="search..." /> -->
+      <div class="board-search flex align-center">
+        <input ref="filter" @keyup="filter" v-if="isSearchModal" type="text" placeholder="search a task..." />
+        <font-awesome-icon class="search-icon" icon="search" @click="isSearchModal=!isSearchModal" />
+        <div v-if="isSearchModal" class="search-modal">
+          <h3 v-for="taskTitle in taskTitles" :key=taskTitle @click="openTaskDetails(taskTitle)">{{taskTitle}}</h3>
+        </div>
       </div>
       <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
       <transition name="fade">
         <div class="dropDown" v-if="isOpenDropDown">
           <div v-for="board in boards" :key="board._id">
-              <h4 class="board-li" @click="goToBoard(board._id)">{{board.title}}</h4>
+            <h4 class="board-li" @click="goToBoard(board._id)">{{board.title}}</h4>
           </div>
         </div>
       </transition>
     </div>
-    <transition name="slide-fade" >
+    <transition name="slide-fade">
       <SideMenu v-if="isOpenSideMenu" @removeSideMenu="removeSideMenu()"></SideMenu>
     </transition>
-
   </section>
 </template>
 
 <script>
-import {eventBus} from '../main.js'
-import SideMenu from '../components/SideMenu.vue';
+import { eventBus } from "../main.js";
+import SideMenu from "../components/SideMenu.vue";
 export default {
   props: ["currBoard"],
   data() {
     return {
+      taskTitles:'',
+      filterBy:'',
+      isSearchModal: false,
       currBoardId: null,
       boards: null,
       isOpenSideMenu: false,
@@ -48,6 +53,7 @@ export default {
     usersOnBoard() {
       return this.$store.getters.usersOnBoard;
     }
+    
   },
   methods: {
     openDropDown() {
@@ -65,16 +71,44 @@ export default {
       console.log("boardId in goToBoard", boardId);
       this.$router.push(`/boards/${boardId}`);
       this.$store.dispatch({ type: "getBoardById", boardId: boardId });
-       this.isOpenDropDown = false;
+      this.isOpenDropDown = false;
+    },
+    filter() {
+      let filterBy=this.$refs.filter.value;
+      
+      let topics;
+      let tasks;
+      topics = this.currBoard.topics.map(topic => topic.tasks);
+      let taskTitles = topics.map(task => task.map(taskTitle => taskTitle.title));
+      let titles = taskTitles.flat();
+      tasks = topics.flat();
+      console.log('tasks',tasks)
+
+      var regex = new RegExp(filterBy, "i");
+       var searchRes=  titles.filter(title => {
+        return regex.test(filterBy) === regex.test(title);
+      });
+      this.taskTitles=searchRes
+    },
+    openTaskDetails(taskTitle){
+      console.log('taskTitle',taskTitle);
+      let topics;
+      let tasks;
+      topics = this.currBoard.topics.map(topic => topic.tasks);
+      tasks = topics.flat();
+      let task=tasks.find(task => {
+        if(task.title===taskTitle) return task.id
+      })
+      
+      console.log('topics',topics);
+      console.log('task',task);
+      // eventBus.$emit('showTaskDetails', { taskId:task.id,topicTitle: task.topic});
     }
   },
   created() {
-    eventBus.$on('removeSideMenu', this.removeSideMenu);
+    eventBus.$on("removeSideMenu", this.removeSideMenu);
     this.boards = this.$store.getters.boardsToShow;
     this.currBoardId = this.currBoard._id;
-    // this.usersOnBoard = this.$store.getters.usersOnBoard;
-    // console.log("this.currBoardId in created", this.currBoardId);
-    // console.log("boards", this.boards);
   },
   components: {
     SideMenu
