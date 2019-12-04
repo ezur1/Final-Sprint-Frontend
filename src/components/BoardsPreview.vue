@@ -1,6 +1,9 @@
 <template>
   <section class="boards-preview ">
     <div class="board-card" @click="goToBoard(board._id)">{{board.title}}</div>
+    <div class="add-board">
+      <button @click=addBoard></button>
+    </div>
   </section>
 </template>
 

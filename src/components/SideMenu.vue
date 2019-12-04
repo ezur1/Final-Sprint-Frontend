@@ -3,7 +3,7 @@
       <h2 class="side-menu-header">{{board.title}}</h2>
       <label>
         <font-awesome-icon icon="images" />
-        <input type="file" @change="changeBoardBGImg($event)" />
+        <input hidden type="file" @change="changeBoardBGImg($event)" />
       </label>
       <div class="board-description">
         <h1>Board Description:</h1> 
