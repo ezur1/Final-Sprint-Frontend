@@ -115,15 +115,20 @@
 
         <div class="actions-on-card flex col">
           <h3>ACTIONS</h3>
-          <a href="#" class="prev-side-btn">
+          <div class="prev-side-btn">
             <span>Move</span>
-          </a>
-          <a href="#" class="prev-side-btn">
+          </div>
+          <div class="prev-side-btn">
             <span>Copy</span>
-          </a>
-          <a href="#" class="prev-side-btn">
-            <span @click.stop="removeTask(task.title)">Delete</span>
-          </a>
+          </div>
+          <div @click="showConfirm=!showConfirm" class="prev-side-btn">
+            <span v-if="!showConfirm">Delete</span>
+            <div v-if="showConfirm" class="flex space-between">
+              <span>are you sure?</span>
+              <font-awesome-icon @click="removeTask(task.title)" icon="check" />
+              <font-awesome-icon @click="showConfirm = true" icon="times" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -146,10 +151,7 @@ export default {
     return {
       dueDate: null,
       showDueDate: false,
-      // checkList:{
-      //   title:'',
-      //   todos:[]
-      // },
+      showConfirm: false,
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
@@ -248,8 +250,7 @@ export default {
       });
     },
     addDueDate() {
-      // this.showDueDate=!this.showDueDate
-      this.showDueDate = true;
+      this.showDueDate = !this.showDueDate;
       this.dueDateMenuOn = !this.dueDateMenuOn;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
