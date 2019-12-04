@@ -2,8 +2,8 @@
   <section class="board-nav-bar-container flex space-between">
     <section class="board-name-users flex">
       <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1>
-      <div v-if="usersOnBoard.length>0" class="connectedUsers flex">
-        <div v-for="user in usersOnBoard" :key="user._id">
+      <div v-if="currBoard.usersOnBoard.length>0" class="connectedUsers flex">
+        <div v-for="user in currBoard.usersOnBoard" :key="user._id">
           <div class="user-on-board">{{user.userName}}</div>
         </div>
       </div>
@@ -18,22 +18,26 @@
       </div>
       <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
       <transition name="fade">
-        <div class="dropDown" v-if="isOpenDropDown">
+        <div class="drop-down flex col" v-if="isOpenDropDown">
           <div v-for="board in boards" :key="board._id">
-            <h4 class="board-li" @click="goToBoard(board._id)">{{board.title}}</h4>
+              <div class="flex" @click="goToBoard(board._id)">
+                <h3 class="board-li">{{board.title}}</h3>
+              </div>
           </div>
         </div>
       </transition>
     </div>
-    <transition name="slide-fade">
-      <SideMenu v-if="isOpenSideMenu" @removeSideMenu="removeSideMenu()"></SideMenu>
+    <transition name="slide-fade" >
+      <SideMenu v-on-clickaway="removeSideMenu" v-if="isOpenSideMenu" @removeSideMenu="removeSideMenu()"></SideMenu>
     </transition>
   </section>
 </template>
 
 <script>
-import { eventBus } from "../main.js";
-import SideMenu from "../components/SideMenu.vue";
+import {eventBus} from '../main.js'
+import SideMenu from '../components/SideMenu.vue';
+import { directive as onClickaway } from "vue-clickaway";
+
 export default {
   props: ["currBoard"],
   data() {
@@ -49,12 +53,7 @@ export default {
       show: true
     };
   },
-  computed: {
-    usersOnBoard() {
-      return this.$store.getters.usersOnBoard;
-    }
-    
-  },
+  computed: {},
   methods: {
     openDropDown() {
       this.isOpenDropDown = !this.isOpenDropDown;
@@ -112,6 +111,9 @@ export default {
   },
   components: {
     SideMenu
-  }
+  },
+   directives: {
+    onClickaway: onClickaway
+  },
 };
 </script>

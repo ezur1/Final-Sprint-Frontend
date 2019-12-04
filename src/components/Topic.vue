@@ -19,6 +19,15 @@
               class="topic-mini-menu flex col"
               @click.stop
             >
+              <span @click="showSortBy=!showSortBy">Sort By</span>
+              <div v-if="showSortBy" class="confirmation-modal">
+                <div class="flex col space-between">
+                  <button @click="setSort('title')">Title</button>
+                  <button @click="setSort('dueDate')">Due Date</button>
+                  <button @click="setSort('createdAt')">Creation Date</button>
+                </div>
+              </div>
+
               <span @click="openColorDropDown()">Topic Color</span>
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
@@ -28,7 +37,8 @@
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
                   <div class="topic-color light-gray flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')"></div>
                   <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')">reset</div>
-                </div>            
+                </div> 
+
               <span @click="showConfirm=!showConfirm">Delete</span>
               <div v-if="showConfirm" class="confirmation-modal">
                 <p>are you sure?</p>
@@ -90,9 +100,6 @@ export default {
   },
   data() {
     return {
-      yes:false,
-      no:false,
-      showConfirm:false,
       isAddTask: true,
       val: null,
       newTask: {
@@ -100,6 +107,8 @@ export default {
         id: null
       },
       isShowForm: false,
+      showConfirm:false,
+      showSortBy:false,
       originalTopicTitle: null,
       TopicMenuOn: false,
       isColorDropDownOpen: false,
@@ -148,12 +157,24 @@ export default {
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
       this.newTask.checkLists = [];
-      this.newTask.dueDate = null;
+      this.newTask.dueDate = 0;
+      this.newTask.createdAt = Date.now();
       eventBus.$emit("addTask", {
         topicTitle: topicTitle,
         newTask: this.newTask
       });
       this.isAddTask = true;
+    },
+    setSort(key){
+      if (key === 'dueDate'){
+        var tasksWithDueDate = this.tasks.filter(task => task.dueDate !== 0);
+        var tasksWithNoDueDate = this.tasks.filter(task => task.dueDate === 0);
+        tasksWithDueDate = utilService.setSort(tasksWithDueDate, key)
+        var sortedbyDueDate = tasksWithDueDate.concat(tasksWithNoDueDate);
+        this.tasks = sortedbyDueDate
+      } else utilService.setSort(this.tasks, key)
+      this.showSortBy = !this.showSortBy;
+      this.TopicMenuOn = !this.TopicMenuOn;
     },
     exit() {
       this.isAddTask = true;
@@ -180,3 +201,4 @@ export default {
   }
 };
 </script>
+

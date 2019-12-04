@@ -32,8 +32,8 @@ export default {
         },
         async logout(context) {
             await context.dispatch({ type: "removeUserFromBoards" });
-            await userService.logout()
             _broadcastUpdate()
+            await userService.logout()
             context.commit({ type: 'setUser', user: null })
         },
 

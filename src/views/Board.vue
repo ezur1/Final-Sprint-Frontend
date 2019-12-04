@@ -2,21 +2,22 @@
   <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})` }">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
-    {{refreshCount}}
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
-    <div class="actions flex">
-      <!-- <button @click="openForm()">Add Topic</button> -->
-      <form v-if="isAddTopic" @submit.prevent="addTopic" class="card edit-card">
-        <input type="text" v-model="newTopic.title" />
-        <button type="submit">Add</button>
-      </form>
-    </div>
-    <section class="topics-container">
+    <section v-if="topics" class="topics-container flex">
       <draggable v-model="topics">
-        <transition-group class="board-lists flex">
+        <transition-group class="flex">
           <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
         </transition-group>
       </draggable>
+      <div class="topic-wraper flex align-c">
+        <div>
+          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p>
+        </div>
+        <div v-if="!isAddTopic" class="add-task-title flex space-between align-c">
+          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" />
+          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
+        </div>
+      </div>
     </section>
   </section>
 </template>
@@ -32,7 +33,7 @@ export default {
   data() {
     return {
       val: null,
-      isAddTopic: false,
+      isAddTopic: true,
       isPreviewTask: false,
       newTopic: {
         title: "",
@@ -65,9 +66,6 @@ export default {
     newTopicToEdit() {
       return JSON.parse(JSON.stringify(this.newTopic));
     },
-    refreshCount(){
-      return this.$store.getters.refreshCount;
-    }
   },
   methods: {
     updateBoard() {
@@ -92,6 +90,9 @@ export default {
         board: this.boardToEdit,
         boardImgUrl: payload.boardImgUrl
       });
+    },
+    exit() {
+      this.isAddTask = true;
     },
     addTopic() {
       this.$store.dispatch({
@@ -152,6 +153,9 @@ export default {
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
+      setTimeout(() => {
+        this.$refs.input.focus();
+      }, 200);
     },
     updateTaskTitle(payload) {
       this.$store.dispatch({
@@ -257,8 +261,6 @@ export default {
       this.updateBoardDescription(payload);
     });
     eventBus.$on("changeBoardBGImg", payload => {
-      console.log('got here!!!!!!!!');
-      
       this.changeBoardBGImg(payload);
     });
     eventBus.$on("updateTopic", payload => {
@@ -309,6 +311,7 @@ destroyed(){
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()
+    /// need to think about removing the user when this component is destroyed (ex: when the user navigate to the other boards....)
   },
   components: {
     Topic,
@@ -319,15 +322,3 @@ destroyed(){
 };
 </script>
 
-<style lang="scss" scoped>
-
-// body {
-//   // background: url('../assets/board-hero.jpg') no-repeat center center fixed;
-//   -webkit-background-size: cover;
-//   -moz-background-size: cover;
-//   -o-background-size: cover;
-//   background-size: cover;
-//   height: 100vh;
-//   width: 100vw;
-// }
-</style>
