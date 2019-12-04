@@ -307,6 +307,7 @@ destroyed(){
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()
+    /// need to think about removing the user when this component is destroyed (ex: when the user navigate to the other boards....)
   },
   components: {
     Topic,
@@ -317,15 +318,3 @@ destroyed(){
 };
 </script>
 
-<style lang="scss" scoped>
-
-// body {
-//   // background: url('../assets/board-hero.jpg') no-repeat center center fixed;
-//   -webkit-background-size: cover;
-//   -moz-background-size: cover;
-//   -o-background-size: cover;
-//   background-size: cover;
-//   height: 100vh;
-//   width: 100vw;
-// }
-</style>
