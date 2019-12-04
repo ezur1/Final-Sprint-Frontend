@@ -64,6 +64,9 @@
         ul{
           padding: 0rem .5rem .5rem;
         }
+        .a{
+          border-bottom: 1px solid rgb(202, 50, 50);
+        }
         .activity-header{
           color: #003e4b;
           text-align: center;
@@ -77,6 +80,7 @@
           overflow-y:scroll; 
           position:relative;
           height: 80vh;
+          
         }
       }
     }
