@@ -39,13 +39,13 @@
               <ul class="activity" >
                 <li class="clean" v-for="(activity,index) in activities" :activity="activity" :key="index">
                   <img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> 
-                  {{activity.user.userName}} has 
+                  <span class="username-activity"></span>{{activity.user.userName}} has 
                   {{activity.title}}
                   {{activity.timeStamp | moment("from", "now") }}
                 </li>
               </ul>
             </section>
-            <button @click="clearLog">Clear</button>
+            <!-- <button @click="clearLog">Clear</button> -->
         </div>
       </div>
     </section>
@@ -90,7 +90,8 @@ export default {
       return this.$store.getters.currBoard;
     },
     activities() {
-      return this.$store.getters.currLog;
+      var activities = this.$store.getters.currLog;
+      return activities.reverse();
     },
   },
     created() {
