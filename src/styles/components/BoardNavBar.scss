@@ -2,13 +2,14 @@
     color: rgba(240, 248, 255, 0.9);
     height: 3rem;
     padding: .5rem 1rem;
-    background: linear-gradient(to bottom, rgba(226,226,226,0) 0%, rgba(209,209,209,0.9) 0%, rgba(23, 43, 38, 0.8) 0%, rgba(254, 254, 254, 0.123) 100%);
+    background: linear-gradient(to bottom, rgba(226,226,226,0) 0%, rgba(209,209,209,0) 0%, rgba(11, 44, 36, 0.8) 0%, rgba(254, 254, 254, 0.125) 100%);
     // background: rgba(23, 43, 38, 0.8);
 
     .nav-bar-logo{
         font-size: 1.5rem;
         padding-right: 1rem;
         border-right: 1px solid  rgba(240, 248, 255, 0.9);
+        cursor: pointer;
     }
     .search-icon{
         font-size: 1.5rem;
@@ -39,24 +40,29 @@
     }
 }
 
-.dropDown {
-    width: 15rem;
-    min-height: 5rem;
-    background-color: rgb(218, 218, 218);
+.drop-down {
+    min-width: 6rem;
     position: absolute;
-    top: 5.5rem;
-    left: 0.5rem;
-    z-index: 10000;
+    top: 6rem;
+    left: .3rem;
+    z-index: 100;
+    color: rgb(0, 62, 75);
+    border-radius: 3px;
+    font-size: 1.2rem;
+    text-align: center;
     .board-li {
-        text-align: center;
-        margin: 0.5rem;
-        padding: 0.5rem;
-        background-color: rgb(255, 255, 255);
+        padding: .3rem;
+        width: 100%;
+        color: rgba(240, 248, 255, 1);
+        margin:.2rem .2rem;
+        // border-bottom: .5px solid rgba(240, 248, 255, 1);
+        background: linear-gradient(to top, rgba(226,226,226,0) 0%, rgba(209,209,209,0.9) 0%, rgba(23, 43, 38, 0.9) 0%, rgba(254, 254, 254, 0.9) 200%);
         border-radius: 3px;
         &:hover {
             cursor: pointer;
-            background-color: rgb(240, 240, 240);
-        }
+            border : .5px solid rgba(240, 248, 255, 1);
+            // border-top: .5px solid rgba(240, 248, 255, 1);
+    }
     }
 }
 
@@ -90,4 +96,5 @@
     border-radius: 4px;
     padding: 5px;
     margin-left: 1rem;
+    cursor: default;
 }

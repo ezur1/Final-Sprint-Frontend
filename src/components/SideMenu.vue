@@ -1,30 +1,52 @@
 <template>
     <section class="side-menu">
-      <h2 class="side-menu-header">{{board.title}}</h2>
-      <label>
-        <font-awesome-icon icon="images" />
-        <input hidden type="file" @change="changeBoardBGImg($event)" />
-      </label>
-      <div class="board-description">
-        <h1>Board Description:</h1> 
-        <div contenteditable ref="boardDescription" 
-            v-html="board.description" 
-            @blur="updateBoardDescription" 
-            @keydown.enter="endEditBoardDescription">
+      <h2 class="side-menu-header">Menu</h2>
+      <div class="side-menu-content">
+        <div class="about-board">
+          <div @click="showAboutBoard=!showAboutBoard" class="flex align-c">
+            <font-awesome-icon icon="chalkboard" class="fa-icon" />
+            <p :class="{picked:showAboutBoard}">About This Board</p>
+          </div>
+          <div class="menu-board-description" v-if="showAboutBoard">
+              <h1>About {{board.title}}</h1> 
+              <div contenteditable ref="boardDescription" 
+                  v-html="board.description" 
+                  @blur="updateBoardDescription" 
+                  @keydown.enter="endEditBoardDescription">
+              </div>
+          </div>
         </div>
-        <br>
-        <h3>Activity Log:</h3>
-        <section v-if="activities" class="logEntries">
-          <ul class="activity" v-for="(activity,index) in activities" :activity="activity" :key="index">
-            <li class="clean">
-              <img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> 
-              {{activity.user.userName}} has 
-              {{activity.title}}
-              {{activity.timeStamp | moment("from", "now") }}
-            </li>
-          </ul>
-        </section>
-        <button @click="clearLog">Clear</button>
+        <div class="change-board-bgc">
+          <div @click="showChangeBgc=!showChangeBgc" class="flex align-c">
+            <font-awesome-icon icon="images" class="fa-icon" />
+            <p :class="{picked:showChangeBgc}">Change Board Background</p>
+          </div>
+          <div v-if="showChangeBgc" class="board-background flex col">
+            <label>
+              <font-awesome-icon icon="file-upload" class="fa-icon"/>
+              Upload Image
+              <input hidden type="file" @change="changeBoardBGImg($event)" />
+            </label>
+            <label>
+              <font-awesome-icon icon="camera-retro" class="fa-icon"/>
+              Choose From Library
+            </label>
+          </div>
+        </div>
+        <div class="avtivity-log flex col">
+          <h3 class="activity-header">Activity Log</h3>
+            <section v-if="activities" class="logEntries">
+              <ul class="activity" >
+                <li class="clean" v-for="(activity,index) in activities" :activity="activity" :key="index">
+                  <img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> 
+                  {{activity.user.userName}} has 
+                  {{activity.title}}
+                  {{activity.timeStamp | moment("from", "now") }}
+                </li>
+              </ul>
+            </section>
+            <button @click="clearLog">Clear</button>
+        </div>
       </div>
     </section>
 </template>
@@ -37,6 +59,8 @@ export default {
   data() {
     return {
       originalBoardDescription: null,
+      showAboutBoard:false,
+      showChangeBgc:false
     };
   },
   methods: {
