@@ -1,19 +1,18 @@
 <template>
-  <section class="board-nav-bar-container flex align-c space-between">
-    <div class="board-search-section flex">
-      <!-- <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1> -->
-      <section v-if="currBoard.usersOnBoard.length>0" class="connectedUsers">
+  <section class="board-nav-bar-container flex space-between">
+    <section class="board-name-users flex">
+      <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1>
+      <div v-if="currBoard.usersOnBoard.length>0" class="connectedUsers flex">
         <div v-for="user in currBoard.usersOnBoard" :key="user._id">
           <div class="user-on-board">{{user.userName}}</div>
         </div>
-      </section>
-      <input type="text" placeholder="search..." />
-      <div class="search-icon-container">
-        <img src="@/assets/search-24.png" />
       </div>
-    </div>
-    <div class="board-menu-section flex align-c space-between">
-      <font-awesome-icon class="icon" icon="chalkboard" @click="openDropDown" />
+    </section>
+    <div class="board-menu-section flex align-c">
+      <div class="board-search flex">
+        <font-awesome-icon class="search-icon" icon="search"/>
+        <!-- <input type="text" placeholder="search..." /> -->
+      </div>
       <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
       <transition name="fade">
         <div class="dropDown" v-if="isOpenDropDown">
@@ -46,9 +45,9 @@ export default {
     };
   },
   computed: {
-    usersOnBoard() {
-      return this.$store.getters.usersOnBoard;
-    }
+    // usersOnBoard() {
+    //   return this.$store.getters.usersOnBoard;
+    // }
   },
   methods: {
     openDropDown() {
@@ -73,9 +72,6 @@ export default {
     eventBus.$on('removeSideMenu', this.removeSideMenu);
     this.boards = this.$store.getters.boardsToShow;
     this.currBoardId = this.currBoard._id;
-    // this.usersOnBoard = this.$store.getters.usersOnBoard;
-    // console.log("this.currBoardId in created", this.currBoardId);
-    // console.log("boards", this.boards);
   },
   components: {
     SideMenu

@@ -1,13 +1,20 @@
 .board-nav-bar-container {
+    color: rgba(240, 248, 255, 0.9);
     height: 3rem;
     padding: .5rem 1rem;
-    background: rgba(190, 190, 190, 0.5);
-    .search-icon-container{
-        margin: 0;
-        height: 2rem;
-        width: 2rem;
-        background-color: #9FACE6;
-        padding: 0.4rem;
+    background: linear-gradient(to bottom, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 0%, rgba(23, 43, 38, 0.8) 0%, rgba(254, 254, 254, 0.123) 100%);
+    .nav-bar-logo{
+        font-size: 1.5rem;
+        padding-right: 1rem;
+        border-right: 1px solid  rgba(240, 248, 255, 0.9);
+    }
+    .search-icon{
+        font-size: 1.5rem;
+        margin-right:1rem;
+        cursor: pointer; 
+        &:hover{
+            color: rgba(240, 248, 255, 1);
+        }
     }
     img {
         height: 1.5rem;
@@ -20,15 +27,12 @@
 }
 
 .open-menu-btn {
-    margin-right: 0.4rem;
-    color: rgb(44, 43, 43);
-    border: 2px solid rgb(66, 66, 66);
+    border: 1px solid rgba(240, 248, 255, 0.9);
     border-radius: 0.3rem;
-    padding: 0.3rem;
+    padding: 0.4rem .8rem;
     &:hover{
-        color: rgb(44, 43, 43);
-        border: 2px solid rgb(233, 225, 225);
-        font-weight: 700;
+        border: 1px solid rgba(240, 248, 255, 1);
+        font-weight: 900;
         cursor: pointer;
     }
 }
@@ -55,14 +59,7 @@
 }
 
 .board-menu-section{
-    width:10rem;
-    .icon{
-        font-size: 1.5rem;
-        cursor: pointer;
-        &:hover{
-            color: rgb(233, 225, 225);
-        }
-    }
+  
 }
 
 
@@ -70,13 +67,7 @@
     transition: opacity .4s;
 }
 
-.fade-enter,
-.fade-leave-to
-/* .fade-leave-active below version 2.1.8 */
-
-{
-    opacity: 0;
-}
+.fade-enter,.fade-leave-to{opacity: 0;}
 
 .slide-fade-enter-active {
     transition: all .3s ease;
@@ -93,8 +84,8 @@
 }
 
 .user-on-board {
-    border: 1px solid grey;
+    border: 1px solid rgba(240, 248, 255, 0.9);
     border-radius: 4px;
     padding: 5px;
-    margin-left: 10px;
+    margin-left: 1rem;
 }
