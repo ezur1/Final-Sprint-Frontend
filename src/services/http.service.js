@@ -1,7 +1,11 @@
 import axios from 'axios'
 import router from '../router/index.js'
 
-const BASE_URL = "http://localhost:3001/api"
+// const BASE_URL = "http://localhost:3001/api"
+
+const BASE_URL = (process.env.NODE_ENV !== 'development') ?
+    '/api' :
+    '//localhost:3001/api';
 
 export const httpService = {
     get,
@@ -34,7 +38,7 @@ function put(route, data) {
 }
 
 function _handleError(err) {
-    console.log('Err:', err.response.data.error);
+    // console.log('Err:', err.response.data.error);
 
     if (err.response.status === 401) {
         sessionStorage.clear();
