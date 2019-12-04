@@ -41,7 +41,7 @@
         </section>
 
         <section class="Check-list flex align-c">
-          <font-awesome-icon class="icon" icon="list-alt" />
+          <!-- <font-awesome-icon class="icon" icon="list-alt" /> -->
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
