@@ -28,9 +28,14 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
-          <h3 v-if="showDueDate">Due date</h3>
-          <span>{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
+        </section>
 
+        <section class="due-date">
+          <h3 v-if="task.dueDate">Due date</h3>
+          <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
+        </section>
+
+        <section class="Check-list">
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
@@ -110,15 +115,20 @@
 
         <div class="actions-on-card flex col">
           <h3>ACTIONS</h3>
-          <a href="#" class="prev-side-btn">
+          <div class="prev-side-btn">
             <span>Move</span>
-          </a>
-          <a href="#" class="prev-side-btn">
+          </div>
+          <div class="prev-side-btn">
             <span>Copy</span>
-          </a>
-          <a href="#" class="prev-side-btn">
-            <span @click.stop="removeTask(task.title)">Delete</span>
-          </a>
+          </div>
+          <div @click="showConfirm=!showConfirm" class="prev-side-btn">
+            <span v-if="!showConfirm">Delete</span>
+            <div v-if="showConfirm" class="flex space-between">
+              <span>are you sure?</span>
+              <font-awesome-icon @click="removeTask(task.title)" icon="check" />
+              <font-awesome-icon @click="showConfirm = true" icon="times" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -140,11 +150,8 @@ export default {
   data() {
     return {
       dueDate: null,
-      showDueDate:false,
-      // checkList:{
-      //   title:'',
-      //   todos:[]
-      // },
+      showDueDate: false,
+      showConfirm: false,
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
@@ -243,7 +250,7 @@ export default {
       });
     },
     addDueDate() {
-      this.showDueDate=!this.showDueDate
+      this.showDueDate = !this.showDueDate;
       this.dueDateMenuOn = !this.dueDateMenuOn;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
@@ -274,6 +281,7 @@ export default {
     }
   },
   created() {
+    // if(this.task.dueDat) this.showDueDate=true;
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;

@@ -3,10 +3,22 @@
     <div class="topic-wraper">
       <div class="topic-content flex col" :style="{ 'background-color': topic.color }">
         <div class="topic-content-header flex space-between">
-          <div class="topic-title" contenteditable ref="topicTitle" v-html="topic.title" @blur="updateTopic" @keydown.enter="endEditTopicTitle"></div>
+          <div
+            class="topic-title"
+            contenteditable
+            ref="topicTitle"
+            v-html="topic.title"
+            @blur="updateTopic"
+            @keydown.enter="endEditTopicTitle"
+          ></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
-            <font-awesome-icon icon="ellipsis-h"/>
-            <div v-on-clickaway="openMenu" v-if="TopicMenuOn" class="topic-mini-menu flex col" @click.stop>
+            <font-awesome-icon icon="ellipsis-h" />
+            <div
+              v-on-clickaway="openMenu"
+              v-if="TopicMenuOn"
+              class="topic-mini-menu flex col"
+              @click.stop
+            >
               <span @click="openColorDropDown()">Topic Color</span>
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
@@ -17,7 +29,14 @@
                   <div class="topic-color light-gray flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')"></div>
                   <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')">reset</div>
                 </div>            
-              <span @click="removeTopic(topic.title)">Delete</span>
+              <span @click="showConfirm=!showConfirm">Delete</span>
+              <div v-if="showConfirm" class="confirmation-modal">
+                <p>are you sure?</p>
+                <div class="flex space-between">
+                  <button @click="removeTopic(topic.title)" class="confirm-btn">yes</button>
+                  <button @click="showConfirm=!showConfirm" class="cancel-btn">no</button>
+                </div>
+              </div>
             </div>
           </a>
         </div>
@@ -36,23 +55,20 @@
         </div>
         <section class="task-composer flex align-c">
           <div>
-            <p v-if="isAddTask" @click="openNewTaskModal()"><span>+ </span>Add task</p>
+            <p v-if="isAddTask" @click="openNewTaskModal()">
+              <span>+</span>Add task
+            </p>
           </div>
           <div v-if="!isAddTask" class="add-task-title flex space-between align-c">
             <input
-                ref="input"
-                type="text"
-                placeholder="Task title"
-                v-model="newTask.title"
-                @keyup.enter="addTask(topic.title)"
-                @blur="exit"
-              />
-              <font-awesome-icon
-                  class="exit-btn"
-                  @click="exit"
-                  icon="times"
-                  size="2x"
-              />
+              ref="input"
+              type="text"
+              placeholder="Task title"
+              v-model="newTask.title"
+              @keyup.enter="addTask(topic.title)"
+              @blur="exit"
+            />
+            <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
           </div>
         </section>
       </div>
@@ -65,15 +81,18 @@ import Draggable from "vuedraggable";
 import TaskPreview from "@/components/TaskPreview";
 import { utilService } from "../services/util.service.js";
 import { eventBus } from "../main.js";
-import { directive as onClickaway } from 'vue-clickaway';
+import { directive as onClickaway } from "vue-clickaway";
 
 export default {
   props: ["topic"],
   directives: {
-    onClickaway: onClickaway,
+    onClickaway: onClickaway
   },
   data() {
     return {
+      yes:false,
+      no:false,
+      showConfirm:false,
       isAddTask: true,
       val: null,
       newTask: {
@@ -83,7 +102,8 @@ export default {
       isShowForm: false,
       originalTopicTitle: null,
       TopicMenuOn: false,
-      isColorDropDownOpen: false
+      isColorDropDownOpen: false,
+      
     };
   },
   computed: {
@@ -105,12 +125,12 @@ export default {
     openNewTaskModal() {
       this.isAddTask = !this.isAddTask;
       this.newTask.title = "";
-      setTimeout(()=>{
+      setTimeout(() => {
         this.$refs.input.focus();
-      },10) 
+      }, 10);
     },
     removeTopic(topicTitle) {
-      eventBus.$emit('removeTopic', topicTitle)
+      eventBus.$emit("removeTopic", topicTitle);
     },
     updateTopic(event) {
       eventBus.$emit("updateTopic", {
@@ -136,19 +156,20 @@ export default {
       this.isAddTask = true;
     },
     exit() {
-      this.isAddTask=true;
+      this.isAddTask = true;
     },
     openMenu() {
       this.TopicMenuOn = !this.TopicMenuOn;
+      this.showConfirm=false
     },
     openColorDropDown() {
       this.isColorDropDownOpen = !this.isColorDropDownOpen;
     },
-    updateTopicColor(topicTitle, color){
-      eventBus.$emit('updateTopicColor', {topicTitle, color})
-      this.openColorDropDown()
-      this.openMenu()
-      }
+    updateTopicColor(topicTitle, color) {
+      eventBus.$emit("updateTopicColor", { topicTitle, color });
+      this.openColorDropDown();
+      this.openMenu();
+    }
   },
   components: {
     Draggable,
