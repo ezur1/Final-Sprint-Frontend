@@ -51,17 +51,17 @@
           </a>
         </div>
         <div class="topic-tasks">
-          <draggable v-model="tasks" group="tasks" :emptyInsertThreshold="100">
-            <transition-group>
-              <TaskPreview
-                class="task"
-                v-for="task in tasks"
-                :task="task"
-                :key="task.title"
-                :topic="topic"
-              />
-            </transition-group>
-          </draggable>
+          <Container 
+          @drop="onDrop" 
+          group-name="tasks" 
+          :get-child-payload="getTaskPayload(topic.title)"
+          drag-class="task-drag"
+          drop-class="task-drop"
+          >
+            <Draggable v-for="task in tasks" :key="task.id">
+              <TaskPreview class="task" :task="task" :topic="topic" />
+            </Draggable>
+          </Container>
         </div>
         <section class="task-composer flex align-c">
           <div>
@@ -87,10 +87,10 @@
 </template>
 
 <script>
-import Draggable from "vuedraggable";
-import TaskPreview from "@/components/TaskPreview";
-import { utilService } from "../services/util.service.js";
 import { eventBus } from "../main.js";
+import TaskPreview from "@/components/TaskPreview";
+import { Container, Draggable } from "vue-smooth-dnd";
+import { utilService } from "../services/util.service.js";
 import { directive as onClickaway } from "vue-clickaway";
 
 export default {
@@ -116,6 +116,9 @@ export default {
     };
   },
   computed: {
+    currBoard() {
+      return this.$store.getters.currBoard;
+    },
     tasks: {
       get() {
         return this.topic.tasks;
@@ -131,6 +134,14 @@ export default {
     }
   },
   methods: {
+    onDrop(dropResult) {
+      this.tasks = utilService.applyDrag(this.tasks, dropResult);
+    },
+    getTaskPayload (topicTitle) {
+      return index => {
+        return this.currBoard.topics.filter(topic => topic.title === topicTitle)[0].tasks[index]
+      }
+    },
     openNewTaskModal() {
       this.isAddTask = !this.isAddTask;
       this.newTask.title = "";
@@ -193,8 +204,9 @@ export default {
     }
   },
   components: {
-    Draggable,
-    TaskPreview
+    TaskPreview,
+    Container, 
+    Draggable
   },
   created() {
     this.originalTopicTitle = this.topic.title;

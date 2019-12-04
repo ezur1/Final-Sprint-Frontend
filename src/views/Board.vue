@@ -4,11 +4,11 @@
     <BoardNavBar :currBoard="currBoard" />
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <section v-if="topics" class="topics-container flex">
-      <draggable v-model="topics">
-        <transition-group class="flex">
-          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
-        </transition-group>
-      </draggable>
+      <Container @drop="onDrop" orientation="horizontal">  
+        <Draggable v-for="topic in topics" :key="topic.title">
+            <topic :topic="topic" :tasks="topic.tasks" />
+        </Draggable>
+      </Container>
       <div class="topic-wraper flex align-c">
         <div>
           <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p>
@@ -25,11 +25,14 @@
 <script>
 import BoardNavBar from "../components/BoardNavBar.vue";
 import MainNavBar from "../components/MainNavBar.vue";
-import Draggable from "vuedraggable";
+import { Container, Draggable } from "vue-smooth-dnd";
+import { utilService } from "../services/util.service.js";
 import Topic from "../components/Topic.vue";
 import { eventBus } from "../main.js";
 import socketService from '../services/socket.service.js';
+
 export default {
+  name: "board",
   data() {
     return {
       val: null,
@@ -43,7 +46,6 @@ export default {
       currTaskDetails: null
     };
   },
-  name: "board",
   computed: {
     currBoard() {
       return this.$store.getters.currBoard;
@@ -68,6 +70,9 @@ export default {
     },
   },
   methods: {
+    onDrop(dropResult) {
+      this.topics = utilService.applyDrag(this.topics, dropResult);
+    },
     updateBoard() {
       let id = this.$route.params.boardId;
       this.$store.dispatch({ type: "getBoardById", boardId: id });
@@ -86,8 +91,6 @@ export default {
       });
     },
     changeBoardBGImg(payload) {
-      console.log('got here with this payload: ',payload.boardImgUrl);
-      
       this.$store.dispatch({
         type: "changeBoardBGImg",
         board: this.boardToEdit,
@@ -151,7 +154,6 @@ export default {
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      // console.log('BOARD.VUE is about to router PUSH to the taskDetails');
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
     },
     openForm() {
@@ -179,7 +181,6 @@ export default {
       });
     },
     updateTaskTags(payload){
-      // console.log("description payload at board.vue", payload);
         this.$store.dispatch({
         type: "updateTaskTags",
         board: this.boardToEdit,
@@ -206,7 +207,6 @@ export default {
       });
     },
     addTodo(payload){
-      console.log('log in board methods');
       this.$store.dispatch({
         type:"addTodo",
         board: this.boardToEdit,
@@ -320,6 +320,7 @@ async destroyed(){
     Topic,
     BoardNavBar,
     MainNavBar,
+    Container, 
     Draggable
   }
 };
