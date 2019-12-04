@@ -28,9 +28,14 @@
             @blur="updateTaskDescription"
             @keydown.enter="endEditDescription"
           ></span>
-          <h3 v-if="showDueDate">Due date</h3>
-          <span>{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
+        </section>
 
+        <section class="due-date">
+          <h3 v-if="task.dueDate">Due date</h3>
+          <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
+        </section>
+
+        <section class="Check-list">
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
@@ -140,7 +145,7 @@ export default {
   data() {
     return {
       dueDate: null,
-      showDueDate:false,
+      showDueDate: false,
       // checkList:{
       //   title:'',
       //   todos:[]
@@ -243,7 +248,8 @@ export default {
       });
     },
     addDueDate() {
-      this.showDueDate=!this.showDueDate
+      // this.showDueDate=!this.showDueDate
+      this.showDueDate = true;
       this.dueDateMenuOn = !this.dueDateMenuOn;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addDueDate", {
@@ -274,6 +280,7 @@ export default {
     }
   },
   created() {
+    // if(this.task.dueDat) this.showDueDate=true;
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
