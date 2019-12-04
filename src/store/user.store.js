@@ -1,5 +1,4 @@
 import userService from '../services/user.service.js'
-import socketService from '../services/socket.service.js';
 
 var localLoggedinUser = null;
 if (sessionStorage.user) localLoggedinUser = JSON.parse(sessionStorage.user);
@@ -31,17 +30,10 @@ export default {
             return user;
         },
         async logout(context) {
-            await context.dispatch({ type: "removeUserFromBoards" });
-            _broadcastUpdate()
             await userService.logout()
             context.commit({ type: 'setUser', user: null })
         },
 
     },
     modules: {}
-}
-
-function _broadcastUpdate() {
-    const msg = (' has been updated!');
-    socketService.emit('boardUpdated', msg);
 }

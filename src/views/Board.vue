@@ -72,6 +72,9 @@ export default {
       let id = this.$route.params.boardId;
       this.$store.dispatch({ type: "getBoardById", boardId: id });
     },
+    addMsg(){
+      console.log('added msg...');
+    },
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
@@ -307,11 +310,11 @@ export default {
     });
     eventBus.$on("clearLog", this.clearLog);
   },
-destroyed(){
+async destroyed(){
+    await this.$store.dispatch({ type: "removeUserFromBoard" });
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()
-    /// need to think about removing the user when this component is destroyed (ex: when the user navigate to the other boards....)
   },
   components: {
     Topic,

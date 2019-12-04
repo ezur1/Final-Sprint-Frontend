@@ -199,18 +199,29 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
-        async removeUserFromBoards(context) {
+        // async removeUserFromBoards(context) {
+        //     var loggedInUserId = context.getters.loggedInUser._id;
+        //     var boards = await boardService.query()
+        //     boards.forEach(board => {
+        //             var usersOnBoard = board.usersOnBoard;
+        //             var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
+        //             if (userIdxInUsersOnBoard !== -1) {
+        //                 board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
+        //                 context.dispatch({ type: "updateBoard", board: board });
+        //             }
+        //         })
+        //         // console.log('aHa!');
+        //         // _broadcastUpdate()
+        //     return boards;
+        // },
+        async removeUserFromBoard(context) {
             var loggedInUserId = context.getters.loggedInUser._id;
-            var boards = await boardService.query()
-            boards.forEach(board => {
-                var usersOnBoard = board.usersOnBoard;
-                var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
-                if (userIdxInUsersOnBoard !== -1) {
-                    board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
-                    context.dispatch({ type: "updateBoard", board: board });
-                }
-            })
-            return boards;
+            var board = context.getters.currBoard;
+            var usersOnBoard = board.usersOnBoard;
+            var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
+            board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board;
         },
         async addCheckList(context, { board, topicTitle, taskTitle, checkList }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
@@ -285,7 +296,7 @@ function _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId) {
 }
 
 function _broadcastUpdate() {
-    const msg = (' has been updated!');
+    const msg = ('board has been updated!');
     socketService.emit('boardUpdated', msg);
 }
 
