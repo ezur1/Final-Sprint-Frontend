@@ -3,7 +3,7 @@
       <h2 class="side-menu-header">{{board.title}}</h2>
       <label>
         <font-awesome-icon icon="images" />
-        <input type="file" @click="changeBoardBGImg($event)" />
+        <input type="file" @change="changeBoardBGImg($event)" />
       </label>
       <div class="board-description">
         <h1>Board Description:</h1> 
@@ -36,9 +36,6 @@ import imgService from "../services/img.service.js";
 export default {
   data() {
     return {
-      // isShow: true,
-      isOpen: false,
-      descriptionTxt: "",
       originalBoardDescription: null,
     };
   },
@@ -54,17 +51,12 @@ export default {
       this.$refs.boardDescription.blur();
     },
     async changeBoardBGImg(ev) {
-      console.log('this is the event: ',ev);
+      console.log('1st step');
       var res = await imgService.uploadImg(ev)
       console.log('this is the res: ',res);
-      // eventBus.$emit("updateBoardDescription", { boardImgUrl: res });
+      eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
     },
-    // changeBoardBGImg(ev) {
-    //   imgService.uploadImg(ev).then(res => {
-    //     console.log('this is the res: ',res);
-    //     this.copiedToy.imgURL = res;
-    //   });
-    // },
+
     gotoUserPage(userId){
       console.log('this is the requested userId: ',userId); /// future development
     },

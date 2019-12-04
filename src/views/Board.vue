@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currBoard" class="board-container flex col">
+  <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})` }">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
     {{refreshCount}}
@@ -82,6 +82,15 @@ export default {
         type: "updateBoardDescription",
         board: this.boardToEdit,
         newBoardDescription: payload.newBoardDescription
+      });
+    },
+    changeBoardBGImg(payload) {
+      console.log('got here with this payload: ',payload.boardImgUrl);
+      
+      this.$store.dispatch({
+        type: "changeBoardBGImg",
+        board: this.boardToEdit,
+        boardImgUrl: payload.boardImgUrl
       });
     },
     addTopic() {
@@ -244,6 +253,11 @@ export default {
     eventBus.$on("updateBoardDescription", payload => {
       this.updateBoardDescription(payload);
     });
+    eventBus.$on("changeBoardBGImg", payload => {
+      console.log('got here!!!!!!!!');
+      
+      this.changeBoardBGImg(payload);
+    });
     eventBus.$on("updateTopic", payload => {
       this.updateTopic(payload);
     });
@@ -304,13 +318,13 @@ destroyed(){
 
 <style lang="scss" scoped>
 
-body {
-  background: url('../assets/board-hero.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  height: 100vh;
-  width: 100vw;
-}
+// body {
+//   // background: url('../assets/board-hero.jpg') no-repeat center center fixed;
+//   -webkit-background-size: cover;
+//   -moz-background-size: cover;
+//   -o-background-size: cover;
+//   background-size: cover;
+//   height: 100vh;
+//   width: 100vw;
+// }
 </style>

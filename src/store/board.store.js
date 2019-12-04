@@ -85,10 +85,18 @@ export default {
             return foundTask
         },
         async updateBoardDescription(context, { board, newBoardDescription }) {
-            // var boardId = _findTopicIndex(board, oldTitle);
             board.description = newBoardDescription;
             var newLogEntry = _makeLogEntry(board.title, 'board-description', 'updated', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
+        async changeBoardBGImg(context, { board, boardImgUrl }) {
+            console.log('got into the STORE with this payload URL: ', boardImgUrl);
+
+            board.imgUrl = boardImgUrl;
+            // var newLogEntry = _makeLogEntry(board.title, 'board-Background', 'changed', context.getters.loggedInUser)
+            // board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
