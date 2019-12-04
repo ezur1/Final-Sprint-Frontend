@@ -140,11 +140,13 @@
     &.light-green{background-color: #a3f7bfd7;}
     &.light-pink{background-color: rgba(255, 182, 193, 0.8);}
     &.light-yellow{background-color: rgba(255, 255, 224, 0.9);}
-    &.none{background-color: #ebecf0be;}
+    &.light-gray{background-color: rgba(228, 235, 234, 0.596);}
+    &.none{background-color: rgba(187, 229, 220, 0.74);}
 }
 
 
 .confirmation-modal{
+
     p{
         text-align: center;
     }
@@ -167,6 +169,6 @@
     }
 }
 
-    &.light-gray{background-color: rgba(228, 235, 234, 0.596);}
-    &.none{background-color: rgba(187, 229, 220, 0.74);}
-}
+
+    
+
