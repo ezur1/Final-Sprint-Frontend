@@ -10,11 +10,24 @@
     </section>
     <div class="board-menu-section flex align-c">
       <div class="board-search flex align-center">
-        <input ref="filter" @keyup="filter" v-if="isSearchModal" type="text" placeholder="search a task..." />
-        <font-awesome-icon class="search-icon" icon="search" @click="isSearchModal=!isSearchModal" />
-        <div v-if="isSearchModal" class="search-modal">
-          <h3 v-for="taskTitle in taskTitles" :key=taskTitle @click="openTaskDetails(taskTitle)">{{taskTitle}}</h3>
-        </div>
+        <input
+          ref="filter"
+          @keyup="filter"
+          v-if="isSearchModal"
+          type="text"
+          placeholder="search a task..."
+        />
+        <font-awesome-icon class="search-icon" icon="search" @click="openSearchModal" />
+        <transition name="fade">
+          <div v-if="isSearchModal" class="search-modal">
+            <h1>search results</h1>
+            <h3
+              @click="openTaskDetails"
+              v-for="task in filterRes"
+              :key="task.taskId"
+            >{{task.taskTitle}}</h3>
+          </div>
+        </transition>
       </div>
       <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
       <transition name="fade">
@@ -42,8 +55,9 @@ export default {
   props: ["currBoard"],
   data() {
     return {
-      taskTitles:'',
-      filterBy:'',
+      taskTitles: "",
+      filterBy: "",
+      filterRes: "",
       isSearchModal: false,
       currBoardId: null,
       boards: null,
@@ -53,7 +67,11 @@ export default {
       show: true
     };
   },
-  computed: {},
+  computed: {
+    usersOnBoard() {
+      return this.$store.getters.usersOnBoard;
+    }
+  },
   methods: {
     openDropDown() {
       this.isOpenDropDown = !this.isOpenDropDown;
@@ -73,35 +91,52 @@ export default {
       this.isOpenDropDown = false;
     },
     filter() {
-      let filterBy=this.$refs.filter.value;
-      
-      let topics;
-      let tasks;
-      topics = this.currBoard.topics.map(topic => topic.tasks);
-      let taskTitles = topics.map(task => task.map(taskTitle => taskTitle.title));
-      let titles = taskTitles.flat();
-      tasks = topics.flat();
-      console.log('tasks',tasks)
-
-      var regex = new RegExp(filterBy, "i");
-       var searchRes=  titles.filter(title => {
-        return regex.test(filterBy) === regex.test(title);
+      this.filterRes = null;
+      var searchRes = [];
+      let filterBy = this.$refs.filter.value;
+      let titles = this.currBoard.topics.map(topic => {
+        let res = { topicTitle: topic.title };
+        res.taskTitles = topic.tasks.map(task => {
+          let taskObj = { title: "", id: "" };
+          taskObj.title = task.title;
+          taskObj.id = task.id;
+          return taskObj;
+        });
+        return res;
       });
-      this.taskTitles=searchRes
+      console.log("titles", titles);
+      // var res=titles.map(topicTitle =>{
+      return titles.map(topicTitle => {
+        let topic = topicTitle.topicTitle;
+        return topicTitle.taskTitles.filter(taskTitle => {
+          var regex = new RegExp(filterBy, "i");
+          if (regex.test(filterBy) === regex.test(taskTitle.title)) {
+            searchRes.push({
+              topic: topic,
+              taskTitle: taskTitle.title,
+              taskId: taskTitle.id
+            });
+            console.log("searchRes", searchRes);
+            this.filterRes = searchRes;
+            console.log("this.filterRes", this.filterRes);
+          }
+        });
+      });
     },
-    openTaskDetails(taskTitle){
-      console.log('taskTitle',taskTitle);
-      let topics;
-      let tasks;
-      topics = this.currBoard.topics.map(topic => topic.tasks);
-      tasks = topics.flat();
-      let task=tasks.find(task => {
-        if(task.title===taskTitle) return task.id
-      })
-      
-      console.log('topics',topics);
-      console.log('task',task);
-      // eventBus.$emit('showTaskDetails', { taskId:task.id,topicTitle: task.topic});
+    
+    openSearchModal(){
+      this.isSearchModal=!this.isSearchModal
+      this.filterRes = null;
+
+    },
+    openTaskDetails() {
+      console.log("this.filterRes", this.filterRes);
+      eventBus.$emit("showTaskDetails", {
+        taskId: this.filterRes[0].taskId,
+        topicTitle: this.filterRes[0].topic
+      });
+      this.filterRes = null;
+      this.isSearchModal = false;
     }
   },
   created() {
