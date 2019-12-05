@@ -75,8 +75,15 @@ export default {
     },
     filter() {
       // let filterBy=this.$refs.filter.value;
-      // let filterRes=[];
+      let filterRes;
       console.log('this.currBoard.topics',this.currBoard.topics);
+      titles=this.currBoard.topics.map(topic =>{
+        let x={topicTitle: topic.title}
+        x.taskTitles=topic.tasks.map(task => task.title)
+        return x
+      })
+      console.log('titles',titles);
+      titles.map()
       // let topics;
       // let tasks;
       // topics = this.currBoard.topics.map(topic => topic.tasks);
