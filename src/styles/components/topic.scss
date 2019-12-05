@@ -9,23 +9,24 @@
         .topic-title{
             font-weight: 900;
             cursor: pointer;
+            outline-color:#67b4a2; 
         }
     }
     .task-composer {
-        padding: 0rem 1rem 0rem 1rem;
-        margin: 0 auto;
-        width: 15rem;
+        padding: 0rem .9rem 0rem;
         p {
             margin: 0;
-            padding: 1rem 0;
+            padding: .4rem 0 .5rem;
+            padding-right:.5rem; 
+            margin-bottom:.5rem;
             color: #0a1e3f;
             border-radius: 3px;
-            width: 100%;
-            span {font-size: 1.5rem;}
+            span {font-size: 1.5rem; margin-left:.5rem; }
             &:hover {
                 cursor: pointer;
                 font-weight: 900;
                 font-size: 1rem;
+                background-color: aliceblue;
                 span{
                     color: #44ae3e;
                 }
@@ -33,14 +34,17 @@
         }
         .exit-btn {
             cursor: pointer;
+            margin-left: 1.3rem;
             font-size: 1.5rem;
             &:hover{color: #d05555}
+
         }
         .task-composer{
             width: 15.5rem;
             border-radius: 3px;
             margin-bottom: .5rem;
             position: relative;
+            
         }
         .add-task-title{
             width: inherit;
@@ -63,11 +67,12 @@
     }
 }
 .topic-content {
-    background-color: rgba(187, 229, 220, 0.74);
+    background-color: rgba(228, 235, 234, 0.596);
     border-radius: 5px;
     max-height: 100%;
     white-space: normal;
     position: relative;
+    
 }
 
 .topic-content-header {
@@ -137,19 +142,14 @@
     text-align: center;
     &.light-blue{background-color: rgba(173, 216, 230, 0.8);}
     &.light-red{background-color: rgba(240, 128, 128, 0.8);}
-    &.light-green{background-color: #a3f7bfd7;}
+    &.light-green{background-color: rgba(187, 229, 220, 0.74);}
     &.light-pink{background-color: rgba(255, 182, 193, 0.8);}
     &.light-yellow{background-color: rgba(255, 255, 224, 0.9);}
-    &.light-gray{background-color: rgba(228, 235, 234, 0.596);}
-    &.none{background-color: rgba(187, 229, 220, 0.74);}
+    &.none{background-color:rgba(228, 235, 234, 0.596);}
 }
 
-
 .confirmation-modal{
-
-    p{
-        text-align: center;
-    }
+    p{text-align: center;}
     .confirm-btn{
         border: 1px solid black;
         background-color: whitesmoke;
@@ -158,7 +158,6 @@
             cursor: pointer;
         }
     }
-    
     .cancel-btn{
         border: 1px solid black;
         background-color: whitesmoke;
@@ -169,6 +168,38 @@
     }
 }
 
+.add-topic{
+    p{padding-bottom:.2rem; }
+    cursor: pointer;
+    height: 3rem;
+    width: 14rem;
+    margin-top:1rem; 
+    background-color: rgba(0,0,0,.4);
+    color: aliceblue;
+    border-radius: 5px;
+    max-height: 100%;
+    font-weight: 900;
+    white-space: normal;
+    position: relative;
 
+    span {font-size: 1.5rem; margin:0 1rem; }
+    input{
+        margin-left: .5rem;
+        margin-right: 1rem;
+        height: 2rem;
+        font-size: 1.1rem;
+        width: 10rem;
+        outline: none;
+        border: none;
+        border-radius:3px;
+        padding-left:.5rem;  
+        color:#172b4d;
+
+    }
+    &:hover{
+        background-color: rgba(0,0,0,.6);
+        
+    }
+}
     
 
