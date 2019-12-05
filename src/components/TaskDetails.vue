@@ -51,9 +51,7 @@
             </div>
         </section>
 
-        
-
-        <section class="Check-list flex align-c">
+        <section class="Check-list flex col">
           <!-- <font-awesome-icon class="icon" icon="list-alt" /> -->
           <CheckList
             v-for="checkList in task.checkLists"
@@ -157,7 +155,7 @@
             <span>Copy</span>
           </div>
           <div @click="showConfirm=!showConfirm" class="prev-side-btn">
-            <font-awesome-icon class="icon" icon="trash-alt"/>
+            <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
             <span v-if="!showConfirm">Delete</span>
             <div v-if="showConfirm" class="flex space-between">
               <span>are you sure?</span>
