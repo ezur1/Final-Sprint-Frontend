@@ -108,6 +108,8 @@ export default {
             return board
         },
         async addTopic(context, { board, newTopic }) {
+            var test = board.topics.find(topic => topic.title === newTopic.title)
+            if (test) return console.log('this topic already exists...');
             board.topics.push(newTopic)
             var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
