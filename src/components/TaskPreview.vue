@@ -1,4 +1,5 @@
 <template>
+  <!-- <div v-if="task" class="task" v-touch:longtap.prevent="longtapHandler" @click="showTaskDetails(task.id)"> -->
   <div v-if="task" class="task" @click="showTaskDetails(task.id)">
     <div class="task-preview flex col space-between">
       <div v-if="task.tags.length!==0" class="tags flex">
@@ -20,6 +21,9 @@ export default {
     return {};
   },
   methods: {
+    longtapHandler(){
+      console.log('long tap has been detected');
+    },
     removeTask(taskTitle) {
       eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle: taskTitle });
     },
