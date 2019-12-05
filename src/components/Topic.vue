@@ -35,7 +35,7 @@
                   <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')"></div>
                   <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
-                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')">reset</div>
+                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.9)')">reset</div>
                 </div> 
 
               <span @click="showConfirm=!showConfirm">Delete</span>

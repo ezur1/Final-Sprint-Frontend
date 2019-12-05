@@ -5,6 +5,9 @@
     display: inline-block;
     vertical-align: top;
     white-space: nowrap;
+    .topic-title{
+        font-size: 1.125rem;
+    }
     &:hover{
         .topic-title{
             font-weight: 900;
@@ -67,17 +70,17 @@
     }
 }
 .topic-content {
-    background-color: rgba(228, 235, 234, 0.596);
+    background-color: rgba(228, 235, 234, 0.9);
     border-radius: 5px;
     max-height: 100%;
     white-space: normal;
     position: relative;
-    
 }
 
 .topic-content-header {
     margin: 10px;
     padding: 0 .5rem;
+    
 }
 
 .topic-mini-menu {
