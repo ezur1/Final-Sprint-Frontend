@@ -9,12 +9,22 @@
             <topic :topic="topic" :tasks="topic.tasks" />
         </Draggable>
       </Container>
-      <div class="topic-wraper flex align-c">
+      <!-- <div class="topic-wraper flex align-c">
         <div>
-          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p>
+          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p> -->
+
+
+      <!-- <draggable v-model="topics">
+        <transition-group class="flex">
+          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
+        </transition-group>
+      </draggable> -->
+      <div @click="openForm()" class="add-topic flex align-c">
+        <div v-if="isAddTopic" >
+          <p><span>+</span>Add Topic</p>
         </div>
-        <div v-if="!isAddTopic" class="add-task-title flex space-between align-c">
-          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" />
+        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
+          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" @click.stop />
           <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
         </div>
       </div>
@@ -98,7 +108,8 @@ export default {
       });
     },
     exit() {
-      this.isAddTask = true;
+      this.isAddTopic = true;
+      this.newTopic.title = '';
     },
     addTopic() {
       this.$store.dispatch({
@@ -107,7 +118,6 @@ export default {
         newTopic: this.newTopicToEdit
       });
       this.newTopic.title = "";
-      this.openForm();
     },
     removeTopic(topicTitle) {
       this.$store.dispatch({

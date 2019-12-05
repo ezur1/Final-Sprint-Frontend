@@ -32,11 +32,10 @@
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
                   <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
-                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, '#a3f7bfd7')"></div>
+                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')"></div>
                   <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
-                  <div class="topic-color light-gray flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')"></div>
-                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')">reset</div>
+                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')">reset</div>
                 </div> 
 
               <span @click="showConfirm=!showConfirm">Delete</span>
@@ -66,7 +65,7 @@
         <section class="task-composer flex align-c">
           <div>
             <p v-if="isAddTask" @click="openNewTaskModal()">
-              <span>+</span>Add task
+              <span>+</span>Add Task
             </p>
           </div>
           <div v-if="!isAddTask" class="add-task-title flex space-between align-c">

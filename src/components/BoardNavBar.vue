@@ -71,37 +71,6 @@ export default {
       this.$router.push(`/boards/${boardId}`);
       this.$store.dispatch({ type: "getBoardById", boardId: boardId });
       this.isOpenDropDown = false;
-    },
-    filter() {
-      let filterBy=this.$refs.filter.value;
-      
-      let topics;
-      let tasks;
-      topics = this.currBoard.topics.map(topic => topic.tasks);
-      let taskTitles = topics.map(task => task.map(taskTitle => taskTitle.title));
-      let titles = taskTitles.flat();
-      tasks = topics.flat();
-      console.log('tasks',tasks)
-
-      var regex = new RegExp(filterBy, "i");
-       var searchRes=  titles.filter(title => {
-        return regex.test(filterBy) === regex.test(title);
-      });
-      this.taskTitles=searchRes
-    },
-    openTaskDetails(taskTitle){
-      console.log('taskTitle',taskTitle);
-      let topics;
-      let tasks;
-      topics = this.currBoard.topics.map(topic => topic.tasks);
-      tasks = topics.flat();
-      let task=tasks.find(task => {
-        if(task.title===taskTitle) return task.id
-      })
-      
-      console.log('topics',topics);
-      console.log('task',task);
-      // eventBus.$emit('showTaskDetails', { taskId:task.id,topicTitle: task.topic});
     }
   },
   created() {

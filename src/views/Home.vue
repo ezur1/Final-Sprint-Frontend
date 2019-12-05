@@ -6,19 +6,19 @@
           <img class="logo-home-page" src="@/assets/logo_transparent.png" />
           <button @click="goToLogin" class="login-btn">Login</button>
         </div>
-        <div class="greet flex justify-center space-around">
-          <div>
-            <h1>TaskFlo lets you work more</h1>
-            <h1>collaboratively and get more done.</h1>
-            <p>TaskFlo’s boards, lists, and cards enable</p>
-            <p>you to organize and prioritize your</p>
-            <p>projects in a fun, flexible, and</p>
-            <p>rewarding way.</p>
+        <div class="greet flex col justify-center space-around">
+          <div class="flex col">
+            <h1>TaskFlow lets you</h1>
+            <h1>work more collaboratively </h1>
+            <h1>and get more done.</h1>
           </div>
-          <!-- <img src="@/assets/hero.jpg" alt /> -->
-          <img src="@/assets/img/main-hero.jpg" alt />
+            <p>TaskFlow’s boards, lists, and cards enable
+            you to organize and prioritize your
+            projects in a fun, flexible, and
+            rewarding way!</p>
         </div>
-        <button class="start-now-btn" @click="startAsGuest">Try Now !</button>
+        
+        <button class="start-now-btn" @click="startAsGuest">Try It Now <img src="@/assets/arrow.png" class="arrow" /></button>
       </div>
 
       <div class="productivity flex space-around">
