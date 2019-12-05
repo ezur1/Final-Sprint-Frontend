@@ -229,6 +229,7 @@ export default {
     },
     backToBoard() {
       var boardId = this.$route.params.boardId;
+      eventBus.$emit("disableWindowOverlay");
       this.$router.push(`/boards/${boardId}`);
     },
     closeMiniMenu() {
@@ -342,7 +343,6 @@ export default {
     }
   },
   created() {
-    // if(this.task.dueDat) this.showDueDate=true;
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
