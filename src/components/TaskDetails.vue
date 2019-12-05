@@ -10,7 +10,7 @@
           @keydown.enter="endEditTaskTitle"
         >{{task.title}}</h1>
       </div>
-      <font-awesome-icon class="icon" icon="times" @click="backToBoard()" />
+      <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
 
     <div class="preview-body flex space-between">
