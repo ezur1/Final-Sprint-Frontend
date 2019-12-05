@@ -44,6 +44,11 @@
             padding: .5rem;
             cursor: pointer;
             border-radius: 3px;
+            h3{
+                &:hover{
+                    cursor: pointer;
+                }
+            }
             .board-background {
                 margin-top: .5rem;
                 margin-left: 1.5rem;
@@ -55,6 +60,22 @@
                         border-left: 2.2px solid #67b6a3;
                     }
                 }
+                .side-menu-library{
+                    min-height: 20rem;
+                    width: 20rem;
+                .bg-img{
+                    height: 8rem;
+                    width: 8rem; 
+                    margin: 0.5rem;
+                    background-color: rgb(184, 184, 184);
+                    &:hover{cursor: pointer;}
+                    img {
+                        width: 8rem;
+                        height: 8rem;
+                    }
+                }
+                
+            }
             }
             &:hover {
                 background-color: rgba(255, 255, 255, 0.6);
@@ -97,3 +118,4 @@
 .activity-txt {
     font-size: 1rem;
 }
+

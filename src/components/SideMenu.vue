@@ -23,13 +23,25 @@
           </div>
           <div v-if="showChangeBgc" class="board-background flex col">
             <label>
-              <font-awesome-icon icon="file-upload" class="fa-icon"/>
-              Upload Image
+              <div class="flex">
+                <font-awesome-icon icon="file-upload" class="fa-icon"/>
+                <h3>Upload Image</h3>
+              </div>
               <input hidden type="file" @change="changeBoardBGImg($event)" />
             </label>
             <label>
-              <font-awesome-icon icon="camera-retro" class="fa-icon"/>
-              Choose From Library
+              <div class="flex">
+              <font-awesome-icon icon="camera-retro" class="fa-icon "/>
+               <h3 @click="openLibrary">Choose From Library</h3>
+               </div>
+               <div v-if="showLibrary" class="side-menu-library flex wrap">
+                 <div class="bg-img">
+                  <img src="https://res.cloudinary.com/ddvdpsmgu/image/upload/v1575394762/zwqecioqitzmvvzeaici.jpg">
+                 </div>
+                 <div class="bg-img">2</div>
+                 <div class="bg-img">3</div>
+                 <div class="bg-img">4</div>
+               </div>
             </label>
           </div>
         </div>
@@ -66,7 +78,8 @@ export default {
       originalBoardDescription: null,
       showAboutBoard:false,
       showChangeBgc:false,
-      showConfirm: false
+      showConfirm: false,
+      showLibrary:false
     };
   },
   methods: {
@@ -89,6 +102,9 @@ export default {
     },
     clearLog() {
       eventBus.$emit('clearLog')
+    },
+    openLibrary(){
+      this.showLibrary=!this.showLibrary
     }
   },
   computed: {
