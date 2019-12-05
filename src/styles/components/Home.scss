@@ -7,11 +7,12 @@
         padding: 1rem;
         background-image: url(../assets/head.png);
         background-repeat: no-repeat;
+        background-position: center;
         background-size: cover;
         position: relative;
         .logo-home-page {
-            width: 7rem;
-            height: 9rem;
+            width: 6em;
+            height: 8em;
             margin-top: 1rem;
             margin-left: 3rem;
         }
@@ -50,7 +51,7 @@
             background-color: #376263;
             border: none;
             display: block;
-            margin-top: 7rem;
+            margin-top: 2.5rem;
             margin-left: 10rem;
 
             img {
@@ -71,20 +72,20 @@
         }
 
         .greet {
-            margin-top: 7rem;
-            margin-left: 3rem;
+            margin-top: 5em;
+            margin-left: 3em;
             color: white;
 
             h1 {
-                font-size: 3.3rem;
+                font-size: 3em;
             }
 
             p {
                 margin: 0;
-                font-size: 1.8rem;
+                font-size: 1.5rem;
                 margin-top: 2rem;
                 width: 36rem;
-                line-height: 2.5rem;
+                line-height: 1.5em;
 
             }
         }
@@ -99,10 +100,11 @@
         background-image: url(../assets/body.png);
         background-repeat: no-repeat;
         background-size: cover;
+        background-position: center;
 
         .prodactivity-content {
             align-self: flex-end;
-
+            margin: 0;
             h1 {
                 font-size: 4rem;
                 font-weight: 900;
@@ -111,10 +113,10 @@
             }
 
             p {
-                width: 34rem;
-                font-size: 2rem;
+                width: 33rem;
+                font-size: 1.8rem;
                 margin: 0;
-                margin-left: 1.5rem;
+                margin-left: 3rem;
                 margin-top: 1rem;
                 line-height: 3rem;
             }
