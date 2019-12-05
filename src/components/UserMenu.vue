@@ -1,10 +1,12 @@
 <template>
     <section class="side-menu">
       <h2 class="side-menu-header">{{user.fullName}}</h2>
-      <img :src="user.imgUrl" />  
-      Activity
-      <button @click="gotoUserProfile(user._id)">Profile</button>
-      <button @click="doLogout">Logout</button>
+      <div class="flex col align-center">
+        <div><img class="user-image" :src="user.imgUrl" /></div>  
+        Activity
+        <button @click="gotoUserProfile(user._id)">Profile</button>
+        <button @click="doLogout">Logout</button>
+      </div>
     </section>
 </template>
 

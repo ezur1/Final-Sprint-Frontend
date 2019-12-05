@@ -15,7 +15,7 @@
           @keyup="filter"
           v-if="isSearchModal"
           type="text"
-          placeholder="search a task..."
+          placeholder="search for a task"
         />
         <font-awesome-icon class="search-icon" icon="search" @click="openSearchModal" />
         <transition name="fade">
