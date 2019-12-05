@@ -38,7 +38,7 @@
             <section v-if="activities" class="logEntries">
               <ul class="activity" >
                 <li style="border-bottom: 1px solid rgb(182, 202, 197);padding-bottom:.3rem" class="clean" v-for="(activity,index) in activities" :activity="activity" :key="index">
-                  <span class="username-activity"><img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> {{activity.user.userName}}</span>has 
+                  <span class="username-activity"><img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> {{activity.user.userName}}</span> has 
                   {{activity.title}}
                   {{activity.timeStamp | moment("from", "now") }}
                 </li>

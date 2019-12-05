@@ -168,6 +168,7 @@ export default {
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
       this.newTask.checkLists = [];
+      this.newTask.imgUrls = [];
       this.newTask.dueDate = 0;
       this.newTask.createdAt = Date.now();
       eventBus.$emit("addTask", {

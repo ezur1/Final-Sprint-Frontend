@@ -245,6 +245,33 @@ export default {
         dueDate: payload.dueDate
       });
     },
+    addImgToTask(payload){
+      this.$store.dispatch({
+        type:"addImgToTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        imgUrl: payload.imgUrl
+      });
+    },
+    removeImgFromTask(payload){
+      this.$store.dispatch({
+        type:"removeImgFromTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        imgUrl: payload.imgUrl
+      });
+    },
+    // addSomethingToTask(payload){ /////////// <--- work in progress
+    //   this.$store.dispatch({
+    //     type: payload.something,
+    //     board: this.boardToEdit,
+    //     topicTitle: payload.topicTitle,
+    //     taskTitle:payload.taskTitle,
+    //     imgUrl: payload.imgUrl // <--- this needs to be a switch case
+    //   });
+    // },
     openTaskDeatils(){
 
     }
@@ -258,7 +285,7 @@ export default {
   
     socketService.setup();
     socketService.emit('gotOnBoard', id)
-    socketService.on('boardUpdated', this.updateBoard) //// listening to "boardUpdated" in sockets
+    socketService.on('boardUpdated', this.updateBoard)
 
     eventBus.$on("updateBoardDescription", payload => {
       this.updateBoardDescription(payload);
@@ -307,6 +334,12 @@ export default {
     });
     eventBus.$on("addDueDate", payload => {
       this.addDueDate(payload);
+    });
+    eventBus.$on("addImgToTask", payload => {
+      this.addImgToTask(payload);
+    });
+    eventBus.$on("removeImgFromTask", payload => {
+      this.removeImgFromTask(payload);
     });
     eventBus.$on("clearLog", this.clearLog);
   },

@@ -40,6 +40,17 @@
           <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
         </section>
 
+        <section class="task-images">
+          <div v-if="task.imgUrls.length>0" class="flex align-c">
+            <font-awesome-icon class="icon" icon="images" />
+            <h3 >Attached Images</h3>
+          </div>
+          <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
+              <img :src="imgUrl" />
+              <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
+            </div>
+        </section>
+
         <section class="Check-list flex align-c">
           <!-- <font-awesome-icon class="icon" icon="list-alt" /> -->
           <CheckList
@@ -114,10 +125,21 @@
             <span>Due Date</span>
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
-
               <input type="date" v-model="dueDate" />
-
               <button @click="addDueDate">Add</button>
+            </div>
+          </a>
+
+          <a href="#" class="prev-side-btn" @click.prevent="openMenu('img')">
+            <font-awesome-icon class="icon" icon="images" />
+            <span>Add Image</span>
+            <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
+              <label>
+                <span class="mini-menu-header">Upload</span>
+                <input hidden type="file" @change="uploadImg($event)" />
+              </label>
+              <div v-if="imgUrl"><img :src="imgUrl" /></div>
+              <button @click="addImg">Add</button>
             </div>
           </a>
         </div>
@@ -149,7 +171,7 @@
 
 <script>
 import { eventBus } from "../main.js";
-// import {uploadImg} from '../services/img.service.js'
+import imgService from "../services/img.service.js";
 import CheckList from "./CheckList.vue";
 import { directive as onClickaway } from "vue-clickaway";
 
@@ -167,7 +189,10 @@ export default {
       val: null,
       checklistMenuOn: false,
       tagsMenuOn: false,
+      showImg: false,
       dueDateMenuOn: false,
+      imgMenuOn: false,
+      imgUrl: null,
       taskDescription: ""
     };
   },
@@ -178,15 +203,24 @@ export default {
           this.checklistMenuOn = !this.checklistMenuOn;
           this.tagsMenuOn = false;
           this.dueDateMenuOn = false;
+          this.imgMenuOn = false;
           break;
         case "tags":
           this.tagsMenuOn = !this.tagsMenuOn;
           this.checklistMenuOn = false;
           this.dueDateMenuOn = false;
+          this.imgMenuOn = false;
           break;
         case "duedate":
           this.dueDateMenuOn = !this.dueDateMenuOn;
           this.checklistMenuOn = false;
+          this.tagsMenuOn = false;
+          this.imgMenuOn = false;
+          break;
+        case "img":
+          this.imgMenuOn = !this.imgMenuOn;
+          this.checklistMenuOn = false;
+          this.dueDateMenuOn = false;
           this.tagsMenuOn = false;
           break;
       }
@@ -253,7 +287,6 @@ export default {
     addCheckList() {
       this.checklistMenuOn = !this.checklistMenuOn;
       var checkListTitle = this.$refs.checklistTitle.value;
-      console.log(checkListTitle);
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
@@ -270,6 +303,20 @@ export default {
         topicTitle: this.topicTitle,
         dueDate: this.dueDate
       });
+    },
+    async uploadImg(ev) {
+      var res = await imgService.uploadImg(ev)
+      this.imgUrl = res;
+    },
+    addImg() {
+      this.showImg = !this.showImg;
+      this.imgMenuOn = !this.imgMenuOn;
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("addImgToTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: this.imgUrl });
+    },
+    removeImg(imgUrl){
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("removeImgFromTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
     }
   },
   computed: {
@@ -297,8 +344,11 @@ export default {
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
+    if (!topicTitle) this.$router.push(`/boards/${boardId}`);
     this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
   },
-  components: { CheckList }
+  components: { 
+    CheckList 
+  }
 };
 </script>

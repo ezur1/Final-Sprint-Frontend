@@ -9,11 +9,11 @@
     align-self: center;
     padding: 1.5rem 1.5rem;
     color: #222222;
-        section {
-            margin: 1rem 0 0 0;
-            h3{
-                margin-left: 0.5rem;
-            }
+    section {
+        margin: 1rem 0 0 0;
+        h3 {
+            margin-left: 0.5rem;
+        }
     }
 }
 
@@ -28,7 +28,6 @@
 
 .description {
     margin-top: 0.5rem;
-    
     textarea {
         width: 100%;
         max-width: 100%;
@@ -56,7 +55,7 @@
         margin-top: 1.5rem;
         margin-left: .3rem;
     }
-    span{
+    span {
         margin-left: 0.5rem;
     }
     .prev-side-btn {
@@ -143,6 +142,9 @@
     .duedate-menu {
         top: 24.7rem;
     }
+    .img-menu {
+        top: 27.35rem;
+    }
     .tags-menu {
         top: 19.5rem;
         .selected-tag::before {
@@ -194,30 +196,34 @@
         }
     }
 }
-.remove-checklist{
+
+.remove-checklist {
     display: none;
 }
-.checklist-container{
-    p{
+
+.checklist-container {
+    p {
         margin: 0;
     }
     margin-bottom: 1rem;
-    .active{
+    .active {
         text-decoration: line-through;
     }
-    .checklist-header{
-        align-items:baseline; 
+    .checklist-header {
+        align-items: baseline;
     }
     // padding: 
-    &:hover{
-        .remove-checklist{
+    &:hover {
+        .remove-checklist {
             display: block;
             cursor: pointer;
-            &:hover{color:#d05555}
+            &:hover {
+                color: #d05555
+            }
         }
     }
 }
 
-.icon{
+.icon {
     color: rgb(66, 66, 66);
 }
