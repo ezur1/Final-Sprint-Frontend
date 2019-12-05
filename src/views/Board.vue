@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})` }">
+  <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})`}">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
@@ -9,16 +9,6 @@
             <topic :topic="topic" :tasks="topic.tasks" />
         </Draggable>
       </Container>
-      <!-- <div class="topic-wraper flex align-c">
-        <div>
-          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p> -->
-
-
-      <!-- <draggable v-model="topics">
-        <transition-group class="flex">
-          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
-        </transition-group>
-      </draggable> -->
       <div @click="openForm()" class="add-topic flex align-c">
         <div v-if="isAddTopic" >
           <p><span>+</span>Add Topic</p>
@@ -88,7 +78,7 @@ export default {
       this.$store.dispatch({ type: "getBoardById", boardId: id });
     },
     addMsg(){
-      console.log('added msg...');
+      // console.log('added msg...');
     },
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
