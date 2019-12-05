@@ -24,6 +24,19 @@
     }
 }
 
+.task-drag {
+    transition: transform 0.3s ease;
+    transform: rotateZ(12deg)
+}
+
+.task-drop {
+    transition: transform 0.3s ease-in-out;
+    transform: rotateZ(0deg)
+}
+
+// .task-long-click {
+//     background-color: red;
+// }
 .task-preview {
     overflow: hidden;
     padding: 6px 8px 2px;

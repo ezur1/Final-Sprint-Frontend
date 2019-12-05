@@ -32,11 +32,10 @@
                 <div v-if="isColorDropDownOpen" class="color-dropdown flex col">
                   <div class="topic-color light-blue" @click="updateTopicColor(topic.title, 'rgba(173, 216, 230, 0.9)')"></div>
                   <div class="topic-color light-red" @click="updateTopicColor(topic.title, 'rgba(240, 128, 128, 0.9)')"></div>
-                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, '#a3f7bfd7')"></div>
+                  <div class="topic-color light-green" @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')"></div>
                   <div class="topic-color light-pink" @click="updateTopicColor(topic.title, 'rgba(255, 182, 193, 0.9)')"></div>
                   <div class="topic-color light-yellow" @click="updateTopicColor(topic.title, 'rgba(255, 255, 224, 0.9)')"></div>
-                  <div class="topic-color light-gray flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')"></div>
-                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(187, 229, 220, 0.9)')">reset</div>
+                  <div class="topic-color none flex " @click="updateTopicColor(topic.title, 'rgba(228, 235, 234, 0.8)')">reset</div>
                 </div> 
 
               <span @click="showConfirm=!showConfirm">Delete</span>
@@ -51,22 +50,22 @@
           </a>
         </div>
         <div class="topic-tasks">
-          <draggable v-model="tasks" group="tasks" :emptyInsertThreshold="100">
-            <transition-group>
-              <TaskPreview
-                class="task"
-                v-for="task in tasks"
-                :task="task"
-                :key="task.title"
-                :topic="topic"
-              />
-            </transition-group>
-          </draggable>
+          <Container 
+          @drop="onDrop" 
+          group-name="tasks" 
+          :get-child-payload="getTaskPayload(topic.title)"
+          drag-class="task-drag"
+          drop-class="task-drop"
+          >
+            <Draggable v-for="task in tasks" :key="task.id">
+              <TaskPreview class="task" :task="task" :topic="topic" />
+            </Draggable>
+          </Container>
         </div>
         <section class="task-composer flex align-c">
           <div>
             <p v-if="isAddTask" @click="openNewTaskModal()">
-              <span>+</span>Add task
+              <span>+</span>Add Task
             </p>
           </div>
           <div v-if="!isAddTask" class="add-task-title flex space-between align-c">
@@ -87,10 +86,10 @@
 </template>
 
 <script>
-import Draggable from "vuedraggable";
-import TaskPreview from "@/components/TaskPreview";
-import { utilService } from "../services/util.service.js";
 import { eventBus } from "../main.js";
+import TaskPreview from "@/components/TaskPreview";
+import { Container, Draggable } from "vue-smooth-dnd";
+import { utilService } from "../services/util.service.js";
 import { directive as onClickaway } from "vue-clickaway";
 
 export default {
@@ -116,6 +115,9 @@ export default {
     };
   },
   computed: {
+    currBoard() {
+      return this.$store.getters.currBoard;
+    },
     tasks: {
       get() {
         return this.topic.tasks;
@@ -131,6 +133,14 @@ export default {
     }
   },
   methods: {
+    onDrop(dropResult) {
+      this.tasks = utilService.applyDrag(this.tasks, dropResult);
+    },
+    getTaskPayload (topicTitle) {
+      return index => {
+        return this.currBoard.topics.filter(topic => topic.title === topicTitle)[0].tasks[index]
+      }
+    },
     openNewTaskModal() {
       this.isAddTask = !this.isAddTask;
       this.newTask.title = "";
@@ -157,6 +167,7 @@ export default {
       this.newTask.description = "Empty, click here to edit.";
       this.newTask.tags = [];
       this.newTask.checkLists = [];
+      this.newTask.imgUrls = [];
       this.newTask.dueDate = 0;
       this.newTask.createdAt = Date.now();
       eventBus.$emit("addTask", {
@@ -193,8 +204,9 @@ export default {
     }
   },
   components: {
-    Draggable,
-    TaskPreview
+    TaskPreview,
+    Container, 
+    Draggable
   },
   created() {
     this.originalTopicTitle = this.topic.title;

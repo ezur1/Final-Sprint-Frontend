@@ -4,32 +4,36 @@
     <BoardNavBar :currBoard="currBoard" />
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
     <section v-if="topics" class="topics-container flex">
-      <draggable v-model="topics">
-        <transition-group class="flex">
-          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
-        </transition-group>
-      </draggable>
-      <div class="topic-wraper flex align-c">
-        <div>
-          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p>
+      <Container @drop="onDrop" orientation="horizontal">  
+        <Draggable v-for="topic in topics" :key="topic.title">
+            <topic :topic="topic" :tasks="topic.tasks" />
+        </Draggable>
+      </Container>
+      <div @click="openForm()" class="add-topic flex align-c">
+        <div v-if="isAddTopic" >
+          <p><span>+</span>Add Topic</p>
         </div>
-        <div v-if="!isAddTopic" class="add-task-title flex space-between align-c">
-          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" />
+        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
+          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" @click.stop />
           <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
         </div>
       </div>
     </section>
+    <div ref="windowOverlay" id="window-overlay"></div>
   </section>
 </template>
 
 <script>
 import BoardNavBar from "../components/BoardNavBar.vue";
 import MainNavBar from "../components/MainNavBar.vue";
-import Draggable from "vuedraggable";
+import { Container, Draggable } from "vue-smooth-dnd";
+import { utilService } from "../services/util.service.js";
 import Topic from "../components/Topic.vue";
 import { eventBus } from "../main.js";
 import socketService from '../services/socket.service.js';
+
 export default {
+  name: "board",
   data() {
     return {
       val: null,
@@ -43,7 +47,6 @@ export default {
       currTaskDetails: null
     };
   },
-  name: "board",
   computed: {
     currBoard() {
       return this.$store.getters.currBoard;
@@ -68,9 +71,15 @@ export default {
     },
   },
   methods: {
+    onDrop(dropResult) {
+      this.topics = utilService.applyDrag(this.topics, dropResult);
+    },
     updateBoard() {
       let id = this.$route.params.boardId;
       this.$store.dispatch({ type: "getBoardById", boardId: id });
+    },
+    addMsg(){
+      console.log('added msg...');
     },
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
@@ -83,8 +92,6 @@ export default {
       });
     },
     changeBoardBGImg(payload) {
-      console.log('got here with this payload: ',payload.boardImgUrl);
-      
       this.$store.dispatch({
         type: "changeBoardBGImg",
         board: this.boardToEdit,
@@ -92,7 +99,8 @@ export default {
       });
     },
     exit() {
-      this.isAddTask = true;
+      this.isAddTopic = true;
+      this.newTopic.title = '';
     },
     addTopic() {
       this.$store.dispatch({
@@ -101,7 +109,6 @@ export default {
         newTopic: this.newTopicToEdit
       });
       this.newTopic.title = "";
-      this.openForm();
     },
     removeTopic(topicTitle) {
       this.$store.dispatch({
@@ -143,13 +150,12 @@ export default {
       });
     },
     showTaskDetails(payload) {
-      
       this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      // console.log('BOARD.VUE is about to router PUSH to the taskDetails');
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
+      this.$refs.windowOverlay.style.display="block";
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
@@ -176,7 +182,6 @@ export default {
       });
     },
     updateTaskTags(payload){
-      // console.log("description payload at board.vue", payload);
         this.$store.dispatch({
         type: "updateTaskTags",
         board: this.boardToEdit,
@@ -203,7 +208,6 @@ export default {
       });
     },
     addTodo(payload){
-      console.log('log in board methods');
       this.$store.dispatch({
         type:"addTodo",
         board: this.boardToEdit,
@@ -242,20 +246,32 @@ export default {
         dueDate: payload.dueDate
       });
     },
-    openTaskDeatils(){
-
+    addImgToTask(payload){
+      this.$store.dispatch({
+        type:"addImgToTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        imgUrl: payload.imgUrl
+      });
+    },
+    removeImgFromTask(payload){
+      this.$store.dispatch({
+        type:"removeImgFromTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        imgUrl: payload.imgUrl
+      });
     }
-    
-
   },
-
   async created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
-  
+
     socketService.setup();
     socketService.emit('gotOnBoard', id)
-    socketService.on('boardUpdated', this.updateBoard) //// listening to "boardUpdated" in sockets
+    socketService.on('boardUpdated', this.updateBoard)
 
     eventBus.$on("updateBoardDescription", payload => {
       this.updateBoardDescription(payload);
@@ -305,18 +321,28 @@ export default {
     eventBus.$on("addDueDate", payload => {
       this.addDueDate(payload);
     });
+    eventBus.$on("addImgToTask", payload => {
+      this.addImgToTask(payload);
+    });
+    eventBus.$on("removeImgFromTask", payload => {
+      this.removeImgFromTask(payload);
+    });
+    eventBus.$on("disableWindowOverlay", () => {
+      this.$refs.windowOverlay.style.display="none";
+    });
     eventBus.$on("clearLog", this.clearLog);
   },
-destroyed(){
+async destroyed(){
+    await this.$store.dispatch({ type: "removeUserFromBoard" });
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()
-    /// need to think about removing the user when this component is destroyed (ex: when the user navigate to the other boards....)
   },
   components: {
     Topic,
     BoardNavBar,
     MainNavBar,
+    Container, 
     Draggable
   }
 };
