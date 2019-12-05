@@ -8,7 +8,7 @@
             <p :class="{picked:showAboutBoard}">About This Board</p>
           </div>
           <div class="menu-board-description" v-if="showAboutBoard">
-              <h1>About {{board.title}}</h1> 
+              <h1>Board Name: {{board.title}}</h1> 
               <div contenteditable ref="boardDescription" 
                   v-html="board.description" 
                   @blur="updateBoardDescription" 
