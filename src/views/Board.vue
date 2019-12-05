@@ -1,5 +1,5 @@
 <template>
-  <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})` }">
+  <section v-if="currBoard" class="board-container flex col" :style="{ backgroundImage: `url(${currBoard.imgUrl})`}">
     <MainNavBar />
     <BoardNavBar :currBoard="currBoard" />
     <router-view :topicTitle="topicTitleForTaskDetails"></router-view>
@@ -79,7 +79,7 @@ export default {
       this.$store.dispatch({ type: "getBoardById", boardId: id });
     },
     addMsg(){
-      console.log('added msg...');
+      // console.log('added msg...');
     },
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });

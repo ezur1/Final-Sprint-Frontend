@@ -8,7 +8,7 @@
             <p :class="{picked:showAboutBoard}">About This Board</p>
           </div>
           <div class="menu-board-description" v-if="showAboutBoard">
-              <h1>About {{board.title}}</h1> 
+              <h1>Board Name: {{board.title}}</h1> 
               <div contenteditable ref="boardDescription" 
                   v-html="board.description" 
                   @blur="updateBoardDescription" 
@@ -38,13 +38,19 @@
             <section v-if="activities" class="logEntries">
               <ul class="activity" >
                 <li style="border-bottom: 1px solid rgb(182, 202, 197);padding-bottom:.3rem" class="clean" v-for="(activity,index) in activities" :activity="activity" :key="index">
-                  <span class="username-activity"><img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> {{activity.user.userName}}</span> has 
-                  {{activity.title}}
-                  {{activity.timeStamp | moment("from", "now") }}
+                  <span class="username-activity"><img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)"/> {{activity.user.userName}}</span>
+                  <span class="activity-txt"> {{activity.title}} {{activity.timeStamp | moment("from", "now") }} </span>
                 </li>
               </ul>
             </section>
-            <!-- <button @click="clearLog">Clear</button> -->
+            <div @click="showConfirm=!showConfirm" class="prev-side-btn">
+              <span v-if="!showConfirm">Clear Log</span>
+              <div v-if="showConfirm" class="flex space-between">
+                <span>are you sure?</span>
+                <font-awesome-icon @click="clearLog" icon="check" />
+                <font-awesome-icon @click="showConfirm = true" icon="times" />
+              </div>
+            </div>
         </div>
       </div>
     </section>
@@ -59,7 +65,8 @@ export default {
     return {
       originalBoardDescription: null,
       showAboutBoard:false,
-      showChangeBgc:false
+      showChangeBgc:false,
+      showConfirm: false
     };
   },
   methods: {
@@ -87,6 +94,9 @@ export default {
   computed: {
     board(){
       return this.$store.getters.currBoard;
+    },
+    user(){
+      return this.$store.getters.loggedInUser
     },
     activities() {
       var activities = this.$store.getters.currLog;

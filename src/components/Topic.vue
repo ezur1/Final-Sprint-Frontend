@@ -22,9 +22,9 @@
               <span @click="showSortBy=!showSortBy">Sort By</span>
               <div v-if="showSortBy" class="confirmation-modal">
                 <div class="flex col space-between">
-                  <button @click="setSort('title')">Title</button>
-                  <button @click="setSort('dueDate')">Due Date</button>
-                  <button @click="setSort('createdAt')">Creation Date</button>
+                  <button class="topic-color none flex" @click="setSort('title')">Title</button>
+                  <button class="topic-color none flex" @click="setSort('dueDate')">Due Date</button>
+                  <button class="topic-color none flex" @click="setSort('createdAt')">Creation Date</button>
                 </div>
               </div>
 
