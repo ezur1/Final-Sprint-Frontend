@@ -16,8 +16,8 @@
             you to organize and prioritize your
             projects in a fun, flexible, and
             rewarding way!</p>
-        </div>
         <button class="start-now-btn" @click="startAsGuest">Try It Now <img src="@/assets/arrow.png" class="arrow" /></button>
+        </div>
       </div>
 
       <div class="home-productivity-container flex col ">
