@@ -5,7 +5,9 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store/index'
 import Vue2TouchEvents from 'vue2-touch-events'
+
 import './styles/global.scss'
+
 Vue.use(require('vue-moment'));
 Vue.use(Vue2TouchEvents)
 

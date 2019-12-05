@@ -1,6 +1,7 @@
 
 .home{
-    .home-header-container{
+    font-family: 'Raleway', sans-serif;
+        .home-header-container{
         
         .logo-home-page{
             width: 7rem;
@@ -61,18 +62,45 @@
             margin-left: 3rem;
             color: white;
             h1{
-                font-size: 3rem;
+                font-size: 3.3rem;
             }
             p{
                 margin: 0;
                 font-size: 1.8rem;
-                margin-top: 1rem;
+                margin-top: 2rem;
                 width: 36rem;
+                line-height: 2.5rem; 
+
             }
         }
-
     }
-
+    .home-productivity-container{
+        color: white;
+        
+        height: 99.9vh;
+        width: 99.4vw;
+        padding: 1rem;
+        background-image: url(../assets/body.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        .prodactivity-content{
+            align-self: flex-end;
+            h1{
+                font-size: 4rem;
+                font-weight: 900;
+                margin-top:5rem;
+                margin-right:5rem;
+            }
+            p{
+                width: 34rem;
+                font-size: 2rem;
+                margin: 0;
+                margin-left:1.5rem;
+                margin-top:1rem;
+                line-height: 3rem; 
+            }
+        }
+    }
 }
 
 

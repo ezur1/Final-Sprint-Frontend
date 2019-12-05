@@ -9,16 +9,6 @@
             <topic :topic="topic" :tasks="topic.tasks" />
         </Draggable>
       </Container>
-      <!-- <div class="topic-wraper flex align-c">
-        <div>
-          <p v-if="isAddTopic" @click="openForm()"><span>+</span>Add Topic</p> -->
-
-
-      <!-- <draggable v-model="topics">
-        <transition-group class="flex">
-          <topic v-for="topic in currBoard.topics" :key="topic.title" :topic="topic" :tasks="topic.tasks" />
-        </transition-group>
-      </draggable> -->
       <div @click="openForm()" class="add-topic flex align-c">
         <div v-if="isAddTopic" >
           <p><span>+</span>Add Topic</p>
@@ -29,6 +19,7 @@
         </div>
       </div>
     </section>
+    <div ref="windowOverlay" id="window-overlay"></div>
   </section>
 </template>
 
@@ -159,12 +150,12 @@ export default {
       });
     },
     showTaskDetails(payload) {
-      
       this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
       this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
+      this.$refs.windowOverlay.style.display="block";
     },
     openForm() {
       this.isAddTopic = !this.isAddTopic;
@@ -272,27 +263,12 @@ export default {
         taskTitle:payload.taskTitle,
         imgUrl: payload.imgUrl
       });
-    },
-    // addSomethingToTask(payload){ /////////// <--- work in progress
-    //   this.$store.dispatch({
-    //     type: payload.something,
-    //     board: this.boardToEdit,
-    //     topicTitle: payload.topicTitle,
-    //     taskTitle:payload.taskTitle,
-    //     imgUrl: payload.imgUrl // <--- this needs to be a switch case
-    //   });
-    // },
-    openTaskDeatils(){
-
     }
-    
-
   },
-
   async created() {
     var id = this.$route.params.boardId;
     this.$store.dispatch({ type: "getBoardById", boardId: id });
-  
+
     socketService.setup();
     socketService.emit('gotOnBoard', id)
     socketService.on('boardUpdated', this.updateBoard)
@@ -350,6 +326,9 @@ export default {
     });
     eventBus.$on("removeImgFromTask", payload => {
       this.removeImgFromTask(payload);
+    });
+    eventBus.$on("disableWindowOverlay", () => {
+      this.$refs.windowOverlay.style.display="none";
     });
     eventBus.$on("clearLog", this.clearLog);
   },
