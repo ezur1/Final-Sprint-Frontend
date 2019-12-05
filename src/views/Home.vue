@@ -5,54 +5,61 @@
         <div class="flex space-between">
           <img class="logo-home-page" src="@/assets/logo_transparent.png" />
           <button @click="goToLogin" class="login-btn">Login</button>
+          <button class="start-now-btn" @click="startAsGuest">
+               Try It Now
+          <img src="@/assets/arrow.png" class="arrow" />
+        </button>
         </div>
         <div class="greet flex col justify-center space-around">
           <div class="flex col">
             <h1>TaskFlow lets you work</h1>
-            <h1>more collaboratively </h1>
+            <h1>more collaboratively</h1>
             <h1>and get more done.</h1>
           </div>
-            <p>TaskFlow’s Boards, Topics, and Tasks enable
+          <p>
+            TaskFlow’s Boards, Topics, and Tasks enable
             you to organize and prioritize your
             projects in a fun, flexible, and
-            rewarding way!</p>
+            rewarding way!
+          </p>
         </div>
-        <button class="start-now-btn" @click="startAsGuest">Try It Now <img src="@/assets/arrow.png" class="arrow" /></button>
+    
       </div>
 
-      <div class="home-productivity-container flex col ">
-          <div class="prodactivity-content">
-            <h1>Work with any team</h1>
-            <div>
-                <p>Wheter its for work,a side project
-                or even the next family vacation,
-                TaskFlow helps your team
-                stay orgenized.</p>
-            </div>
+      <!-- <div class="home-productivity-container flex col">
+        <div class="prodactivity-content">
+          <h1>Work with any team</h1>
+          <div>
+            <p>
+              Wheter its for work,a side project
+              or even the next family vacation,
+              TaskFlow helps your team
+              stay orgenized.
+            </p>
           </div>
-      </div>
-    </div> 
+        </div>
+      </div> -->
+    </div>
 
-    <Footer/>
-
+    <!-- <Footer /> -->
   </section>
 </template>
 
 <script>
-import Footer from "../components/Footer.vue";
+// import Footer from "../components/Footer.vue";
 export default {
   name: "home",
   methods: {
     async startAsGuest() {
-      const cred = {userName: "guest", password: "guest"}
-      await this.$store.dispatch({type :'login', userCred:cred})
-      this.$router.push('/boards/5de684f15564fb54d8768cff');
+      const cred = { userName: "guest", password: "guest" };
+      await this.$store.dispatch({ type: "login", userCred: cred });
+      this.$router.push("/boards/5de684f15564fb54d8768cff");
       // this.$router.push('/boards/3b44c9c13368cbfb8f1bf4b4');
     },
     goToLogin() {
       this.$router.push("/signin");
     }
   },
-  components: { Footer }
+  // components: { Footer }
 };
 </script>
