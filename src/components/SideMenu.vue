@@ -35,8 +35,8 @@
                <h3 @click="openLibrary">Choose From Library</h3>
                </div>
                <div v-if="showLibrary" class="side-menu-library flex wrap">
-                 <div class="bg-img">
-                  <img src="https://res.cloudinary.com/ddvdpsmgu/image/upload/v1575394762/zwqecioqitzmvvzeaici.jpg">
+                 <div class="bg-img" >
+                  <img ref="bgImg" @click="setBackground('https://res.cloudinary.com/ddvdpsmgu/image/upload/v1575394762/zwqecioqitzmvvzeaici.jpg')" src="https://res.cloudinary.com/ddvdpsmgu/image/upload/v1575394762/zwqecioqitzmvvzeaici.jpg">
                  </div>
                  <div class="bg-img">2</div>
                  <div class="bg-img">3</div>
@@ -96,6 +96,9 @@ export default {
     async changeBoardBGImg(ev) {
       var res = await imgService.uploadImg(ev)
       eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
+    },
+    setBackground(imgUrl){
+      eventBus.$emit("changeBoardBGImg", { boardImgUrl: imgUrl });
     },
     gotoUserPage(userId){
       console.log('this is the requested userId: ',userId); /// future development
