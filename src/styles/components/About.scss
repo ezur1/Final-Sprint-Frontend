@@ -1,5 +1,6 @@
 
 .about{
+    background-color: rgb(230, 230, 230);
     .main-about-page-content{
         .about-header{
             background-image: url(../assets/img/about-hero.png);
@@ -25,54 +26,34 @@
 
             }
         }
-        
-
     }
 
     .devs{
-        margin-top: 2rem;
-        background-color: rgb(231, 231, 231);
-        height: 38rem;
-        width: 100%;
-        .ohad{
+        background-color: rgb(241, 241, 241);
+        height: 30rem;
+        width: 80%;
+        margin-bottom: 3rem;
+        margin-top: 3rem;
+        margin-left:  auto;
+        margin-right:  auto;
+        .dev{
             width: 20rem;
             height: 20rem;
             text-align: center;
-            img{
+            .dev-avatar{
                 display: block;
                 margin: 0 auto;
                 width: 10rem;
                 height: 10rem;
                 margin-bottom: 1rem;
             }
-            .about-icon{
-                color: rgb(197, 58, 58);
+            .social-media-logo{
+                img{
+                margin: 0.5rem;
+                }               
             }
         }
-        .natan{
-            width: 20rem;
-            height: 20rem;
-            text-align: center;
-            img{
-                display: block;
-                margin: 0 auto;
-                width: 10rem;
-                height: 10rem;
-                margin-bottom: 1rem;
-            }
-        }
-        .elior{
-            width: 20rem;
-            height: 20rem;
-            text-align: center;
-            img{
-                display: block;
-                margin: 0 auto;
-                width: 10rem;
-                height: 10rem;
-                margin-bottom: 1rem;
-            }
-        }
+       
     }
 }
 

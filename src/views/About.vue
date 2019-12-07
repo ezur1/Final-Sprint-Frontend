@@ -11,31 +11,46 @@
       </div>
     </div>
     <div class="devs flex  align-c space-around">
-      <div class="ohad">
-        <img src="@/assets/img/ohad.jpg" alt="">
+      <div class="dev">
+        <img class="dev-avatar" src="@/assets/img/ohad.jpg" alt="">
         <h2>Ohad Leshem</h2>
-        <font-awesome-icon class="social-media-icon" icon="github-square" />
+        <div class="social-media-logo">
+          <img src="@/assets/img/github-logo.png" alt="github">
+          <img src="@/assets/img/facebook.png" alt="facebook">
+        </div>
+        
       </div>
-      <div class="natan">
-        <img src="@/assets/img/natan.jpg" alt="">
+      <div class="dev">
+        <img class="dev-avatar" src="@/assets/img/natan.jpg" alt="">
         <h2>Natan yagodayv</h2>
-        <font-awesome-icon icon="github" />
+        <div class="social-media-logo">
+          <img src="@/assets/img/github-logo.png" alt="github">
+          <img src="@/assets/img/facebook.png" alt="facebook">
+        </div>
       </div>
-      <div class="elior">
-        <img src="@/assets/img/elior.jpg" alt="">
+      <div class="dev">
+        <img class="dev-avatar" src="@/assets/img/elior.jpg" alt="">
         <h2>Elior zur</h2>
-        <font-awesome-icon class="icon" icon="github" />
+        <div class="social-media-logo">
+          <img src="@/assets/img/github-logo.png" alt="github">
+          <img src="@/assets/img/facebook.png" alt="facebook">
+
+        </div>
 
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import mainNavBar from '../components/MainNavBar.vue'
+import Footer from "../components/Footer.vue";
+
 export default {
   components:{
-    mainNavBar
+    mainNavBar,
+    Footer
   }
   
 }
