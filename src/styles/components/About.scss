@@ -1,0 +1,78 @@
+
+.about{
+    .main-about-page-content{
+        .about-header{
+            background-image: url(../assets/img/about-hero.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 100%;
+            height: 38rem;
+            .contact-us{
+                padding: 4rem;
+                border: 0.2rem solid white;
+                h1{
+                    font-size: 4.5rem;
+                    color: rgb(233, 233, 233);
+                    text-align: center;
+                }
+                p{
+                    font-weight: bold;
+                    font-size: 2rem;
+                    color: rgb(233, 233, 233);
+                    text-align: center;
+                }
+
+            }
+        }
+        
+
+    }
+
+    .devs{
+        margin-top: 2rem;
+        background-color: rgb(231, 231, 231);
+        height: 38rem;
+        width: 100%;
+        .ohad{
+            width: 20rem;
+            height: 20rem;
+            text-align: center;
+            img{
+                display: block;
+                margin: 0 auto;
+                width: 10rem;
+                height: 10rem;
+                margin-bottom: 1rem;
+            }
+            .about-icon{
+                color: rgb(197, 58, 58);
+            }
+        }
+        .natan{
+            width: 20rem;
+            height: 20rem;
+            text-align: center;
+            img{
+                display: block;
+                margin: 0 auto;
+                width: 10rem;
+                height: 10rem;
+                margin-bottom: 1rem;
+            }
+        }
+        .elior{
+            width: 20rem;
+            height: 20rem;
+            text-align: center;
+            img{
+                display: block;
+                margin: 0 auto;
+                width: 10rem;
+                height: 10rem;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+}
+
