@@ -2,6 +2,14 @@ import { httpService } from '../services/http.service.js';
 
 const ROUTE = "/board"
 
+export default {
+    query,
+    remove,
+    add,
+    update,
+    getById
+};
+
 function query() {
     return httpService.get(ROUTE)
 }
@@ -21,11 +29,3 @@ function remove(id) {
 function add(added) {
     return httpService.post(ROUTE, added)
 }
-
-export default {
-    query,
-    remove,
-    add,
-    update,
-    getById
-};

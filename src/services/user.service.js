@@ -1,25 +1,43 @@
 import { httpService } from '../services/http.service.js';
 
-const ROUTE = '/auth'
+const USER_ROUTE = '/user'
+const AUTH_ROUTE = '/auth'
 
 export default {
+    query,
+    getById,
+    update,
     login,
     signup,
     logout
 }
 
+async function query() {
+    const users = await httpService.get(USER_ROUTE)
+    return users
+}
+
+async function getById(id) {
+    var user = await httpService.get(`${USER_ROUTE}/${id}`)
+    return user
+}
+
+function update(user) {
+    return httpService.put(`${USER_ROUTE}/${user._id}`, user)
+}
+
 async function login(userCred) {
-    const user = await httpService.post(`${ROUTE}/login`, userCred)
+    const user = await httpService.post(`${AUTH_ROUTE}/login`, userCred)
     return _handleLogin(user)
 }
 
 async function signup(userCred) {
-    const user = await httpService.post(`${ROUTE}/signup`, userCred)
+    const user = await httpService.post(`${AUTH_ROUTE}/signup`, userCred)
     return _handleLogin(user)
 }
 
 async function logout() {
-    await httpService.post(`${ROUTE}/logout`);
+    await httpService.post(`${AUTH_ROUTE}/logout`);
     sessionStorage.clear();
 }
 

@@ -72,3 +72,17 @@
         background-color: $clrTag5;
     }
 }
+
+.members {
+    justify-content: flex-end;
+}
+
+.member-preview {
+    cursor: pointer;
+    height: 2rem;
+    margin-left: 4px;
+}
+
+.task-preview-image {
+    width: 200px;
+}

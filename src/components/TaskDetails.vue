@@ -33,10 +33,20 @@
           ></span>
         </section>
 
+        <section class="members">
+          <div v-if="task.members.length>0" class="flex align-c">
+            <font-awesome-icon class="icon" icon="user-alt" />
+            <h3>Members</h3>
+          </div>
+          <div class="flex">
+            <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
+          </div>
+        </section>
+
         <section class="due-date">
           <div v-if="task.dueDate" class="due-date-header flex align-c">
             <font-awesome-icon class="icon" icon="clock" />
-            <h3 >Due date</h3>
+            <h3>Due date</h3>
           </div>
             <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
         </section>
@@ -66,6 +76,22 @@
       <div class="preview-sidebar flex col">
         <div class="add-to-card flex col">
           <h3>ADD TO CARD</h3>
+
+          <a href="#" class="prev-side-btn" @click.prevent="openMenu('members')">
+            <font-awesome-icon class="icon" icon="user-alt" />
+            <span>Members</span>
+            <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
+              <span class="mini-menu-header">Members</span>
+              <div class="flex col">
+                <h3>Board Members</h3>
+                <!-- <input type="text" placeholder="Search members" ref="memberSearch" /> -->
+              </div>
+              <div class="flex" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
+                <Avatar :size="30" :username="member.fullName"></Avatar>
+                {{member.fullName}}
+              </div>
+            </div>
+          </a>
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
             <font-awesome-icon class="icon" icon="tags" />
@@ -134,11 +160,11 @@
             <font-awesome-icon class="icon" icon="images" />
             <span>Add Image</span>
             <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
-              <label>
+              <label >
                 <span class="mini-menu-header">Upload</span>
                 <input hidden type="file" @change="uploadImg($event)" />
               </label>
-              <div v-if="imgUrl"><img :src="imgUrl" /></div>
+              <div v-if="imgUrl" ><img :src="imgUrl" /></div>
               <button @click="addImg">Add</button>
             </div>
           </a>
@@ -173,6 +199,8 @@
 import { eventBus } from "../main.js";
 import imgService from "../services/img.service.js";
 import CheckList from "./CheckList.vue";
+import MemberPreview from "./MemberPreview";
+import Avatar from 'vue-avatar'
 import { directive as onClickaway } from "vue-clickaway";
 
 export default {
@@ -183,42 +211,77 @@ export default {
   },
   data() {
     return {
+      membersMenuOn: false,
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
-      val: null,
-      checklistMenuOn: false,
-      tagsMenuOn: false,
+      // removeMemberModal: false,
       showImg: false,
+      val: null,
+      tagsMenuOn: false,
+      checklistMenuOn: false,
       dueDateMenuOn: false,
       imgMenuOn: false,
       imgUrl: null,
       taskDescription: ""
     };
   },
+  computed: {
+    task() {
+      return this.$store.getters.currTask;
+    },
+    currBoard() {
+      return this.$store.getters.currBoard;
+    },
+    originalTaskTitle: {
+      get() {
+        var taskTitle = this.$store.getters.currTask;
+        taskTitle = taskTitle.title;
+        return taskTitle;
+      },
+      set(value) {
+        this.val = value;
+      }
+    },
+    tags() {
+      var tags = this.$store.getters.currTaskTags;
+      return tags;
+    }
+  },
   methods: {
     openMenu(menu) {
       switch (menu) {
-        case "checklist":
-          this.checklistMenuOn = !this.checklistMenuOn;
+        case "members":
+          this.membersMenuOn = !this.membersMenuOn;
           this.tagsMenuOn = false;
+          this.checklistMenuOn = false;
           this.dueDateMenuOn = false;
           this.imgMenuOn = false;
           break;
         case "tags":
           this.tagsMenuOn = !this.tagsMenuOn;
+          this.membersMenuOn = false;
           this.checklistMenuOn = false;
+          this.dueDateMenuOn = false;
+          this.imgMenuOn = false;
+          break;
+        case "checklist":
+          this.checklistMenuOn = !this.checklistMenuOn;
+          this.membersMenuOn = false;
+          this.tagsMenuOn = false;
           this.dueDateMenuOn = false;
           this.imgMenuOn = false;
           break;
         case "duedate":
           this.dueDateMenuOn = !this.dueDateMenuOn;
+          this.membersMenuOn = false;
           this.checklistMenuOn = false;
           this.tagsMenuOn = false;
           this.imgMenuOn = false;
           break;
         case "img":
           this.imgMenuOn = !this.imgMenuOn;
+          this.membersMenuOn = false;
           this.checklistMenuOn = false;
           this.dueDateMenuOn = false;
           this.tagsMenuOn = false;
@@ -230,6 +293,9 @@ export default {
       eventBus.$emit("disableWindowOverlay");
       this.$router.push(`/boards/${boardId}`);
     },
+    // closeRemoveMemberModal(){
+    //   this.removeMemberModal= false
+    // },
     closeMiniMenu() {
       this.checklistMenuOn = false;
       this.tagsMenuOn = false;
@@ -269,6 +335,28 @@ export default {
         taskTitle: taskTitle
       });
       this.backToBoard();
+    },
+    addMemberToTask(member){
+      var currTaskTitle = this.originalTaskTitle;
+      var isSelected = event.target.className.includes("selected-member");
+      if (isSelected) {
+        var classStr = event.target.className;
+        classStr = classStr.replace(" selected-member", "");
+        event.target.className = classStr;
+      } else event.target.className += " selected-member";
+      eventBus.$emit("updateTaskMembers", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        member
+      });
+    },
+    removeMemberFromTask(member){
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("updateTaskMembers", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        member
+      });
     },
     addTag(tag) {
       var currTaskTitle = this.originalTaskTitle;
@@ -321,35 +409,30 @@ export default {
       eventBus.$emit("removeImgFromTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
     }
   },
-  computed: {
-    task() {
-      var task = this.$store.getters.currTask;
-      return task;
-    },
-    originalTaskTitle: {
-      get() {
-        var taskTitle = this.$store.getters.currTask;
-        taskTitle = taskTitle.title;
-        return taskTitle;
-      },
-      set(value) {
-        this.val = value;
-      }
-    },
-    tags() {
-      var tags = this.$store.getters.currTaskTags;
-      return tags;
-    }
-  },
   created() {
     var boardId = this.$route.params.boardId;
     var taskId = this.$route.params.taskId;
     var topicTitle = this.topicTitle;
+    var board = this.$route.params.board
     if (!topicTitle) this.$router.push(`/boards/${boardId}`);
-    this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
+    // this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
+    this.$store.dispatch({ type: "getTaskById", board, taskId, topicTitle });
+    
+
+  //   var members = this.currBoard.members;
+  //   console.log('these are the members: ', members);
+  //   var memberObjects = members.map(userId => {
+  //     var memberObject = await this.$store.dispatch({ type: "getUserById", userId })
+  //     console.log('got this memberObject: ',memberObject);
+  //     return memberObject
+  //   })
+  //   this.members = memberObjects
+    
   },
   components: { 
-    CheckList 
+    CheckList,
+    MemberPreview,
+    Avatar
   }
 };
 </script>

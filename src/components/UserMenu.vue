@@ -16,8 +16,8 @@ export default {
     return {};
   },
   methods: {
-    gotoUserProfile(userId){
-      console.log('this is the requested userId: ',userId);
+    gotoUserProfile(){
+     
     },
     doLogout() {
       this.$store.dispatch({ type: "logout" });

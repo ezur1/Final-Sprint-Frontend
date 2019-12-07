@@ -3,8 +3,13 @@
     <MainNavBar />
     <div class="main-content-container">
       <div class="flex space-around">
-        <h1>Boards</h1>
-        <BoardsPreview v-for="board in boards" :key="board._id" :board="board" @removeBoard="removeBoard" />
+        <h1>My Boards</h1>
+        <BoardsPreview v-for="board in boards" 
+        :key="board._id" 
+        :board="board" 
+        :users="users" 
+        @removeBoard="removeBoard"
+        @addUserToBoard="addUserToBoard" />
     </div>
       <router-view />
     </div>
@@ -31,13 +36,20 @@ export default {
         title: "",
         activityLog: [],
         usersOnBoard: [],
+        members: [],
         topics: []
       },
     };
   },
   computed: {
+    user() {
+      return this.$store.getters.loggedInUser;
+    },
+    users() {
+      return this.$store.getters.users;
+    },
     boards() {
-      return this.$store.getters.boardsToShow;
+      return this.$store.getters.boards;
     }
   },
   methods:{
@@ -52,17 +64,23 @@ export default {
       if (!this.newBoard.title) return;
       this.newBoard.createdBy = this.$store.getters.loggedInUser;
       this.newBoard.createdOn = Date.now();
-      this.$store.dispatch({ type: "addBoard", newBoard: this.newBoard });
+      this.newBoard.members.push(this.user)
+      this.$store.dispatch({ type: "addBoard", newBoard: this.newBoard, firstMember: this.user });
       this.isAddBoard = true;
     },
     removeBoard(boardId) {
       this.$store.dispatch({ type: "removeBoard", boardId });
+    },
+    addUserToBoard(payload){
+      this.$store.dispatch({ type: "addUserToBoard", board: payload.board, user: payload.user });
+      this.$store.dispatch({ type: "addBoardToUser", boardId: payload.board._id, user: payload.user });
     },
     exit() {
       this.isAddBoard=true;
     },
   },
   created() {
+    this.$store.dispatch("loadUsers");
     this.$store.dispatch("loadBoards");
   },
   components: {

@@ -1,0 +1,47 @@
+.board-prev-side-btn {
+    float: right;
+    margin-right: 5px;
+}
+
+.board-prev-mini-menu {
+    cursor: default;
+    position: absolute;
+    z-index: 20;
+    background-color: #fff;
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 1rem;
+    width: 12rem;
+    box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
+    >* {
+        cursor: pointer;
+        font-weight: 600;
+        padding: 0 .5rem;
+        &:hover {
+            transition: all .2s ease;
+            border-radius: 3px;
+            box-shadow: -2.5px 0 0 rgb(103, 180, 162), 2.5px 0 0 rgb(103, 180, 162);
+        }
+        &:not(:last-child) {
+            margin-bottom: .5rem;
+        }
+    }
+    .none:hover {
+        transition: all .2s ease-in-out;
+        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
+    }
+    .none {
+        // justify-content: center
+    }
+}
+
+.board-color {
+    height: 35px;
+    border: none;
+    border-radius: 2px;
+    margin: 2px;
+    align-items: center;
+    &.none {
+        background-color: rgba(228, 235, 234, 0.596);
+    }
+}

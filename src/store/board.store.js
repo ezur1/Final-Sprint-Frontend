@@ -25,7 +25,7 @@ export default {
         }
     },
     getters: {
-        boardsToShow(state) {
+        boards(state) {
             return state.boards
         },
         currBoard(state) {
@@ -75,20 +75,26 @@ export default {
             board.activityLog = [];
             await context.dispatch({ type: "updateBoard", board: board });
         },
-        async getTaskById(context, { boardId, taskId, topicTitle }) {
-            var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
-                ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
+        async addUserToBoard(context, { board, user }) {
+            var testIfExist = board.members.find(User => User._id === user._id);
+            if (testIfExist) return console.log('this user is already a member...');
+            board.members.push(user);
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
+        getTaskById(context, { board, taskId, topicTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
             context.commit({ type: 'setCurrTopicTitle', topicTitle });
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
-        async addBoard(context, { newBoard }) {
+        async addBoard(context, { newBoard, firstMember }) {
             var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
             newBoard.activityLog.push(newLogEntry)
-            await boardService.add(newBoard)
+            var addedBoard = await boardService.add(newBoard)
             context.dispatch({ type: "loadBoards" });
+            context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: firstMember });
             return newBoard
         },
         async removeBoard(context, { boardId }) {
@@ -108,8 +114,8 @@ export default {
             return board
         },
         async addTopic(context, { board, newTopic }) {
-            var test = board.topics.find(topic => topic.title === newTopic.title)
-            if (test) return console.log('this topic already exists...');
+            var testIfExist = board.topics.find(topic => topic.title === newTopic.title)
+            if (testIfExist) return console.log('this topic already exists...');
             board.topics.push(newTopic)
             var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
@@ -153,6 +159,23 @@ export default {
             board.topics[topicIdx].tasks[taskIdx].description = taskDescription;
             await context.dispatch({ type: "updateBoard", board: board });
             return board
+        },
+        async updateTaskMembers(context, { board, topicTitle, taskTitle, member }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var currMemberIdx = board.topics[topicIdx].tasks[taskIdx].members.findIndex(currMember => currMember._id === member._id);
+            var foundTask = board.topics[topicIdx].tasks[taskIdx];
+            if (currMemberIdx === -1) {
+                board.topics[topicIdx].tasks[taskIdx].members.push(member);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            } else {
+                board.topics[topicIdx].tasks[taskIdx].members.splice(currMemberIdx, 1);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            }
         },
         async updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
