@@ -69,8 +69,12 @@
                     width: 8rem; 
                     margin: 0.5rem;
                     background-color: rgb(184, 184, 184);
-                    &:hover{cursor: pointer;}
+                    &:hover{
+                        cursor: pointer;
+                        opacity: 0.6; 
+                    }
                     img {
+                        border-radius: 3px;
                         width: 8rem;
                         height: 6rem;
                     }
