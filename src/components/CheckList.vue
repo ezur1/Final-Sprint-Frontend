@@ -48,6 +48,9 @@ import ToDoItem from "./ToDoItem";
 export default {
   name: "CheckList",
   props: ["checkList", "topicTitle", "taskTitle"],
+  directives: {
+    onClickaway: onClickaway
+  },
   data(){
     return{
       isAddTodo:false,
@@ -67,9 +70,6 @@ export default {
       })
       return parseInt((counters.done / counters.total) * 100)
     }
-  },
-   directives: {
-    onClickaway: onClickaway
   },
   methods: {
     updateCheckListTitle(event) {
