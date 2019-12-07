@@ -2,7 +2,7 @@
   <section class="board-nav-bar-container flex space-between">
     <section class="board-name-users flex">
       <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1>
-      <div v-if="currBoard.usersOnBoard.length>0" class="connected-users flex">
+      <div v-if="currBoard.usersOnBoard.length>0" class="connected-users flex ">
         <div v-for="user in currBoard.usersOnBoard" :key="user._id">
           <div class="user-on-board">{{user.userName}}</div>
         </div>
@@ -141,7 +141,7 @@ export default {
     },
       exit() {
         this.$refs.newTopicInput.value='';
-        this.isAddTopic = true;
+        this.isAddTopic = !this.isAddTopic;
     },
       addTopic() {
         this.$store.dispatch({
@@ -153,7 +153,6 @@ export default {
           } 
       });
       this.exit();
-      
     },
     openSearchModal(){
       this.isSearchModal=!this.isSearchModal
