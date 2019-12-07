@@ -256,7 +256,7 @@ export default {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
             var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
-            var todoIdx = _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)
+            var todoIdx = _findTodoIdx(board, topicIdx, taskIdx, checkListIdx, currTodoTxt)            
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone = !board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].isDone;
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });

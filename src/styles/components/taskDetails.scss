@@ -12,8 +12,29 @@
     section {
         margin: 1rem 0 0 0;
         h3 {
-            margin-left: 0.5rem;
+            margin-left: .7rem;
         }
+    }
+    .task-mid-info{
+        width:80%;
+    }
+    .task-tags{
+        align-items: center;
+        margin-right:4rem; 
+        .tag-preview{
+            width: 2.5rem;
+            height: .7rem;
+            margin-right:.5rem; 
+            
+        }
+    }
+    .due-date{
+        span{
+            margin-left:1.7rem; 
+        }
+    }
+    .due-date-header{
+        margin-bottom: 8px;
     }
 }
 
@@ -22,7 +43,9 @@
     z-index: 1;
     h1 {
         cursor: pointer;
-        outline-color: #67b4a2;
+        outline-color:#67b4a2;  
+        font-weight: 900;
+        font-size: 1.4rem;
     }
     .exit-btn {
         &:hover {
@@ -35,11 +58,11 @@
 .preview-main {
     width: 72%;
 }
-
 .description {
     margin-top: 0.5rem;
-    span {
-        outline-color: #67b4a2;
+    span{
+        margin-left:1.7rem; 
+        outline-color:#67b4a2; 
     }
     .description-header {
         margin-bottom: .5rem;
@@ -211,31 +234,83 @@
 
 .remove-checklist {
     display: none;
+    margin-left:1.5rem;  
 }
 
 .checklist-container {
-    p {
-        margin: 0;
-    }
+    width: 100%;
+    p {margin: 0;}
     margin-bottom: 1rem;
-    .active {
-        text-decoration: line-through;
-    }
     .checklist-header {
         align-items: baseline;
+        margin-bottom: 8px;
+        &:hover {
+            .remove-checklist {
+                display: block;
+                cursor: pointer;
+                &:hover {
+                    color: #d05555
+                }
+            }
+        }
     }
-    // padding: 
-    &:hover {
-        .remove-checklist {
-            display: block;
-            cursor: pointer;
-            &:hover {
-                color: #d05555
+    .checklist-main{
+        margin-left: 1.5rem;
+        width:100%;
+        input{
+            background: none;
+            border: none;
+            border-bottom: 1px solid #172b4d;
+            padding: 0rem .5rem 1px;
+            outline: none;
+            margin-left: .5rem;
+            font-size: 1rem;
+        }
+        .checklist-list{
+            width: 92%;
+            // margin-bottom: .2rem;
+            padding: .1rem .4rem;
+           
+            &:hover{
+                background-color: #fff;
+                border-radius:3px; 
+                .remove-checklist-item{
+                    display: block;
+                }
+
+            }
+            input{
+                margin: 0;
+                margin-right:.5rem; 
+            }
+        }
+        .add-todo{
+            margin-top: 1rem;
+
+            span{
+                border: 1.4px solid #172b4d;
+                border-radius: 3px;
+                color: #172b4d;
+                padding:0 .3rem;
+                margin-left:1rem; 
+                cursor: pointer;
+                font-size: .9rem;
             }
         }
     }
 }
+.active {
+    text-decoration: line-through;
+}
 
 .icon {
     color: rgb(66, 66, 66);
+    &.remove-checklist-item{
+        display: none;
+        &:hover{
+            cursor: pointer;
+            color:#d05555;
+        }
+
+    }
 }

@@ -6,7 +6,8 @@
     vertical-align: top;
     white-space: nowrap;
     .topic-title{
-        font-size: 1.125rem;
+        font-size: 1.1rem;
+        padding:0 .3rem; 
     }
     &:hover{
         .topic-title{
@@ -79,7 +80,7 @@
 
 .topic-content-header {
     margin: 10px;
-    padding: 0 .5rem;
+    // padding: 0 .5rem;
     
 }
 
@@ -246,7 +247,8 @@
     }
 }
 .mini-menu-topic-icon{
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    padding-top: 4px;
     color: #0a1e3f;
 }
     
