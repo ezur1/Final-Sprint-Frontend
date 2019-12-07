@@ -19,7 +19,7 @@
           <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
         </section>
         <section class="description">
-          <div class="flex align-c">
+          <div class="description-header flex align-c">
             <font-awesome-icon class="icon" icon="align-left" />
             <h3>Description</h3>
           </div>
