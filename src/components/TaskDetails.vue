@@ -161,11 +161,11 @@
             <font-awesome-icon class="icon" icon="images" />
             <span>Add Image</span>
             <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
-              <label>
+              <label >
                 <span class="mini-menu-header">Upload</span>
                 <input hidden type="file" @change="uploadImg($event)" />
               </label>
-              <div v-if="imgUrl"><img :src="imgUrl" /></div>
+              <div v-if="imgUrl" ><img :src="imgUrl" /></div>
               <button @click="addImg">Add</button>
             </div>
           </a>
