@@ -11,9 +11,9 @@
         </h3>
         <font-awesome-icon class="remove-checklist" @click="removeCheckList" icon="trash"/>
     </div>
-    <div class="flex space-between">
+    <div v-if="checkList.todos.length>0" class="flex space-between">
       <p>{{checkListStats}}%</p>
-      <progress v-if="checkList.todos.length>0" :value="checkListStats" max="100"></progress>
+      <progress :value="checkListStats" max="100"></progress>
     </div>
     <div class=" checklist-main flex col">
       <ToDoItem 
