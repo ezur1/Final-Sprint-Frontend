@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     boards() {
-      return this.$store.getters.boardsToShow;
+      return this.$store.getters.boards;
     }
   },
   created() {

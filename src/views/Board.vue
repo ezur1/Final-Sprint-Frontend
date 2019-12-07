@@ -154,7 +154,9 @@ export default {
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
-      this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
+      this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
+      // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
+      // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
       this.$refs.windowOverlay.style.display="block";
     },
     openForm() {
@@ -179,6 +181,15 @@ export default {
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
         taskDescription:payload.description
+      });
+    },
+    addMemberToTask(payload){
+        this.$store.dispatch({
+        type: "addMemberToTask",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        member:payload.member
       });
     },
     updateTaskTags(payload){
@@ -300,6 +311,9 @@ export default {
     eventBus.$on("updateTaskDescription", payload => {
       this.updateTaskDescription(payload);
     });
+    eventBus.$on("addMemberToTask", payload => {
+      this.addMemberToTask(payload);
+    });
     eventBus.$on("updateTaskTags", payload => {
       this.updateTaskTags(payload);
     });
@@ -332,7 +346,10 @@ export default {
     });
     eventBus.$on("clearLog", this.clearLog);
   },
-async destroyed(){
+  async deactivated(){
+    await this.screenShot();
+  },
+  async destroyed(){
     await this.$store.dispatch({ type: "removeUserFromBoard" });
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();

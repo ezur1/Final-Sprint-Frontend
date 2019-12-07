@@ -58,7 +58,7 @@
           drop-class="task-drop"
           >
             <Draggable v-for="task in tasks" :key="task.id">
-              <TaskPreview class="task" :task="task" :topic="topic" />
+              <TaskPreview class="task" :board="currBoard" :task="task" :topic="topic" />
             </Draggable>
           </Container>
         </div>
@@ -165,6 +165,7 @@ export default {
       if (!this.newTask.title) return;
       this.newTask.id = utilService.makeId();
       this.newTask.description = "Empty, click here to edit.";
+      this.newTask.members = [];
       this.newTask.tags = [];
       this.newTask.checkLists = [];
       this.newTask.imgUrls = [];

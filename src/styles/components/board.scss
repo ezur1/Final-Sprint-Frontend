@@ -1,12 +1,11 @@
-
 .board-card {
+    background-size: cover;
     border-radius: 0.5rem;
     margin: 1rem;
     width: 10rem;
     height: 10rem;
     color: rgb(235, 235, 235);
     border: 5px solid rgb(235, 235, 235);
-
 }
 
 #window-overlay {
@@ -18,7 +17,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Black background with opacity */
     z-index: 10;
     cursor: pointer;
-  }
+}

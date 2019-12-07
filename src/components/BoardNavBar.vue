@@ -141,7 +141,7 @@ export default {
   },
   created() {
     eventBus.$on("removeSideMenu", this.removeSideMenu);
-    this.boards = this.$store.getters.boardsToShow;
+    this.boards = this.$store.getters.boards;
     this.currBoardId = this.currBoard._id;
   },
   components: {

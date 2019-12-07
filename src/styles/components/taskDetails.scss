@@ -20,10 +20,10 @@
 .preview-header {
     position: relative;
     z-index: 1;
-    .exit-btn{
-    &:hover{
-        cursor: pointer;
-        color:#d05555;
+    .exit-btn {
+        &:hover {
+            cursor: pointer;
+            color: #d05555;
         }
     }
 }
@@ -141,6 +141,9 @@
                 }
             }
         }
+    }
+    .members-menu {
+        top: 16.75rem;
     }
     .checklist-menu {
         top: 22.05rem;
