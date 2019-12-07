@@ -127,6 +127,9 @@ export default {
     openSearchModal(){
       this.isSearchModal=!this.isSearchModal
       this.filterRes = null;
+      setTimeout(() => {
+        this.$refs.filter.focus();
+      }, 200);
 
     },
     openTaskDetails() {

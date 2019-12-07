@@ -56,9 +56,9 @@
             <h3 >Attached Images</h3>
           </div>
           <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
-              <img :src="imgUrl" />
-              <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
-            </div>
+            <img :src="imgUrl" />
+            <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
+          </div>
         </section>
 
         <section class="Check-list flex col">
@@ -161,10 +161,10 @@
             <span>Add Image</span>
             <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
               <label >
-                <span class="mini-menu-header">Upload</span>
+                <font-awesome-icon class="icon" icon="cloud-upload-alt" />
                 <input hidden type="file" @change="uploadImg($event)" />
               </label>
-              <div v-if="imgUrl" ><img :src="imgUrl" /></div>
+              <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
               <button @click="addImg">Add</button>
             </div>
           </a>
