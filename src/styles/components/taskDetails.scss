@@ -139,6 +139,9 @@
     }
     .members-menu {
         top: 16.75rem;
+        .selected-member::before {
+            content: "\2713"
+        }
     }
     .checklist-menu {
         top: 22.05rem;
@@ -151,7 +154,7 @@
     }
     .tags-menu {
         top: 19.5rem;
-        .selected-tag::before {
+        .selected-tag::after {
             content: "\2713"
         }
         .tag {
@@ -231,4 +234,3 @@
 .icon {
     color: rgb(66, 66, 66);
 }
-

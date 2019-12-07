@@ -89,20 +89,12 @@ export default {
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
-        // async getTaskById(context, { boardId, taskId, topicTitle }) { <---  ORIGINAL, slow version that shows the previous task details for a split-second....
-        //     var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
-        //         ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
-        //     var topicIdx = _findTopicIndex(board, topicTitle);
-        //     var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
-        //     context.commit({ type: 'setCurrTopicTitle', topicTitle });
-        //     context.commit({ type: 'setCurrTask', foundTask });
-        //     return foundTask
-        // },
-        async addBoard(context, { newBoard }) {
+        async addBoard(context, { newBoard, firstMember }) {
             var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
             newBoard.activityLog.push(newLogEntry)
-            await boardService.add(newBoard)
+            var addedBoard = await boardService.add(newBoard)
             context.dispatch({ type: "loadBoards" });
+            context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: firstMember });
             return newBoard
         },
         async removeBoard(context, { boardId }) {
@@ -168,14 +160,22 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
-        async addMemberToTask(context, { board, topicTitle, taskTitle, member }) {
+        async updateTaskMembers(context, { board, topicTitle, taskTitle, member }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var testIfExist = board.topics[topicIdx].tasks[taskIdx].members.find(Member => Member._id === member._id);
-            if (testIfExist) return console.log('this member is already assigned to this task...');
-            board.topics[topicIdx].tasks[taskIdx].members.push(member);
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
+            var currMemberIdx = board.topics[topicIdx].tasks[taskIdx].members.findIndex(currMember => currMember._id === member._id);
+            var foundTask = board.topics[topicIdx].tasks[taskIdx];
+            if (currMemberIdx === -1) {
+                board.topics[topicIdx].tasks[taskIdx].members.push(member);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            } else {
+                board.topics[topicIdx].tasks[taskIdx].members.splice(currMemberIdx, 1);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            }
         },
         async updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
             var topicIdx = _findTopicIndex(board, topicTitle);

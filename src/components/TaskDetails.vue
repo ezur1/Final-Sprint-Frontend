@@ -37,9 +37,8 @@
             <font-awesome-icon class="icon" icon="user-alt" />
             <h3>Members</h3>
           </div>
-          <div class="flex" v-for="member in task.members" :key="member._id">
-            <Avatar :size="30" :username="member.fullName"></Avatar>
-            {{member.fullName}}
+          <div class="flex">
+            <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
           </div>
         </section>
 
@@ -200,6 +199,7 @@
 import { eventBus } from "../main.js";
 import imgService from "../services/img.service.js";
 import CheckList from "./CheckList.vue";
+import MemberPreview from "./MemberPreview";
 import Avatar from 'vue-avatar'
 import { directive as onClickaway } from "vue-clickaway";
 
@@ -215,6 +215,7 @@ export default {
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
+      // removeMemberModal: false,
       showImg: false,
       val: null,
       tagsMenuOn: false,
@@ -292,6 +293,9 @@ export default {
       eventBus.$emit("disableWindowOverlay");
       this.$router.push(`/boards/${boardId}`);
     },
+    // closeRemoveMemberModal(){
+    //   this.removeMemberModal= false
+    // },
     closeMiniMenu() {
       this.checklistMenuOn = false;
       this.tagsMenuOn = false;
@@ -334,7 +338,21 @@ export default {
     },
     addMemberToTask(member){
       var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("addMemberToTask", {
+      var isSelected = event.target.className.includes("selected-member");
+      if (isSelected) {
+        var classStr = event.target.className;
+        classStr = classStr.replace(" selected-member", "");
+        event.target.className = classStr;
+      } else event.target.className += " selected-member";
+      eventBus.$emit("updateTaskMembers", {
+        taskTitle: currTaskTitle,
+        topicTitle: this.topicTitle,
+        member
+      });
+    },
+    removeMemberFromTask(member){
+      var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("updateTaskMembers", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
         member
@@ -412,6 +430,7 @@ export default {
   },
   components: { 
     CheckList,
+    MemberPreview,
     Avatar
   }
 };
