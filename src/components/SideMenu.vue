@@ -17,6 +17,17 @@
             @keydown.enter="endEditBoardDescription"
           ></div>
         </div>
+        <div class="menu-users-onboard flex col" v-if="showAboutBoard">
+            <div class="flex">
+              <font-awesome-icon icon="users" class="fa-icon" />
+              <p>Users On Board</p>
+            </div>
+             <div v-if="board.usersOnBoard.length>0" class="connected-users flex">
+              <div v-for="user in board.usersOnBoard" :key="user._id">
+                <div class="user-on-board">{{user.userName}}</div>
+              </div>
+            </div>
+        </div>
       </div>
       <div class="change-board-bgc">
         <div @click="showChangeBgc=!showChangeBgc" class="flex align-c">
@@ -25,16 +36,16 @@
         </div>
         <div v-if="showChangeBgc" class="board-background flex col">
           <label>
-            <div class="flex">
+            <div class="flex align-c">
               <font-awesome-icon icon="file-upload" class="fa-icon" />
-              <h3>Upload Image</h3>
+              <p>Upload Image</p>
             </div>
             <input hidden type="file" @change="changeBoardBGImg($event)" />
           </label>
           <label>
-            <div class="flex">
+            <div class="flex align-c">
               <font-awesome-icon icon="camera-retro" class="fa-icon" />
-              <h3 @click="openLibrary">Choose From Library</h3>
+              <p @click="openLibrary">Choose From Library</p>
             </div>
             <div v-if="showLibrary" class="side-menu-library flex wrap">
               <div class="bg-img">
