@@ -156,7 +156,6 @@ export default {
       var taskId = payload.taskId;
       this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
       // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
-      // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
       this.$refs.windowOverlay.style.display="block";
     },
     openForm() {
@@ -183,9 +182,9 @@ export default {
         taskDescription:payload.description
       });
     },
-    addMemberToTask(payload){
+    updateTaskMembers(payload){
         this.$store.dispatch({
-        type: "addMemberToTask",
+        type: "updateTaskMembers",
         board: this.boardToEdit,
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
@@ -311,8 +310,8 @@ export default {
     eventBus.$on("updateTaskDescription", payload => {
       this.updateTaskDescription(payload);
     });
-    eventBus.$on("addMemberToTask", payload => {
-      this.addMemberToTask(payload);
+    eventBus.$on("updateTaskMembers", payload => {
+      this.updateTaskMembers(payload);
     });
     eventBus.$on("updateTaskTags", payload => {
       this.updateTaskTags(payload);

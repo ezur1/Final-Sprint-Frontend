@@ -6,10 +6,16 @@
         <div v-for="tag in task.tags" :key="tag" :class="tag" class="tag-preview">
         </div>
       </div> 
+
       <div class="flex col space-between">
         <div class="task-title">{{task.title}}</div>
         <div v-if="task.imgUrls.length>0">
           <img class="task-preview-image" :src="task.imgUrls[0]" />
+        </div>
+      </div>
+      <div v-if="task.members.length!==0" class="members flex">
+        <div v-for="member in task.members" :key="member._id" class="member-preview" @click="removeMemberFromTask(task.title, member._id)">
+            <Avatar :size="30" :username="member.fullName"></Avatar>
         </div>
       </div>
     </div>
@@ -17,6 +23,8 @@
 </template>
 <script>
 import {eventBus} from '../main.js'
+import Avatar from 'vue-avatar'
+
 export default {
   props: ['topic', 'task'],
   data() {
@@ -27,13 +35,22 @@ export default {
       console.log('long tap has been detected');
     },
     removeTask(taskTitle) {
-      eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle: taskTitle });
+      eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle });
     },
     showTaskDetails(taskId) {
       eventBus.$emit('showTaskDetails', { taskId,topicTitle: this.topic.title});
+    },
+    removeMemberFromTask(taskTitle, memberId){
+      eventBus.$emit("removeMemberFromTask", {
+        topicTitle: this.topic.title,
+        taskTitle,
+        memberId
+      });
     }
   },
-  components: {}
+  components: {
+    Avatar
+  }
 };
 </script>
 
