@@ -50,6 +50,9 @@
             .social-media-logo{
                 img{
                 margin: 0.5rem;
+                }
+                &:hover{
+                    cursor: pointer;
                 }               
             }
         }
