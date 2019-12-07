@@ -6,10 +6,12 @@
         <div v-for="tag in task.tags" :key="tag" :class="tag" class="tag-preview">
         </div>
       </div> 
-      <div class="flex space-between">
+      <div class="flex col space-between">
         <div class="task-title">{{task.title}}</div>
+        <div v-if="task.imgUrls.length>0">
+          <img class="task-preview-image" :src="task.imgUrls[0]" />
+        </div>
       </div>
-  
     </div>
   </div>
 </template>

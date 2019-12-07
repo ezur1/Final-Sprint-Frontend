@@ -8,7 +8,7 @@
       <router-link to="/">Home</router-link>
       <router-link to="/taskfloapp">Boards</router-link>
       <router-link to="/about">About Us</router-link>
-      <div class="avatar" @click="toggleUserMenu"><Avatar :size="40" :username=user.fullName></Avatar></div>
+      <div v-if="user.fullName" class="avatar" @click="toggleUserMenu"><Avatar :size="40" :username="user.fullName"></Avatar></div>
     </div>
     <transition name="slide-fade" >
       <UserMenu v-if="isOpenUserMenu"/>
@@ -41,7 +41,7 @@ export default {
       this.$store.dispatch({ type: "logout" });
     }
   },
-  created() {},
+    created() {},
     components: {
     UserMenu,
     Avatar

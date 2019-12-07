@@ -3,12 +3,10 @@
 @import 'setup/variables';
 @import 'setup/mixins';
 @import 'setup/functions';
-
 // BASICS
 @import 'basics/helpers';
 @import 'basics/base';
 @import 'basics/layout';
-
 // // COMPONENTS
 @import 'components/topic';
 @import 'components/task';
@@ -19,6 +17,5 @@
 @import 'components/Home';
 @import 'components/SignIn';
 @import 'components/board';
+@import 'components/BoardPreviews';
 @import 'components/Footer';
-
-
