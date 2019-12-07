@@ -1,7 +1,7 @@
 <template>
   <section v-on-clickaway="backToBoard" v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
-      <div class="task-mid-info">
+      <div class="task-mid-info flex space-between">
         <h1
           contenteditable
           ref="taskTitle"
@@ -9,15 +9,16 @@
           @blur="updateTaskTitle"
           @keydown.enter="endEditTaskTitle"
         >{{task.title}}</h1>
+        <div v-if="tags" class="task-tags flex">
+            <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
+        </div>
       </div>
       <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
 
     <div class="preview-body flex space-between">
       <div class="preview-main" @click="closeMiniMenu()">
-        <section v-if="tags" class="taskTags flex">
-          <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
-        </section>
+       
         <section class="description">
           <div class="description-header flex align-c">
             <font-awesome-icon class="icon" icon="align-left" />
@@ -33,14 +34,14 @@
         </section>
 
         <section class="due-date">
-          <div v-if="task.dueDate" class="flex  align-c">
+          <div v-if="task.dueDate" class="due-date-header flex align-c">
             <font-awesome-icon class="icon" icon="clock" />
             <h3 >Due date</h3>
           </div>
-          <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
+            <span v-if="task.dueDate">{{ task.dueDate | moment("dddd, MMMM Do YYYY") }}</span>
         </section>
 
-        <section class="task-images">
+        <section v-if="task.imgUrls.length>0" class="task-images">
           <div v-if="task.imgUrls.length>0" class="flex align-c">
             <font-awesome-icon class="icon" icon="images" />
             <h3 >Attached Images</h3>
@@ -51,8 +52,7 @@
             </div>
         </section>
 
-        <section class="Check-list flex col">
-          <!-- <font-awesome-icon class="icon" icon="list-alt" /> -->
+        <section class="check-list flex col">
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
@@ -283,11 +283,12 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
-      console.log("this.tags:", this.tags);
+      // console.log("this.tags:", this.tags);
     },
     addCheckList() {
       this.checklistMenuOn = !this.checklistMenuOn;
       var checkListTitle = this.$refs.checklistTitle.value;
+      if(checkListTitle === "")return;
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
