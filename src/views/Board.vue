@@ -208,18 +208,28 @@ export default {
         color:payload.color
       });
     },
-    addCheckList(payload){
+    updateCheckLists(payload){
       this.$store.dispatch({
-        type:"addCheckList",
+        type:"updateCheckLists",
         board: this.boardToEdit,
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
-        checkList: payload.checkList
+        checkList: payload.checkList,
       });
     },
-    addTodo(payload){
+    updateCheckListTitle(payload){
+        this.$store.dispatch({
+        type: "updateCheckListTitle",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        oldCheckListTitle: payload.oldCheckListTitle,
+        newCheckListTitle: payload.newCheckListTitle
+      });
+    },
+    updateTodos(payload){
       this.$store.dispatch({
-        type:"addTodo",
+        type:"updateTodos",
         board: this.boardToEdit,
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
@@ -235,16 +245,6 @@ export default {
         taskTitle:payload.taskTitle,
         checkListTitle: payload.checkListTitle,
         currTodoTxt: payload.currTodoTxt
-      });
-    },
-    removeCheckList(payload){
-      this.$store.dispatch({
-        type:"removeCheckList",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkListTitle: payload.checkListTitle,
-        
       });
     },
     addDueDate(payload){
@@ -320,16 +320,22 @@ export default {
       this.updateTopicColor(payload);
     });
     eventBus.$on("addCheckList", payload => {
-      this.addCheckList(payload);
+      this.updateCheckLists(payload);
     });
-    eventBus.$on("addTodo", payload => {
-      this.addTodo(payload);
+    eventBus.$on("removeCheckList", payload => {
+      this.updateCheckLists(payload);
+    });
+    eventBus.$on("updateCheckListTitle", payload => {
+      this.updateCheckListTitle(payload);
+    });
+    eventBus.$on("addTodoItem", payload => {
+      this.updateTodos(payload);
+    });
+    eventBus.$on("removeTodoItem", payload => {
+      this.updateTodos(payload);
     });
     eventBus.$on("toggleIsDoneCheckList", payload => {
       this.toggleIsDoneCheckList(payload);
-    });
-    eventBus.$on("removeCheckList", payload => {
-      this.removeCheckList(payload);
     });
     eventBus.$on("addDueDate", payload => {
       this.addDueDate(payload);

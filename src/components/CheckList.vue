@@ -2,25 +2,31 @@
   <div v-if="checkList" class="checklist-container flex col">
     <div class="checklist-header flex">
         <font-awesome-icon class="icon" icon="tasks" />
-        <h3 class="checklist-title">{{checkList.checkListTitle}}</h3>
+        <h3 contenteditable 
+        ref="checkListTitle" 
+        v-html="checkList.title" 
+        class="checklist-title"
+        @blur="updateCheckListTitle"
+        @keydown.enter="endEditCheckListTitle">
+        </h3>
         <font-awesome-icon class="remove-checklist" @click="removeCheckList" icon="trash"/>
     </div>
     <div class=" checklist-main flex col">
       <div v-for="currTodo in checkList.todos" :key="currTodo.txt" class="checklist-list space-between flex align-c">
         <div class="flex todo align-c">
-          <input @click="toggleIsDoneCheckList(currTodo.txt)" type="checkbox" />
+          <input @click="toggleIsDoneCheckList(currTodo.txt)" :checked="currTodo.isDone" type="checkbox" />
           <!-- <input @click="toggleIsDoneCheckList(currTodo.txt)" type="checkbox" else  /> -->
           <p :class="{active: currTodo.isDone }">{{currTodo.txt}}</p>
         </div>
-        <font-awesome-icon class="icon remove-checklist-item" icon="backspace" />
+        <font-awesome-icon class="icon remove-checklist-item" icon="backspace" @click="removeTodoItem(currTodo)" />
       </div>
       <div class="add-todo" v-on-clickaway="showComposer">
         <div v-if="!isAddTodo">
           <span @click="isAddTodo=true">Add Item</span>
         </div>
         <div v-if="isAddTodo" class="flex">
-          <input ref="todoItem" type="text" placeholder="Add an item" @keydown.enter="addTodo"/>
-          <span @click="addTodo">Add</span>
+          <input ref="todoItem" type="text" placeholder="Add an item" @keydown.enter="addTodoItem"/>
+          <span @click="addTodoItem">Add</span>
         </div>
       </div>
     </div>
@@ -35,62 +41,77 @@ import { directive as onClickaway } from "vue-clickaway";
 
 export default {
   name: "CheckList",
-  props: ["checkList", "topicTitle", "originalTaskTitle"],
+  props: ["checkList", "topicTitle", "taskTitle"],
   data(){
     return{
-      isAddTodo:false
+      isAddTodo:false,
+      originalCheckListTitle: null
     }
   },
    directives: {
     onClickaway: onClickaway
   },
   methods: {
-    addTodo() {
-        var todoItem = this.$refs.todoItem.value;
-        if(todoItem==="")return;
-        console.log('todoItem - ',todoItem);
-        console.log('this.topicTitle - ',this.topicTitle);
-        console.log('this.originalTaskTitle - ',this.originalTaskTitle);
-        console.log('this.checkList.checkListTitle - ',this.checkList.checkListTitle);
-      this.$refs.todoItem.value = "";
-        eventBus.$emit("addTodo", {
+    updateCheckListTitle(event) {
+      if (!event.target.innerHTML)
+        event.target.innerHTML = "Checklist";
+      eventBus.$emit("updateCheckListTitle", {
         topicTitle: this.topicTitle,
-        taskTitle: this.originalTaskTitle,
-        checkListTitle: this.checkList.checkListTitle,
-        todo: {
-          txt:todoItem,
-          isDone:false
-        }
+        taskTitle: this.taskTitle,
+        oldCheckListTitle: this.checkList.title,
+        newCheckListTitle: event.target.innerHTML
+      });
+      this.originalCheckListTitle = event.target.innerHTML;
+    },
+    endEditCheckListTitle() {
+      this.$refs.checkListTitle.blur();
+    },
+    addTodoItem() {
+      var todoItem = this.$refs.todoItem.value;
+      if(todoItem==="")return;
+      this.$refs.todoItem.value = "";
+        eventBus.$emit("addTodoItem", {
+          taskTitle: this.taskTitle,
+          topicTitle: this.topicTitle,
+          checkListTitle: this.checkList.title,
+          todo: {
+            txt:todoItem,
+            isDone:false
+          }
+        });
+    },
+    removeTodoItem(todo) {
+      // var currTaskTitle = this.originalTaskTitle;
+      eventBus.$emit("removeTodoItem", {
+        taskTitle: this.taskTitle,
+        topicTitle: this.topicTitle,
+        checkListTitle: this.checkList.title,
+        todo
       });
     },
     toggleIsDoneCheckList(currTodoTxt) {
       // event.target.checked = !event.target.checked;
         eventBus.$emit("toggleIsDoneCheckList", {
         topicTitle: this.topicTitle,
-        taskTitle: this.originalTaskTitle,
-        checkListTitle: this.checkList.checkListTitle,
+        taskTitle: this.taskTitle,
+        checkListTitle: this.checkList.title,
         currTodoTxt: currTodoTxt
       });
     },
     removeCheckList() {
-      var currTaskTitle = this.originalTaskTitle;
+      // var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("removeCheckList", {
-        taskTitle: currTaskTitle,
+        taskTitle: this.taskTitle,
         topicTitle: this.topicTitle,
-        checkListTitle: this.checkList.title
-      });
-    },
-    removeCheckListItem() {
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("removeCheckList", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        checkListTitle: this.checkList.title
+        checkList: this.checkList
       });
     },
     showComposer(){
       this.isAddTodo=false;
     }
-  }
+  },
+  created() {
+    this.originalCheckListTitle = this.checkList.title;
+  },
 };
 </script>

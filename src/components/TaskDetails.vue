@@ -67,7 +67,7 @@
             v-for="checkList in task.checkLists"
             :key="checkList.title"
             :checkList="checkList"
-            :originalTaskTitle="originalTaskTitle"
+            :taskTitle="originalTaskTitle"
             :topicTitle="topicTitle"
           />
         </section>
@@ -381,7 +381,7 @@ export default {
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
-        checkList: { checkListTitle: checkListTitle, todos: [] }
+        checkList: { title: checkListTitle, todos: [] }
       });
     },
     addDueDate() {
