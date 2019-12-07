@@ -42,6 +42,9 @@ export default {
     };
   },
   computed: {
+    user() {
+      return this.$store.getters.loggedInUser;
+    },
     users() {
       return this.$store.getters.users;
     },
@@ -61,7 +64,8 @@ export default {
       if (!this.newBoard.title) return;
       this.newBoard.createdBy = this.$store.getters.loggedInUser;
       this.newBoard.createdOn = Date.now();
-      this.$store.dispatch({ type: "addBoard", newBoard: this.newBoard });
+      this.newBoard.members.push(this.user)
+      this.$store.dispatch({ type: "addBoard", newBoard: this.newBoard, firstMember: this.user });
       this.isAddBoard = true;
     },
     removeBoard(boardId) {

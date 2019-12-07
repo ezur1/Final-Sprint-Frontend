@@ -2,6 +2,7 @@
 
 import boardService from '../services/board.service.js'
 import socketService from '../services/socket.service.js';
+// import userService from '../services/user.service.js';
 
 export default {
     state: {
@@ -98,11 +99,12 @@ export default {
         //     context.commit({ type: 'setCurrTask', foundTask });
         //     return foundTask
         // },
-        async addBoard(context, { newBoard }) {
+        async addBoard(context, { newBoard, firstMember }) {
             var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
             newBoard.activityLog.push(newLogEntry)
-            await boardService.add(newBoard)
+            var addedBoard = await boardService.add(newBoard)
             context.dispatch({ type: "loadBoards" });
+            context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: firstMember });
             return newBoard
         },
         async removeBoard(context, { boardId }) {
