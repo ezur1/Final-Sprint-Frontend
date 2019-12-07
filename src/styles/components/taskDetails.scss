@@ -20,6 +20,10 @@
 .preview-header {
     position: relative;
     z-index: 1;
+    h1{
+        cursor: pointer;
+        outline-color:#67b4a2;  
+    }
     .exit-btn{
     &:hover{
         cursor: pointer;
@@ -34,20 +38,11 @@
 
 .description {
     margin-top: 0.5rem;
-    textarea {
-        width: 100%;
-        max-width: 100%;
-        background-color: rgba(9, 30, 66, .04);
-        outline-color: coral;
-        font-size: 1rem;
-        border: none;
-        border-radius: 3px;
-        display: block;
-        min-height: 60px;
-        padding: 8px 12px;
-        text-decoration: none;
-        resize: none;
-        margin: .5rem 0 .5rem 0;
+    span{
+        outline-color:#67b4a2; 
+    }
+    .description-header{
+        margin-bottom:.5rem; 
     }
 }
 

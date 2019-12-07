@@ -152,21 +152,62 @@
 }
 
 .confirmation-modal{
-    p{text-align: center;}
+    padding: .5rem;
+    outline: none;
+    p{
+        text-align: center;
+        margin: 0;
+        margin-bottom:1rem; 
+    }
     .confirm-btn{
-        border: 1px solid black;
-        background-color: whitesmoke;
+        border: none;
+        background-color: none;
+        color: rgb(101, 97, 97);
+        font-size: 1rem;
+        font-weight: 600;
+        outline: none;
         &:hover{
-            background-color: rgb(231, 231, 231);
             cursor: pointer;
+            color: rgb(54, 143, 121);
+            box-shadow: 0 0 0 1px rgb(54, 143, 121);
+            border-radius: 3px;
         }
     }
     .cancel-btn{
-        border: 1px solid black;
-        background-color: whitesmoke;
+        border: none;
+        background-color: none;
+        color: rgb(210, 30, 30);
+        font-size: 1rem;
+        font-weight: 600;
+        padding: .2rem;
+        outline: none;
         &:hover{
             cursor: pointer;
-            background-color: rgb(231, 231, 231);
+            box-shadow: 0 0 0 1px rgb(210, 30, 30);
+            border-radius: 3px;
+        }
+    }
+    .sortby-option{
+        background-color:none;
+        border: none;
+        font-size: 1rem;
+        border-radius: 3px;
+        margin-bottom:3px; 
+        cursor: pointer;
+        &.title:hover{
+            transition: all .2s ease-in-out;
+            font-weight: 500;
+            box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+        }
+        &.duedate:hover{
+            transition: all .2s ease-in-out;
+            font-weight: 500;
+            box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
+        }
+        &.creation:hover{
+            transition: all .2s ease-in-out;
+            font-weight: 500;
+            box-shadow:-2.5px 0 0 rgb(119, 124, 123),2.5px 0 0 rgb(119, 124, 123);
         }
     }
 }
@@ -203,6 +244,10 @@
         background-color: rgba(0,0,0,.6);
         
     }
+}
+.mini-menu-topic-icon{
+    font-size: 1.3rem;
+    color: #0a1e3f;
 }
     
 

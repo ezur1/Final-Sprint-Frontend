@@ -12,7 +12,7 @@
             @keydown.enter="endEditTopicTitle"
           ></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
-            <font-awesome-icon icon="ellipsis-h" />
+            <font-awesome-icon class="mini-menu-topic-icon" icon="ellipsis-h" />
             <div
               v-on-clickaway="openMenu"
               v-if="TopicMenuOn"
@@ -22,9 +22,9 @@
               <span @click="showSortBy=!showSortBy">Sort By</span>
               <div v-if="showSortBy" class="confirmation-modal">
                 <div class="flex col space-between">
-                  <button class="topic-color none flex" @click="setSort('title')">Title</button>
-                  <button class="topic-color none flex" @click="setSort('dueDate')">Due Date</button>
-                  <button class="topic-color none flex" @click="setSort('createdAt')">Creation Date</button>
+                  <button class="sortby-option title flex" @click="setSort('title')">Title</button>
+                  <button class="sortby-option duedate flex" @click="setSort('dueDate')">Due Date</button>
+                  <button class="sortby-option creation flex" @click="setSort('createdAt')">Creation Date</button>
                 </div>
               </div>
 
@@ -40,10 +40,10 @@
 
               <span @click="showConfirm=!showConfirm">Delete</span>
               <div v-if="showConfirm" class="confirmation-modal">
-                <p>are you sure?</p>
-                <div class="flex space-between">
-                  <button @click="removeTopic(topic.title)" class="confirm-btn">yes</button>
-                  <button @click="showConfirm=!showConfirm" class="cancel-btn">no</button>
+                <p>Are you sure?</p>
+                <div class="flex space-around">
+                  <button @click="removeTopic(topic.title)" class="confirm-btn">Yes</button>
+                  <button @click="showConfirm=!showConfirm" class="cancel-btn">Cancel</button>
                 </div>
               </div>
             </div>
