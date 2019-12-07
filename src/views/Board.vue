@@ -9,15 +9,6 @@
             <topic :topic="topic" :tasks="topic.tasks" />
         </Draggable>
       </Container>
-      <div @click="openForm()" class="add-topic flex align-c">
-        <div v-if="isAddTopic" >
-          <p><span>+</span>Add Topic</p>
-        </div>
-        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
-          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" @click.stop />
-          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
-        </div>
-      </div>
     </section>
     <div ref="windowOverlay" id="window-overlay"></div>
   </section>
@@ -37,12 +28,7 @@ export default {
   data() {
     return {
       val: null,
-      isAddTopic: true,
       isPreviewTask: false,
-      newTopic: {
-        title: "",
-        tasks: []
-      },
       topicTitleForTaskDetails: null,
       currTaskDetails: null
     };
@@ -98,18 +84,7 @@ export default {
         boardImgUrl: payload.boardImgUrl
       });
     },
-    exit() {
-      this.isAddTopic = true;
-      this.newTopic.title = '';
-    },
-    addTopic() {
-      this.$store.dispatch({
-        type: "addTopic",
-        board: this.boardToEdit,
-        newTopic: this.newTopicToEdit
-      });
-      this.newTopic.title = "";
-    },
+
     removeTopic(topicTitle) {
       this.$store.dispatch({
         type: "removeTopic",
@@ -157,12 +132,6 @@ export default {
       this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
       // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
       this.$refs.windowOverlay.style.display="block";
-    },
-    openForm() {
-      this.isAddTopic = !this.isAddTopic;
-      setTimeout(() => {
-        this.$refs.input.focus();
-      }, 200);
     },
     updateTaskTitle(payload) {
       this.$store.dispatch({

@@ -2,9 +2,18 @@
   <section class="board-nav-bar-container flex space-between">
     <section class="board-name-users flex">
       <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1>
-      <div v-if="currBoard.usersOnBoard.length>0" class="connectedUsers flex">
+      <div v-if="currBoard.usersOnBoard.length>0" class="connected-users flex ">
         <div v-for="user in currBoard.usersOnBoard" :key="user._id">
           <div class="user-on-board">{{user.userName}}</div>
+        </div>
+      </div>
+      <div @click="openForm()" class="add-topic flex align-c">
+        <div v-if="isAddTopic" >
+          <p><span>+</span>Add Topic</p>
+        </div>
+        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
+          <input ref="newTopicInput" type="text" placeholder="Topic title" @keyup.enter="addTopic" @blur="exit" @click.stop />
+          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
         </div>
       </div>
     </section>
@@ -55,6 +64,7 @@ export default {
   props: ["currBoard"],
   data() {
     return {
+      isAddTopic: true,
       taskTitles: "",
       filterBy: "",
       filterRes: "",
@@ -123,14 +133,30 @@ export default {
         });
       });
     },
-    
+     openForm() {
+      this.isAddTopic = !this.isAddTopic;
+      setTimeout(() => {
+        this.$refs.newTopicInput.focus();
+      }, 200);
+    },
+      exit() {
+        this.$refs.newTopicInput.value='';
+        this.isAddTopic = !this.isAddTopic;
+    },
+      addTopic() {
+        this.$store.dispatch({
+          type: "addTopic",
+          board: this.currBoard,
+          newTopic: {
+            title:this.$refs.newTopicInput.value,
+            tasks:[]
+          } 
+      });
+      this.exit();
+    },
     openSearchModal(){
       this.isSearchModal=!this.isSearchModal
       this.filterRes = null;
-      setTimeout(() => {
-        this.$refs.filter.focus();
-      }, 200);
-
     },
     openTaskDetails() {
       console.log("this.filterRes", this.filterRes);
