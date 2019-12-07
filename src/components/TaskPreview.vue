@@ -9,7 +9,7 @@
       <div class="flex col space-between">
         <div class="task-title">{{task.title}}</div>
         <div v-if="task.imgUrls.length>0">
-          <img :src="task.imgUrls[0]" />
+          <img class="task-preview-image" :src="task.imgUrls[0]" />
         </div>
       </div>
     </div>

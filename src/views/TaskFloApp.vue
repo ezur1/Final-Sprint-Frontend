@@ -36,6 +36,7 @@ export default {
         title: "",
         activityLog: [],
         usersOnBoard: [],
+        members: [],
         topics: []
       },
     };
