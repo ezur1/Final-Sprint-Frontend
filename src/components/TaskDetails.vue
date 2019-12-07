@@ -57,9 +57,9 @@
             <h3 >Attached Images</h3>
           </div>
           <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
-              <img :src="imgUrl" />
-              <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
-            </div>
+            <img :src="imgUrl" />
+            <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
+          </div>
         </section>
 
         <section class="check-list flex col">
@@ -67,7 +67,7 @@
             v-for="checkList in task.checkLists"
             :key="checkList.title"
             :checkList="checkList"
-            :originalTaskTitle="originalTaskTitle"
+            :taskTitle="originalTaskTitle"
             :topicTitle="topicTitle"
           />
         </section>
@@ -161,10 +161,10 @@
             <span>Add Image</span>
             <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
               <label >
-                <span class="mini-menu-header">Upload</span>
+                <font-awesome-icon class="icon" icon="cloud-upload-alt" />
                 <input hidden type="file" @change="uploadImg($event)" />
               </label>
-              <div v-if="imgUrl" ><img :src="imgUrl" /></div>
+              <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
               <button @click="addImg">Add</button>
             </div>
           </a>
@@ -381,7 +381,7 @@ export default {
       eventBus.$emit("addCheckList", {
         taskTitle: currTaskTitle,
         topicTitle: this.topicTitle,
-        checkList: { checkListTitle: checkListTitle, todos: [] }
+        checkList: { title: checkListTitle, todos: [] }
       });
     },
     addDueDate() {
