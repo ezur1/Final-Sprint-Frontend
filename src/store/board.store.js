@@ -2,7 +2,6 @@
 
 import boardService from '../services/board.service.js'
 import socketService from '../services/socket.service.js';
-// import userService from '../services/user.service.js';
 
 export default {
     state: {
@@ -90,15 +89,6 @@ export default {
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
-        // async getTaskById(context, { boardId, taskId, topicTitle }) { <---  ORIGINAL, slow version that shows the previous task details for a split-second....
-        //     var board = await boardService.getById(boardId) ///// maybe it would be better to use the state's "currBoard"....
-        //         ////// DONT KNOW WHERE TO GET THE "topicTitle" IF USER GOT HERE VIA BOOKMARK ///////
-        //     var topicIdx = _findTopicIndex(board, topicTitle);
-        //     var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
-        //     context.commit({ type: 'setCurrTopicTitle', topicTitle });
-        //     context.commit({ type: 'setCurrTask', foundTask });
-        //     return foundTask
-        // },
         async addBoard(context, { newBoard, firstMember }) {
             var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
             newBoard.activityLog.push(newLogEntry)

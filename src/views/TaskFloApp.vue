@@ -72,7 +72,6 @@ export default {
       this.$store.dispatch({ type: "removeBoard", boardId });
     },
     addUserToBoard(payload){
-      // this.$store.dispatch({ type: "addUserToBoard", board: payload.board, userId: payload.user._id });
       this.$store.dispatch({ type: "addUserToBoard", board: payload.board, user: payload.user });
       this.$store.dispatch({ type: "addBoardToUser", boardId: payload.board._id, user: payload.user });
     },
