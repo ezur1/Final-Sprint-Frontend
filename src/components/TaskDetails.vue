@@ -44,11 +44,7 @@
         </section>
 
         <section class="due-date">
-<<<<<<< HEAD
           <div v-if="task.dueDate" class="due-date-header flex align-c">
-=======
-          <div v-if="task.dueDate" class="flex align-c">
->>>>>>> 65b79b2e94c3be34d01b52c10b030dc7edcee5c6
             <font-awesome-icon class="icon" icon="clock" />
             <h3>Due date</h3>
           </div>
