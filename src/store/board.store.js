@@ -279,6 +279,15 @@ export default {
                 return board
             }
         },
+        async updateToDoItemTxt(context, { board, topicTitle, taskTitle, checkListTitle, oldToDoItemTxt, newToDoItemTxt }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
+            var todoIdx = board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.findIndex(currTodo => currTodo.txt === oldToDoItemTxt);
+            board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].txt = newToDoItemTxt;
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
         async toggleIsDoneCheckList(context, { board, topicTitle, taskTitle, checkListTitle, currTodoTxt }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);

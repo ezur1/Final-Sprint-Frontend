@@ -11,15 +11,20 @@
         </h3>
         <font-awesome-icon class="remove-checklist" @click="removeCheckList" icon="trash"/>
     </div>
+    <div class="flex space-between">
+      <p>{{checkListStats}}%</p>
+      <progress v-if="checkList.todos.length>0" :value="checkListStats" max="100"></progress>
+    </div>
     <div class=" checklist-main flex col">
-      <div v-for="currTodo in checkList.todos" :key="currTodo.txt" class="checklist-list space-between flex align-c">
-        <div class="flex todo align-c">
-          <input @click="toggleIsDoneCheckList(currTodo.txt)" :checked="currTodo.isDone" type="checkbox" />
-          <!-- <input @click="toggleIsDoneCheckList(currTodo.txt)" type="checkbox" else  /> -->
-          <p :class="{active: currTodo.isDone }">{{currTodo.txt}}</p>
-        </div>
-        <font-awesome-icon class="icon remove-checklist-item" icon="backspace" @click="removeTodoItem(currTodo)" />
-      </div>
+      <ToDoItem 
+        v-for="currTodo in checkList.todos" 
+        :key="currTodo.txt"
+        :todo="currTodo"
+        :checkList="checkList"
+        :taskTitle="taskTitle"
+        :topicTitle="topicTitle"
+        class="checklist-list space-between flex align-c" 
+        />
       <div class="add-todo" v-on-clickaway="showComposer">
         <div v-if="!isAddTodo">
           <span @click="isAddTodo=true">Add Item</span>
@@ -38,6 +43,7 @@
 <script>
 import { eventBus } from "../main.js";
 import { directive as onClickaway } from "vue-clickaway";
+import ToDoItem from "./ToDoItem";
 
 export default {
   name: "CheckList",
@@ -46,6 +52,20 @@ export default {
     return{
       isAddTodo:false,
       originalCheckListTitle: null
+    }
+  },
+  computed: {
+    checkListStats() {
+      var counters = {
+          total: this.checkList.todos.length,
+          done: 0
+      }
+      this.checkList.todos.forEach(todo => {
+          if (todo.isDone) {
+              counters.done++
+          }  
+      })
+      return parseInt((counters.done / counters.total) * 100)
     }
   },
    directives: {
@@ -113,5 +133,8 @@ export default {
   created() {
     this.originalCheckListTitle = this.checkList.title;
   },
+  components: { 
+    ToDoItem
+  }
 };
 </script>

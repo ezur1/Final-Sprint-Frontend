@@ -15,25 +15,24 @@
             margin-left: .7rem;
         }
     }
-    .task-mid-info{
-        width:80%;
+    .task-mid-info {
+        width: 80%;
     }
-    .task-tags{
+    .task-tags {
         align-items: center;
-        margin-right:4rem; 
-        .tag-preview{
+        margin-right: 4rem;
+        .tag-preview {
             width: 2.5rem;
             height: .7rem;
-            margin-right:.5rem; 
-            
+            margin-right: .5rem;
         }
     }
-    .due-date{
-        span{
-            margin-left:1.7rem; 
+    .due-date {
+        span {
+            margin-left: 1.7rem;
         }
     }
-    .due-date-header{
+    .due-date-header {
         margin-bottom: 8px;
     }
 }
@@ -43,7 +42,7 @@
     z-index: 1;
     h1 {
         cursor: pointer;
-        outline-color:#67b4a2;  
+        outline-color: #67b4a2;
         font-weight: 900;
         font-size: 1.4rem;
     }
@@ -58,11 +57,12 @@
 .preview-main {
     width: 72%;
 }
+
 .description {
     margin-top: 0.5rem;
-    span{
-        margin-left:1.7rem; 
-        outline-color:#67b4a2; 
+    span {
+        margin-left: 1.7rem;
+        outline-color: #67b4a2;
     }
     .description-header {
         margin-bottom: .5rem;
@@ -234,12 +234,17 @@
 
 .remove-checklist {
     display: none;
-    margin-left:1.5rem;  
+    margin-left: 1.5rem;
 }
 
 .checklist-container {
-    width: 100%;
-    p {margin: 0;}
+    width: 95%;
+    p {
+        margin: 0;
+    }
+    progress {
+        width: 100%;
+    }
     margin-bottom: 1rem;
     .checklist-header {
         align-items: baseline;
@@ -254,10 +259,10 @@
             }
         }
     }
-    .checklist-main{
+    .checklist-main {
         margin-left: 1.5rem;
-        width:100%;
-        input{
+        width: 100%;
+        input {
             background: none;
             border: none;
             border-bottom: 1px solid #172b4d;
@@ -266,51 +271,48 @@
             margin-left: .5rem;
             font-size: 1rem;
         }
-        .checklist-list{
+        .checklist-list {
             width: 92%;
             // margin-bottom: .2rem;
             padding: .1rem .4rem;
-           
-            &:hover{
+            &:hover {
                 background-color: #fff;
-                border-radius:3px; 
-                .remove-checklist-item{
+                border-radius: 3px;
+                .remove-checklist-item {
                     display: block;
                 }
-
             }
-            input{
+            input {
                 margin: 0;
-                margin-right:.5rem; 
+                margin-right: .5rem;
             }
         }
-        .add-todo{
+        .add-todo {
             margin-top: 1rem;
-
-            span{
+            span {
                 border: 1.4px solid #172b4d;
                 border-radius: 3px;
                 color: #172b4d;
-                padding:0 .3rem;
-                margin-left:1rem; 
+                padding: 0 .3rem;
+                margin-left: 1rem;
                 cursor: pointer;
                 font-size: .9rem;
             }
         }
     }
 }
+
 .active {
     text-decoration: line-through;
 }
 
 .icon {
     color: rgb(66, 66, 66);
-    &.remove-checklist-item{
+    &.remove-checklist-item {
         display: none;
-        &:hover{
+        &:hover {
             cursor: pointer;
-            color:#d05555;
+            color: #d05555;
         }
-
     }
 }

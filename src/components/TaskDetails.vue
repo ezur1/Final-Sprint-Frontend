@@ -215,7 +215,6 @@ export default {
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
-      // removeMemberModal: false,
       showImg: false,
       val: null,
       tagsMenuOn: false,

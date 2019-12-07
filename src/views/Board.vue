@@ -237,6 +237,17 @@ export default {
         todo: payload.todo
       });
     },
+    updateToDoItemTxt(payload){
+        this.$store.dispatch({
+        type: "updateToDoItemTxt",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        oldToDoItemTxt: payload.oldToDoItemTxt,
+        newToDoItemTxt: payload.newToDoItemTxt
+      });
+    },
     toggleIsDoneCheckList(payload){
       this.$store.dispatch({
         type:"toggleIsDoneCheckList",
@@ -333,6 +344,9 @@ export default {
     });
     eventBus.$on("removeTodoItem", payload => {
       this.updateTodos(payload);
+    });
+    eventBus.$on("updateToDoItemTxt", payload => {
+      this.updateToDoItemTxt(payload);
     });
     eventBus.$on("toggleIsDoneCheckList", payload => {
       this.toggleIsDoneCheckList(payload);
