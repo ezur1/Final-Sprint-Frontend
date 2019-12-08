@@ -6,7 +6,8 @@
           <img class="logo-home-page" src="@/assets/logo_transparent.png" />
           <button @click="goToLogin" class="login-btn">Login</button>
         </div>
-        <div class="greet flex col justify-center space-around">
+        <div class="greet flex col justify-center">
+          <img class="head-home-page" src="@/assets/headTp.png" />
           <div class="flex col">
             <h1>TaskFlow lets you work</h1>
             <h1>more collaboratively </h1>

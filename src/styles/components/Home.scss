@@ -1,14 +1,17 @@
 .home {
     font-family: 'Raleway', sans-serif;
-
+    overflow: hidden;
     .home-header-container {
         height: 99.9vh;
         width: 99.4vw;
         padding: 1rem;
-        background-image: url(../assets/head.png);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
+        // background-image: url(../assets/head.png);
+        // background-repeat: no-repeat;
+        // background-position: center;
+        // background-size: cover;
+        background: rgb(118,198,161);
+        background: linear-gradient(140deg, rgba(118,198,161,1) 6%, rgba(118,198,161,1) 35%, rgba(206,227,120,1) 73%);
+
         position: relative;
         .logo-home-page {
             width: 6em;
@@ -72,10 +75,17 @@
         }
 
         .greet {
-            margin-top: 5em;
+            height: 80vh;
+            // margin-top: 1em;
             margin-left: 3em;
             color: white;
-
+            position: relative;
+            .head-home-page{
+                width: 50rem;
+                position: absolute;
+                right:0;
+                bottom: 6rem;
+            }
             h1 {
                 font-size: 3em;
             }
@@ -83,10 +93,9 @@
             p {
                 margin: 0;
                 font-size: 1.5rem;
-                margin-top: 2rem;
+                // margin-top: 2rem;
                 width: 36rem;
                 line-height: 1.5em;
-
             }
         }
     }
@@ -97,7 +106,7 @@
         height: 99.9vh;
         width: 99.4vw;
         padding: 1rem;
-        background-image: url(../assets/body.png);
+        // background-image: url(../assets/body.png);
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
