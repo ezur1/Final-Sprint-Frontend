@@ -57,7 +57,7 @@
             <h3 >Attached Images</h3>
           </div>
           <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
-            <img :src="imgUrl" />
+            <img class="task-img" :src="imgUrl" />
             <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
           </div>
         </section>
