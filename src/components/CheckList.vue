@@ -11,7 +11,7 @@
         </h3>
         <font-awesome-icon class="remove-checklist" @click="removeCheckList" icon="trash"/>
     </div>
-    <div v-if="checkList.todos.length>0" class="flex space-between">
+    <div v-if="checkList.todos.length>0" class="progress-bar flex ">
       <p>{{checkListStats}}%</p>
       <progress :value="checkListStats" max="100"></progress>
     </div>

@@ -17,6 +17,14 @@
     }
     .task-mid-info {
         width: 80%;
+        .members{
+            justify-content: end;
+            align-items: baseline;
+            .icon{
+                margin-right: .5rem;
+                margin-top: .5rem;
+            }
+        }
     }
     .task-tags {
         align-items: center;
@@ -56,6 +64,11 @@
 
 .details-main {
     width: 72%;
+    min-height: 50vh;
+    max-height: 60vh;
+    overflow-y:scroll; 
+    border-top:1px solid #d3d3d3;
+    margin-top:.5rem;
 }
 
 .description {
@@ -79,7 +92,7 @@
         margin-top: 1.5rem;
         margin-left: .3rem;
     }
-    span {
+    span.title {
         margin-left: 0.5rem;
     }
     .prev-side-btn {
@@ -107,15 +120,17 @@
         }
         .mini-menu {
             cursor: default;
-            position: fixed;
+            position: absolute;
             z-index: 20;
             background-color: #fff;
             border-radius: 3px;
             box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
             overflow: hidden;
-            padding: 1rem;
+            padding: .5rem;
             color: #172b4d;
-            width: 20rem;
+            width: 11.1rem;
+            top: 2.2rem;
+            left: .1rem;
             .mini-menu-header {
                 color: #5e6c84;
                 line-height: 40px;
@@ -135,65 +150,79 @@
                 margin: 0
             }
             input {
-                width: 70%;
+                width: 85%;
                 border: none;
                 border-bottom: .5px solid #172b4d;
                 padding: 0rem .5rem 1px;
                 outline: none;
                 margin-left: .75rem;
                 font-size: 1rem;
+                text-align: center;
             }
             button {
-                margin-top: 1.5rem;
+                border: 1.4px solid #172b4d;
+                border-radius: 3px;
+                color: #172b4d;
+                padding: 0 .3rem;
+                cursor: pointer;
+                font-size: 1.1rem;
+                margin-top: 1rem;
                 font-weight: 600;
                 font-size: 1rem;
                 background: none;
-                border-radius: 3px;
-                padding: .5rem;
-                cursor: pointer;
-                color: #172b4d;
-                border: 2px solid rgba(9, 30, 66, .13);
                 &:hover {
-                    border: 2px solid lightgreen;
+                    border: 1.4px solid #638cd3;;
                 }
             }
         }
     }
     .members-menu {
-        top: 16.75rem;
+        .minimenu-user{
+            margin-bottom:.5rem; 
+            .minimenu-avatar{
+                margin: 0;
+            }
+        }
         .selected-member::before {
             content: "\2713"
         }
     }
-    .checklist-menu {
-        top: 22.05rem;
-    }
-    .duedate-menu {
-        top: 24.7rem;
-    }
     .img-menu {
-        top: 27.35rem;
+        text-align: center;
+        .add-img-link{
+            margin: 0 auto;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            .icon{
+                margin-right: .5rem;
+            }
+            &:hover{
+                .icon{
+                    color: #638cd3;
+                }  
+            }
+        }
         >* {
             .img-attachment {
-                width: 100%;
+                max-width: 9rem;
+                max-height: 10rem;
             }
         }
     }
     .tags-menu {
-        top: 19.5rem;
         .selected-tag::after {
             content: "\2713"
         }
         .tag {
-            width: 90%;
-            height: 2rem;
+            width: 100%;
+            height: 1.7rem;
             margin-bottom: .4rem;
             display: block;
             border-radius: 3px;
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
-            padding-right: .3rem;
+            padding-right: .5rem;
             cursor: pointer;
             color: #f4f5f7;
             font-size: 1.6rem;
@@ -201,31 +230,31 @@
         .blue-tag {
             background-color: $clrTag1;
             &:hover {
-                box-shadow: -10px 0 rgba(72, 72, 255, 0.6);
+                box-shadow: -6px 0 rgb(124, 192, 230),5.9px 0 rgb(124, 192, 230);
             }
         }
-        .orange-tag {
+        .pink-tag {
             background-color: $clrTag2;
             &:hover {
-                box-shadow: -10px 0 rgba(255, 166, 0, 0.6);
+                box-shadow: -6px 0 rgb(169, 94, 123),5.9px 0 rgb(169, 94, 123);
             }
         }
         .yellow-tag {
             background-color: $clrTag3;
             &:hover {
-                box-shadow: -10px 0 rgba(255, 238, 8, 0.5);
+                box-shadow: -6px 0 rgb(255, 239, 168),5.9px 0 rgb(255, 239, 168);
             }
         }
         .green-tag {
             background-color: $clrTag4;
             &:hover {
-                box-shadow: -10px 0 #11cb21c5;
+                box-shadow: -6px 0 rgb(102, 224, 181),5.9px 0 rgb(102, 224, 181);
             }
         }
         .red-tag {
             background-color: $clrTag5;
             &:hover {
-                box-shadow: -10px 0 #f82e2eb4;
+                box-shadow: -6px 0 rgba(248, 46, 46, 0.794),5.9px 0 rgba(248, 46, 46, 0.794);
             }
         }
     }
@@ -238,11 +267,17 @@
 
 .checklist-container {
     width: 95%;
+    .progress-bar{
+        width: 60%;
+        margin-left: 1.8rem;
+        progress {
+            width: 60%;
+            margin-left:.5rem; 
+        }
+        
+    }
     p {
         margin: 0;
-    }
-    progress {
-        width: 100%;
     }
     margin-bottom: 1rem;
     .checklist-header {
@@ -304,6 +339,15 @@
 .active {
     text-decoration: line-through;
 }
+.task-images{
+    img{
+        width: 10rem;
+    }
+    .remove-img-icon{
+        font-size: 1.5rem;
+        margin-left: 1rem;
+    }
+}
 
 .icon {
     color: rgb(66, 66, 66);
@@ -313,6 +357,12 @@
             cursor: pointer;
             color: #d05555;
         }
+    }
+}
+.task-activities{
+    
+    .task-created-by{
+        
     }
 }
 

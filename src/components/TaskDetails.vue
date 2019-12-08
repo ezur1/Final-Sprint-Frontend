@@ -2,20 +2,27 @@
   <section v-on-clickaway="backToBoard" v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info flex space-between">
-        <h1
-          contenteditable
-          ref="taskTitle"
-          v-html="task.title"
-          @blur="updateTaskTitle"
-          @keydown.enter="endEditTaskTitle"
-        >{{task.title}}</h1>
+        <div>
+            <h1
+            contenteditable
+            ref="taskTitle"
+            v-html="task.title"
+            @blur="updateTaskTitle"
+            @keydown.enter="endEditTaskTitle"
+          >{{task.title}}</h1>
+          <span>{{topicTitle}}</span>
+            <div v-if="task.members.length>0" class="flex members">
+              <font-awesome-icon class="icon" icon="user-alt" />
+              <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
+            </div>
+        </div>
+        
         <div v-if="tags" class="task-tags flex">
             <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
         </div>
       </div>
       <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
-    <div>in topic {{topicTitle}}</div>
     <div class="details-body flex space-between">
       <div class="details-main" @click="closeMiniMenu()">
        
@@ -33,15 +40,7 @@
           ></span>
         </section>
 
-        <section class="members">
-          <div v-if="task.members.length>0" class="flex align-c">
-            <font-awesome-icon class="icon" icon="user-alt" />
-            <h3>Members</h3>
-          </div>
-          <div class="flex">
-            <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
-          </div>
-        </section>
+        
 
         <section class="due-date">
           <div v-if="task.dueDate" class="due-date-header flex align-c">
@@ -58,7 +57,7 @@
           </div>
           <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
             <img :src="imgUrl" />
-            <font-awesome-icon @click="removeImg(imgUrl)" icon="times" />
+            <font-awesome-icon @click="removeImg(imgUrl)" icon="times" class="remove-img-icon"/>
           </div>
         </section>
 
@@ -72,8 +71,7 @@
           />
         </section>
 
-        <section class="taskActivities">
-
+        <section class="task-activities">
           <div class="task-comments">
             <div>
               <h1 v-if="isAddComment" @click="openForm"><span>+ </span>Add Comment</h1>
@@ -83,7 +81,7 @@
               <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
             </div>
           </div>
-          <div class="flex col" v-for="activity in task.activities" :key="activity.txt">
+          <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
             <div class="flex">
               <Avatar :size="30" :username="activity.user.fullName"></Avatar>
               <div>{{activity.user.fullName}}</div>
@@ -91,7 +89,6 @@
             </div>
             <div>{{activity.txt}}</div>
           </div>
-
         </section>
 
       </div>
@@ -102,23 +99,19 @@
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('members')">
             <font-awesome-icon class="icon" icon="user-alt" />
-            <span>Members</span>
+            <span class="title">Members</span>
             <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Members</span>
-              <div class="flex col">
-                <h3>Board Members</h3>
-                <!-- <input type="text" placeholder="Search members" ref="memberSearch" /> // future development --> 
-              </div>
-              <div class="flex" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
+              <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
                 <Avatar :size="30" :username="member.fullName"></Avatar>
-                {{member.fullName}}
+                <span class="title">{{member.fullName}}</span>
               </div>
             </div>
           </a>
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
             <font-awesome-icon class="icon" icon="tags" />
-            <span>Tags</span>
+            <span class="title">Tags</span>
             <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Tags</span>
               <div class="flex col">
@@ -129,10 +122,10 @@
                   @click="addTag('blue-tag')"
                 ></div>
                 <div
-                  ref="orange-tag"
-                  class="orange-tag tag"
-                  :class="{'selected-tag':task.tags.includes('orange-tag')}"
-                  @click="addTag('orange-tag')"
+                  ref="pink-tag"
+                  class="pink-tag tag"
+                  :class="{'selected-tag':task.tags.includes('pink-tag')}"
+                  @click="addTag('pink-tag')"
                 ></div>
                 <div
                   ref="yellow-tag"
@@ -158,12 +151,11 @@
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('checklist')">
             <font-awesome-icon class="icon" icon="list-alt" />
-            <span>Checklist</span>
+            <span class="title">Checklist</span>
             <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Add Checklist</span>
               <div class="flex">
-                <h3>Title:</h3>
-                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" />
+                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" placeholder="Checklist Title" />
               </div>
               <button @click="addCheckList">Add</button>
             </div>
@@ -171,7 +163,7 @@
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('duedate')">
             <font-awesome-icon class="icon" icon="clock" />
-            <span>Due Date</span>
+            <span class="title">Due Date</span>
             <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
               <span class="mini-menu-header">Change Due Date</span>
               <input type="date" v-model="dueDate" />
@@ -181,11 +173,12 @@
 
           <a href="#" class="prev-side-btn" @click.prevent="openMenu('img')">
             <font-awesome-icon class="icon" icon="images" />
-            <span>Add Image</span>
+            <span class="title">Add Image</span>
             <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
-              <label >
+              <label class="add-img-link flex align-c" >
                 <font-awesome-icon class="icon" icon="cloud-upload-alt" />
                 <input hidden type="file" @change="uploadImg($event)" />
+                Upload Image
               </label>
               <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
               <button @click="addImg">Add</button>
@@ -197,15 +190,15 @@
           <h3>ACTIONS</h3>
           <div class="prev-side-btn">
             <font-awesome-icon class="icon" icon="chevron-right" />
-            <span>Move</span>
+            <span class="title">Move</span>
           </div>
           <div class="prev-side-btn">
             <font-awesome-icon class="icon" icon="copy"/>
-            <span>Copy</span>
+            <span class="title">Copy</span>
           </div>
           <div @click="showConfirm=!showConfirm" class="prev-side-btn">
             <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
-            <span v-if="!showConfirm">Delete</span>
+            <span class="title" v-if="!showConfirm">Delete</span>
             <div v-if="showConfirm" class="flex space-between">
               <span>are you sure?</span>
               <font-awesome-icon class="icon" @click="removeTask(task.title)" icon="check" />
