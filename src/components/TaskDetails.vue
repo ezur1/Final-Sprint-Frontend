@@ -83,13 +83,18 @@
               <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
             </div>
           </div>
-          <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
-            <div class="flex">
-              <Avatar :size="30" :username="activity.user.fullName"></Avatar>
-              <div>{{activity.user.fullName}}</div>
-              <div>{{activity.timeStamp | moment("from", "now") }}</div>
+          <div class="toggle-task-activities">
+            <span @click="showActivityDetails=!showActivityDetails">Toggle Details</span>
+          </div>
+          <div v-if="showActivityDetails"> 
+            <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
+              <div>
+                <Avatar :size="30" :username="activity.user.fullName"></Avatar>
+                <span class="task-activity-user-full-name">{{activity.user.firstName}}</span>
+                <span class="task-activity-txt">{{activity.txt}}</span>
+                <span>{{activity.timeStamp | moment("from", "now") }}</span>
+              </div>
             </div>
-            <div>{{activity.txt}}</div>
           </div>
         </section>
 
@@ -236,6 +241,7 @@ export default {
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
+      showActivityDetails: false,
       showImg: false,
       val: null,
       tagsMenuOn: false,
@@ -317,9 +323,6 @@ export default {
       eventBus.$emit("disableWindowOverlay");
       this.$router.push(`/boards/${boardId}`);
     },
-    // closeRemoveMemberModal(){
-    //   this.removeMemberModal= false
-    // },
     closeMiniMenu() {
       this.checklistMenuOn = false;
       this.tagsMenuOn = false;
@@ -409,7 +412,6 @@ export default {
     },
     openForm() {
       this.isAddComment = !this.isAddComment;
-      // this.newComment.title = "";
       setTimeout(()=>{
         this.$refs.newCommentInput.focus();
       },10) 
@@ -419,7 +421,7 @@ export default {
         topicTitle: this.topicTitle,
         taskTitle: this.originalTaskTitle,
         newComment: {
-            txt:this.$refs.newCommentInput.value,
+            txt: `wrote: ${this.$refs.newCommentInput.value}`,
             user: this.currUser,
             timeStamp: Date.now()
           } 
@@ -460,19 +462,7 @@ export default {
     var topicTitle = this.topicTitle;
     var board = this.$route.params.board
     if (!topicTitle) this.$router.push(`/boards/${boardId}`);
-    // this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
     this.$store.dispatch({ type: "getTaskById", board, taskId, topicTitle });
-    
-
-  //   var members = this.currBoard.members;
-  //   console.log('these are the members: ', members);
-  //   var memberObjects = members.map(userId => {
-  //     var memberObject = await this.$store.dispatch({ type: "getUserById", userId })
-  //     console.log('got this memberObject: ',memberObject);
-  //     return memberObject
-  //   })
-  //   this.members = memberObjects
-    
   },
   components: { 
     CheckList,

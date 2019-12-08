@@ -171,7 +171,7 @@ export default {
       this.newTask.members = [];
       this.newTask.tags = [];
       this.newTask.checkLists = [];
-      this.newTask.activities = [{txt:'task creation', user: this.currUser, timeStamp: Date.now()}];
+      this.newTask.activities = [{txt:'has created this task', user: this.currUser, timeStamp: Date.now()}];
       this.newTask.imgUrls = [];
       this.newTask.dueDate = 0;
       this.newTask.createdAt = Date.now();

@@ -9,7 +9,7 @@ function makeId(length = 3) {
     return txt;
 }
 
-const applyDrag = (arr, dragResult) => {
+function applyDrag(arr, dragResult) {
     const { removedIndex, addedIndex, payload } = dragResult
     if (removedIndex === null && addedIndex === null) return arr
     const result = [...arr]

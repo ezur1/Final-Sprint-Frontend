@@ -1,5 +1,5 @@
 'use strict'
-
+import Vue from 'vue'
 import boardService from '../services/board.service.js'
 import socketService from '../services/socket.service.js';
 
@@ -49,6 +49,11 @@ export default {
             var boards = await boardService.query()
             context.commit({ type: 'setBoards', boards })
             return boards
+        },
+        async setCurrBoard(context, { boardId }) {
+            var board = await boardService.getById(boardId)
+            context.commit({ type: 'setCurrBoard', board })
+            return board
         },
         async getBoardById(context, { boardId }) {
             var board = await boardService.getById(boardId)
@@ -108,6 +113,15 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
+        async removeUserFromBoard(context) {
+            var loggedInUserId = context.getters.loggedInUser._id;
+            var board = context.getters.currBoard;
+            var usersOnBoard = board.usersOnBoard;
+            var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
+            board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board;
+        },
         async changeBoardBGImg(context, { board, boardImgUrl }) {
             board.imgUrl = boardImgUrl;
             await context.dispatch({ type: "updateBoard", board: board });
@@ -130,6 +144,12 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
+        async updateTopicOrder(context, { topics }) {
+            var board = context.getters.currBoard;
+            board.topics = topics
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
         async updateTopic(context, { board, oldTitle, newTitle }) {
             var idx = _findTopicIndex(board, oldTitle);
             board.topics[idx].title = newTitle;
@@ -143,56 +163,6 @@ export default {
             board.topics[topicIdx].color = color;
             await context.dispatch({ type: "updateBoard", board: board });
             return board
-        },
-        async updateTaskTitle(context, { board, topicTitle, newTitle, oldTitle }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
-            board.topics[topicIdx].tasks[taskIdx].title = newTitle;
-            var newLogEntry = _makeLogEntry(oldTitle, 'task', 'updated', context.getters.loggedInUser)
-            board.activityLog.push(newLogEntry)
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
-        },
-        async updateTaskDescription(context, { board, topicTitle, taskTitle, taskDescription }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            board.topics[topicIdx].tasks[taskIdx].description = taskDescription;
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
-        },
-        async updateTaskMembers(context, { board, topicTitle, taskTitle, member }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var currMemberIdx = board.topics[topicIdx].tasks[taskIdx].members.findIndex(currMember => currMember._id === member._id);
-            var foundTask = board.topics[topicIdx].tasks[taskIdx];
-            if (currMemberIdx === -1) {
-                board.topics[topicIdx].tasks[taskIdx].members.push(member);
-                context.commit({ type: 'setCurrTask', foundTask });
-                await context.dispatch({ type: "updateBoard", board: board });
-                return board
-            } else {
-                board.topics[topicIdx].tasks[taskIdx].members.splice(currMemberIdx, 1);
-                context.commit({ type: 'setCurrTask', foundTask });
-                await context.dispatch({ type: "updateBoard", board: board });
-                return board
-            }
-        },
-        async updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var currTagIdx = board.topics[topicIdx].tasks[taskIdx].tags.findIndex(currTag => currTag === tag);
-            var foundTask = board.topics[topicIdx].tasks[taskIdx];
-            if (currTagIdx === -1) {
-                board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
-                context.commit({ type: 'setCurrTask', foundTask });
-                await context.dispatch({ type: "updateBoard", board: board });
-                return board
-            } else {
-                board.topics[topicIdx].tasks[taskIdx].tags.splice(currTagIdx, 1);
-                context.commit({ type: 'setCurrTask', foundTask });
-                await context.dispatch({ type: "updateBoard", board: board });
-                return board
-            }
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
@@ -218,33 +188,83 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
-        async updateTopicOrder(context, { topics }) {
-            var board = context.getters.currBoard;
-            board.topics = topics
+        async updateTaskTitle(context, { board, topicTitle, newTitle, oldTitle }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, oldTitle);
+            var newTaskActivityEntry = _makeTaskActivityEntry(`the task title from ${oldTitle} to ${newTitle} `, 'updated ', context.getters.loggedInUser)
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+            board.topics[topicIdx].tasks[taskIdx].title = newTitle;
+            var newLogEntry = _makeLogEntry(oldTitle, 'task', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
-        async removeUserFromBoard(context) {
-            var loggedInUserId = context.getters.loggedInUser._id;
-            var board = context.getters.currBoard;
-            var usersOnBoard = board.usersOnBoard;
-            var userIdxInUsersOnBoard = _findUserIndexInUsersOnBoard(usersOnBoard, loggedInUserId);
-            board.usersOnBoard.splice(userIdxInUsersOnBoard, 1);
+        async updateTaskDescription(context, { board, topicTitle, taskTitle, taskDescription }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var newTaskActivityEntry = _makeTaskActivityEntry('the description', 'updated', context.getters.loggedInUser)
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+            board.topics[topicIdx].tasks[taskIdx].description = taskDescription;
             await context.dispatch({ type: "updateBoard", board: board });
-            return board;
+            return board
+        },
+        async updateTaskMembers(context, { board, topicTitle, taskTitle, member }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var currMemberIdx = board.topics[topicIdx].tasks[taskIdx].members.findIndex(currMember => currMember._id === member._id);
+            var foundTask = board.topics[topicIdx].tasks[taskIdx];
+            if (currMemberIdx === -1) {
+                let newTaskActivityEntry = _makeTaskActivityEntry(member.firstName, 'assigned this task to ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+                board.topics[topicIdx].tasks[taskIdx].members.push(member);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            } else {
+                let newTaskActivityEntry = _makeTaskActivityEntry(member.firstName, 'unassigned this task from', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+                board.topics[topicIdx].tasks[taskIdx].members.splice(currMemberIdx, 1);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            }
+        },
+        async updateTaskTags(context, { board, topicTitle, taskTitle, tag }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            var currTagIdx = board.topics[topicIdx].tasks[taskIdx].tags.findIndex(currTag => currTag === tag);
+            var foundTask = board.topics[topicIdx].tasks[taskIdx];
+            if (currTagIdx === -1) {
+                let newTaskActivityEntry = _makeTaskActivityEntry(tag, 'added a ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+                board.topics[topicIdx].tasks[taskIdx].tags.push(tag);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            } else {
+                let newTaskActivityEntry = _makeTaskActivityEntry(tag, 'removed a ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
+                board.topics[topicIdx].tasks[taskIdx].tags.splice(currTagIdx, 1);
+                context.commit({ type: 'setCurrTask', foundTask });
+                await context.dispatch({ type: "updateBoard", board: board });
+                return board
+            }
         },
         async updateCheckLists(context, { board, topicTitle, taskTitle, checkList }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            // var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             var currCheckListIdx = board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(currCheckList => currCheckList.title === checkList.title);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             if (currCheckListIdx === -1) {
+                let newTaskActivityEntry = _makeTaskActivityEntry(checkList.title, 'added checklist ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
                 board.topics[topicIdx].tasks[taskIdx].checkLists.push(checkList);
                 context.commit({ type: 'setCurrTask', foundTask });
                 await context.dispatch({ type: "updateBoard", board: board });
                 return board
             } else {
+                let newTaskActivityEntry = _makeTaskActivityEntry(checkList.title, 'removed checklist ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
                 board.topics[topicIdx].tasks[taskIdx].checkLists.splice(currCheckListIdx, 1);
                 context.commit({ type: 'setCurrTask', foundTask });
                 await context.dispatch({ type: "updateBoard", board: board });
@@ -254,6 +274,8 @@ export default {
         async updateCheckListTitle(context, { board, topicTitle, taskTitle, oldCheckListTitle, newCheckListTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            let newTaskActivityEntry = _makeTaskActivityEntry(`checklist: ${oldCheckListTitle}'s title `, 'updated ', context.getters.loggedInUser)
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
             var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, oldCheckListTitle)
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].title = newCheckListTitle;
             var newLogEntry = _makeLogEntry(oldCheckListTitle, `checklist's title`, 'updated', context.getters.loggedInUser)
@@ -268,11 +290,15 @@ export default {
             var currTodoIdx = board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.findIndex(currTodo => currTodo.txt === todo.txt);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             if (currTodoIdx === -1) {
+                let newTaskActivityEntry = _makeTaskActivityEntry(`checklist item: ${todo.txt} to ${checkListTitle} `, 'added ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
                 board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.push(todo);
                 context.commit({ type: 'setCurrTask', foundTask });
                 await context.dispatch({ type: "updateBoard", board: board });
                 return board
             } else {
+                let newTaskActivityEntry = _makeTaskActivityEntry(`checklist item: ${todo.txt} from ${checkListTitle} `, 'removed ', context.getters.loggedInUser)
+                board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
                 board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.splice(currTodoIdx, 1);
                 context.commit({ type: 'setCurrTask', foundTask });
                 await context.dispatch({ type: "updateBoard", board: board });
@@ -282,6 +308,8 @@ export default {
         async updateToDoItemTxt(context, { board, topicTitle, taskTitle, checkListTitle, oldToDoItemTxt, newToDoItemTxt }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            let newTaskActivityEntry = _makeTaskActivityEntry(`checklist item from ${oldToDoItemTxt} to ${newToDoItemTxt} `, 'updated ', context.getters.loggedInUser)
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
             var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             var todoIdx = board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos.findIndex(currTodo => currTodo.txt === oldToDoItemTxt);
             board.topics[topicIdx].tasks[taskIdx].checkLists[checkListIdx].todos[todoIdx].txt = newToDoItemTxt;
@@ -302,6 +330,8 @@ export default {
         async addDueDate(context, { board, topicTitle, taskTitle, dueDate }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            let newTaskActivityEntry = _makeTaskActivityEntry(`due date: ${Vue.moment(dueDate).format("MMM Do")}, `, 'added ', context.getters.loggedInUser)
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newTaskActivityEntry)
             board.topics[topicIdx].tasks[taskIdx].dueDate = dueDate;
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             context.commit({ type: 'setCurrTask', foundTask });
@@ -388,10 +418,10 @@ function _makeLogEntry(name, type, action, loggedInUser) {
     }
 }
 
-// function _makeTaskActivityEntry(name, type, action, loggedInUser) {
-//     return {
-//         title: ` has ${action} the "${name}" ${type}`,
-//         user: loggedInUser,
-//         timeStamp: Date.now()
-//     }
-// }
+function _makeTaskActivityEntry(what, action, loggedInUser) {
+    return {
+        txt: ` has ${action} ${what}`,
+        user: loggedInUser,
+        timeStamp: Date.now()
+    }
+}

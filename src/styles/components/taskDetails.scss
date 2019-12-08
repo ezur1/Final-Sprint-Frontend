@@ -80,10 +80,10 @@
     }
     .task-mid-info {
         width: 80%;
-        .members{
+        .members {
             justify-content: end;
             align-items: baseline;
-            .icon{
+            .icon {
                 margin-right: .5rem;
                 margin-top: .5rem;
             }
@@ -131,9 +131,9 @@
     width: 72%;
     min-height: 50vh;
     max-height: 60vh;
-    overflow-y:scroll; 
-    border-top:1px solid #d3d3d3;
-    margin-top:.5rem;
+    overflow-y: scroll;
+    border-top: 1px solid #d3d3d3;
+    margin-top: .5rem;
 }
 
 .description {
@@ -168,7 +168,6 @@
         height: 32px;
         margin-top: .6rem;
         max-width: 300px;
-        // overflow: hidden;
         padding: 6px 12px;
         position: relative;
         text-decoration: none;
@@ -237,15 +236,16 @@
                 font-size: 1rem;
                 background: none;
                 &:hover {
-                    border: 1.4px solid #638cd3;;
+                    border: 1.4px solid #638cd3;
+                    ;
                 }
             }
         }
     }
     .members-menu {
-        .minimenu-user{
-            margin-bottom:.5rem; 
-            .minimenu-avatar{
+        .minimenu-user {
+            margin-bottom: .5rem;
+            .minimenu-avatar {
                 margin: 0;
             }
         }
@@ -255,17 +255,17 @@
     }
     .img-menu {
         text-align: center;
-        .add-img-link{
+        .add-img-link {
             margin: 0 auto;
             margin-bottom: 1rem;
             cursor: pointer;
-            .icon{
+            .icon {
                 margin-right: .5rem;
             }
-            &:hover{
-                .icon{
+            &:hover {
+                .icon {
                     color: #638cd3;
-                }  
+                }
             }
         }
         >* {
@@ -296,31 +296,31 @@
         .blue-tag {
             background-color: $clrTag1;
             &:hover {
-                box-shadow: -6px 0 rgb(124, 192, 230),5.9px 0 rgb(124, 192, 230);
+                box-shadow: -6px 0 rgb(124, 192, 230), 5.9px 0 rgb(124, 192, 230);
             }
         }
         .pink-tag {
             background-color: $clrTag2;
             &:hover {
-                box-shadow: -6px 0 rgb(169, 94, 123),5.9px 0 rgb(169, 94, 123);
+                box-shadow: -6px 0 rgb(169, 94, 123), 5.9px 0 rgb(169, 94, 123);
             }
         }
         .yellow-tag {
             background-color: $clrTag3;
             &:hover {
-                box-shadow: -6px 0 rgb(255, 239, 168),5.9px 0 rgb(255, 239, 168);
+                box-shadow: -6px 0 rgb(255, 239, 168), 5.9px 0 rgb(255, 239, 168);
             }
         }
         .green-tag {
             background-color: $clrTag4;
             &:hover {
-                box-shadow: -6px 0 rgb(102, 224, 181),5.9px 0 rgb(102, 224, 181);
+                box-shadow: -6px 0 rgb(102, 224, 181), 5.9px 0 rgb(102, 224, 181);
             }
         }
         .red-tag {
             background-color: $clrTag5;
             &:hover {
-                box-shadow: -6px 0 rgba(248, 46, 46, 0.794),5.9px 0 rgba(248, 46, 46, 0.794);
+                box-shadow: -6px 0 rgba(248, 46, 46, 0.794), 5.9px 0 rgba(248, 46, 46, 0.794);
             }
         }
     }
@@ -333,14 +333,13 @@
 
 .checklist-container {
     width: 95%;
-    .progress-bar{
+    .progress-bar {
         width: 60%;
         margin-left: 1.8rem;
         progress {
             width: 60%;
-            margin-left:.5rem; 
+            margin-left: .5rem;
         }
-        
     }
     p {
         margin: 0;
@@ -405,11 +404,12 @@
 .active {
     text-decoration: line-through;
 }
-.task-images{
-    img{
+
+.task-images {
+    img {
         width: 10rem;
     }
-    .remove-img-icon{
+    .remove-img-icon {
         font-size: 1.5rem;
         margin-left: 1rem;
     }
@@ -425,11 +425,21 @@
         }
     }
 }
-.task-activities{
-    
-    .task-created-by{
-        
-    }
+
+.task-activities {
+    .task-created-by {}
+}
+
+.toggle-task-activities {
+    float: right;
+    border: 1.4px solid #172b4d;
+    border-radius: 3px;
+    color: #172b4d;
+    padding: 0 .3rem;
+    margin-top: .8rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    font-size: .9rem;
 }
 
 .add-comment {
