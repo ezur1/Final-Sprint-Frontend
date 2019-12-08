@@ -2,15 +2,17 @@
   <section v-on-clickaway="backToBoard" v-if="task" class="task-details flex col">
     <div class="preview-header flex space-between">
       <div class="task-mid-info flex space-between">
-        <div>
-            <h1
-            contenteditable
-            ref="taskTitle"
-            v-html="task.title"
-            @blur="updateTaskTitle"
-            @keydown.enter="endEditTaskTitle"
-          >{{task.title}}</h1>
-          <span>{{topicTitle}}</span>
+        <div class="top-header flex col">
+            <div>
+              <h1
+              contenteditable
+              ref="taskTitle"
+              v-html="task.title"
+              @blur="updateTaskTitle"
+              @keydown.enter="endEditTaskTitle"
+            >{{task.title}}</h1>
+            <span>{{topicTitle}}</span>
+            </div>
             <div v-if="task.members.length>0" class="flex members">
               <font-awesome-icon class="icon" icon="user-alt" />
               <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
@@ -81,13 +83,18 @@
               <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
             </div>
           </div>
-          <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
-            <div class="flex">
-              <Avatar :size="30" :username="activity.user.fullName"></Avatar>
-              <div>{{activity.user.fullName}}</div>
-              <div>{{activity.timeStamp | moment("from", "now") }}</div>
+          <div class="toggle-task-activities">
+            <span @click="showActivityDetails=!showActivityDetails">Toggle Details</span>
+          </div>
+          <div v-if="showActivityDetails"> 
+            <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
+              <div>
+                <Avatar :size="30" :username="activity.user.fullName"></Avatar>
+                <span class="task-activity-user-full-name">{{activity.user.firstName}}</span>
+                <span class="task-activity-txt">{{activity.txt}}</span>
+                <span>{{activity.timeStamp | moment("from", "now") }}</span>
+              </div>
             </div>
-            <div>{{activity.txt}}</div>
           </div>
         </section>
 
@@ -96,113 +103,116 @@
       <div class="details-sidebar flex col">
         <div class="add-to-card flex col">
           <h3>ADD TO CARD</h3>
-
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('members')">
-            <font-awesome-icon class="icon" icon="user-alt" />
-            <span class="title">Members</span>
-            <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
-              <span class="mini-menu-header">Members</span>
-              <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
-                <Avatar :size="30" :username="member.fullName"></Avatar>
-                <span class="title">{{member.fullName}}</span>
+          <div class="add-ons flex col">
+            <a href="#" class="prev-side-btn" @click.prevent="openMenu('members')">
+              <font-awesome-icon class="icon" icon="user-alt" />
+              <span class="title">Members</span>
+              <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
+                <span class="mini-menu-header">Members</span>
+                <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
+                  <Avatar :size="30" :username="member.fullName"></Avatar>
+                  <span class="title">{{member.fullName}}</span>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
 
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
-            <font-awesome-icon class="icon" icon="tags" />
-            <span class="title">Tags</span>
-            <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
-              <span class="mini-menu-header">Tags</span>
-              <div class="flex col">
-                <div
-                  ref="blue-tag"
-                  class="blue-tag tag"
-                  :class="{'selected-tag':task.tags.includes('blue-tag')}"
-                  @click="addTag('blue-tag')"
-                ></div>
-                <div
-                  ref="pink-tag"
-                  class="pink-tag tag"
-                  :class="{'selected-tag':task.tags.includes('pink-tag')}"
-                  @click="addTag('pink-tag')"
-                ></div>
-                <div
-                  ref="yellow-tag"
-                  class="yellow-tag tag"
-                  :class="{'selected-tag':task.tags.includes('yellow-tag')}"
-                  @click="addTag('yellow-tag')"
-                ></div>
-                <div
-                  ref="green-tag"
-                  class="green-tag tag"
-                  :class="{'selected-tag':task.tags.includes('green-tag')}"
-                  @click="addTag('green-tag')"
-                ></div>
-                <div
-                  ref="red-tag"
-                  class="red-tag tag"
-                  :class="{'selected-tag':task.tags.includes('red-tag')}"
-                  @click="addTag('red-tag')"
-                ></div>
+            <a href="#" class="prev-side-btn" @click.prevent="openMenu('tags')">
+              <font-awesome-icon class="icon" icon="tags" />
+              <span class="title">Tags</span>
+              <div v-if="tagsMenuOn" class="tags-menu mini-menu flex col" @click.stop>
+                <span class="mini-menu-header">Tags</span>
+                <div class="flex col tags">
+                  <div
+                    ref="blue-tag"
+                    class="blue-tag tag"
+                    :class="{'selected-tag':task.tags.includes('blue-tag')}"
+                    @click="addTag('blue-tag')"
+                  ></div>
+                  <div
+                    ref="pink-tag"
+                    class="pink-tag tag"
+                    :class="{'selected-tag':task.tags.includes('pink-tag')}"
+                    @click="addTag('pink-tag')"
+                  ></div>
+                  <div
+                    ref="yellow-tag"
+                    class="yellow-tag tag"
+                    :class="{'selected-tag':task.tags.includes('yellow-tag')}"
+                    @click="addTag('yellow-tag')"
+                  ></div>
+                  <div
+                    ref="green-tag"
+                    class="green-tag tag"
+                    :class="{'selected-tag':task.tags.includes('green-tag')}"
+                    @click="addTag('green-tag')"
+                  ></div>
+                  <div
+                    ref="red-tag"
+                    class="red-tag tag"
+                    :class="{'selected-tag':task.tags.includes('red-tag')}"
+                    @click="addTag('red-tag')"
+                  ></div>
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
 
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('checklist')">
-            <font-awesome-icon class="icon" icon="list-alt" />
-            <span class="title">Checklist</span>
-            <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
-              <span class="mini-menu-header">Add Checklist</span>
-              <div class="flex">
-                <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" placeholder="Checklist Title" />
+            <a href="#" class="prev-side-btn" @click.prevent="openMenu('checklist')">
+              <font-awesome-icon class="icon" icon="list-alt" />
+              <span class="title">Checklist</span>
+              <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
+                <span class="mini-menu-header">Add Checklist</span>
+                <div class="flex">
+                  <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" placeholder="Checklist Title" />
+                </div>
+                <button @click="addCheckList">Add</button>
               </div>
-              <button @click="addCheckList">Add</button>
-            </div>
-          </a>
+            </a>
 
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('duedate')">
-            <font-awesome-icon class="icon" icon="clock" />
-            <span class="title">Due Date</span>
-            <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
-              <span class="mini-menu-header">Change Due Date</span>
-              <input type="date" v-model="dueDate" />
-              <button @click="addDueDate">Add</button>
-            </div>
-          </a>
+            <a href="#" class="prev-side-btn" @click.prevent="openMenu('duedate')">
+              <font-awesome-icon class="icon" icon="clock" />
+              <span class="title">Due Date</span>
+              <div v-if="dueDateMenuOn" class="duedate-menu mini-menu flex col" @click.stop>
+                <span class="mini-menu-header">Change Due Date</span>
+                <input type="date" v-model="dueDate" />
+                <button @click="addDueDate">Add</button>
+              </div>
+            </a>
 
-          <a href="#" class="prev-side-btn" @click.prevent="openMenu('img')">
-            <font-awesome-icon class="icon" icon="images" />
-            <span class="title">Add Image</span>
-            <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
-              <label class="add-img-link flex align-c" >
-                <font-awesome-icon class="icon" icon="cloud-upload-alt" />
-                <input hidden type="file" @change="uploadImg($event)" />
-                Upload Image
-              </label>
-              <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
-              <button @click="addImg">Add</button>
-            </div>
-          </a>
+            <a href="#" class="prev-side-btn" @click.prevent="openMenu('img')">
+              <font-awesome-icon class="icon" icon="images" />
+              <span class="title">Add Image</span>
+              <div v-if="imgMenuOn" class="img-menu mini-menu flex col" @click.stop>
+                <label class="add-img-link flex align-c" >
+                  <font-awesome-icon class="icon" icon="cloud-upload-alt" />
+                  <input hidden type="file" @change="uploadImg($event)" />
+                  Upload Image
+                </label>
+                <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
+                <button @click="addImg">Add</button>
+              </div>
+            </a>
+          </div>
         </div>
 
         <div class="actions-on-card flex col">
           <h3>ACTIONS</h3>
-          <div class="prev-side-btn">
-            <font-awesome-icon class="icon" icon="chevron-right" />
-            <span class="title">Move</span>
-          </div>
-          <div class="prev-side-btn">
-            <font-awesome-icon class="icon" icon="copy"/>
-            <span class="title">Copy</span>
-          </div>
-          <div @click="showConfirm=!showConfirm" class="prev-side-btn">
-            <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
-            <span class="title" v-if="!showConfirm">Delete</span>
-            <div v-if="showConfirm" class="flex space-between">
-              <span>are you sure?</span>
-              <font-awesome-icon class="icon" @click="removeTask(task.title)" icon="check" />
-              <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
+          <div class="add-ons flex col">
+            <div class="prev-side-btn">
+              <font-awesome-icon class="icon" icon="chevron-right" />
+              <span class="title">Move</span>
+            </div>
+            <div class="prev-side-btn">
+              <font-awesome-icon class="icon" icon="copy"/>
+              <span class="title">Copy</span>
+            </div>
+            <div @click="showConfirm=!showConfirm" class="prev-side-btn">
+              <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
+              <span class="title" v-if="!showConfirm">Delete</span>
+              <div v-if="showConfirm" class="flex space-between">
+                <span>are you sure?</span>
+                <font-awesome-icon class="icon" @click="removeTask(task.title)" icon="check" />
+                <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
+              </div>
             </div>
           </div>
         </div>
@@ -231,6 +241,7 @@ export default {
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
+      showActivityDetails: false,
       showImg: false,
       val: null,
       tagsMenuOn: false,
@@ -410,7 +421,7 @@ export default {
         topicTitle: this.topicTitle,
         taskTitle: this.originalTaskTitle,
         newComment: {
-            txt:this.$refs.newCommentInput.value,
+            txt: `wrote: ${this.$refs.newCommentInput.value}`,
             user: this.currUser,
             timeStamp: Date.now()
           } 

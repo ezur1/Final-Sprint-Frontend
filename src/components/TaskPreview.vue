@@ -17,7 +17,7 @@
       <div v-if="task.dueDate" class="due-date">
         <font-awesome-icon class="icon" icon="clock" />
         {{task.dueDate | moment("MMM D")}}
-      </div>   
+      </div> 
       <div v-if="task.checkLists.length>0" class="checklist">
         <font-awesome-icon class="icon" icon="check-square" />
         {{checkListStats}}
