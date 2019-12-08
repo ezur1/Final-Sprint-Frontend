@@ -77,7 +77,7 @@ export default {
         },
         async addUserToBoard(context, { board, user }) {
             var testIfExist = board.members.find(User => User._id === user._id);
-            if (testIfExist) return console.log('this user is already a member...');
+            if (testIfExist) return // console.log('this user is already a member...');
             board.members.push(user);
             await context.dispatch({ type: "updateBoard", board: board });
             return board
@@ -115,7 +115,7 @@ export default {
         },
         async addTopic(context, { board, newTopic }) {
             var testIfExist = board.topics.find(topic => topic.title === newTopic.title)
-            if (testIfExist) return console.log('this topic already exists...');
+            if (testIfExist) return // console.log('this topic already exists...');
             board.topics.push(newTopic)
             var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
