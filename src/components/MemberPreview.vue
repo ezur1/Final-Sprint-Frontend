@@ -1,7 +1,7 @@
 <template>
   <section class="member-container">
     <div @click="removeMemberModal=!removeMemberModal">
-      <Avatar :size="40" :username="member.fullName" class="member-preview"></Avatar>
+      <Avatar :size="25" :username="member.fullName" class="member-preview"></Avatar>
       <div v-if="removeMemberModal" v-on-clickaway="closeRemoveMemberModal" class="member-prev-mini-menu">
         <div class="flex col space-around">
           <p>{{member.fullName}}</p>
