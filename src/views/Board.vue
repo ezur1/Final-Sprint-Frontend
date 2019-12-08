@@ -27,10 +27,7 @@ export default {
   name: "board",
   data() {
     return {
-      val: null,
-      isPreviewTask: false,
       topicTitleForTaskDetails: null,
-      currTaskDetails: null
     };
   },
   computed: {
@@ -42,7 +39,6 @@ export default {
         return this.currBoard.topics;
       },
       set(newTopicOrder) {
-        this.val = newTopicOrder;
         this.$store.dispatch({
           type: "updateTopicOrder",
           topics: newTopicOrder
@@ -125,12 +121,10 @@ export default {
       });
     },
     showTaskDetails(payload) {
-      this.currTaskDetails = payload.task;
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
       var taskId = payload.taskId;
       this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
-      // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
       this.$refs.windowOverlay.style.display="block";
     },
     updateTaskTitle(payload) {
@@ -341,14 +335,10 @@ export default {
     eventBus.$on("addTaskComment", payload => {
       this.addTaskComment(payload);
     });
-    
     eventBus.$on("disableWindowOverlay", () => {
       this.$refs.windowOverlay.style.display="none";
     });
     eventBus.$on("clearLog", this.clearLog);
-  },
-  async deactivated(){
-    await this.screenShot();
   },
   async destroyed(){
     await this.$store.dispatch({ type: "removeUserFromBoard" });

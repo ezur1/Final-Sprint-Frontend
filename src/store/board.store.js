@@ -50,6 +50,11 @@ export default {
             context.commit({ type: 'setBoards', boards })
             return boards
         },
+        async setCurrBoard(context, { boardId }) {
+            var board = await boardService.getById(boardId)
+            context.commit({ type: 'setCurrBoard', board })
+            return board
+        },
         async getBoardById(context, { boardId }) {
             var board = await boardService.getById(boardId)
             context.commit({ type: 'setCurrBoard', board })
@@ -77,7 +82,7 @@ export default {
         },
         async addUserToBoard(context, { board, user }) {
             var testIfExist = board.members.find(User => User._id === user._id);
-            if (testIfExist) return console.log('this user is already a member...');
+            if (testIfExist) return // console.log('this user is already a member...');
             board.members.push(user);
             await context.dispatch({ type: "updateBoard", board: board });
             return board
@@ -115,7 +120,7 @@ export default {
         },
         async addTopic(context, { board, newTopic }) {
             var testIfExist = board.topics.find(topic => topic.title === newTopic.title)
-            if (testIfExist) return console.log('this topic already exists...');
+            if (testIfExist) return // console.log('this topic already exists...');
             board.topics.push(newTopic)
             var newLogEntry = _makeLogEntry(newTopic.title, 'topic', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
@@ -196,6 +201,7 @@ export default {
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
+
             board.topics[idx].tasks.push(newTask);
             var newLogEntry = _makeLogEntry(newTask.title, 'task', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
@@ -236,7 +242,6 @@ export default {
         async updateCheckLists(context, { board, topicTitle, taskTitle, checkList }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            // var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             var currCheckListIdx = board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(currCheckList => currCheckList.title === checkList.title);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             if (currCheckListIdx === -1) {
@@ -387,6 +392,8 @@ function _makeLogEntry(name, type, action, loggedInUser) {
         timeStamp: Date.now()
     }
 }
+
+// var newTaskActivityEntry = _makeTaskActivityEntry(newTask.title, 'added', loggedInUser)
 
 // function _makeTaskActivityEntry(name, type, action, loggedInUser) {
 //     return {
