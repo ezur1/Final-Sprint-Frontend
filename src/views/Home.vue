@@ -30,6 +30,7 @@
                 TaskFlow helps your team
                 stay orgenized.</p>
             </div>
+            <img class="body-home-page" src="@/assets/bodyTp.png" />
           </div>
       </div>
     </div> 
