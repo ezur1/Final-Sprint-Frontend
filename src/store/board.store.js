@@ -327,6 +327,15 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board;
         },
+        async addTaskComment(context, { board, topicTitle, taskTitle, newComment }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            board.topics[topicIdx].tasks[taskIdx].activities.unshift(newComment);
+            var foundTask = board.topics[topicIdx].tasks[taskIdx];
+            context.commit({ type: 'setCurrTask', foundTask });
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board;
+        },
         // async addSomethingToTask(context, { board, topicTitle, taskTitle, imgUrl }) { ////////// <--- work in progress
         //     var type = 
         //     var topicIdx = _findTopicIndex(board, topicTitle);
@@ -378,3 +387,11 @@ function _makeLogEntry(name, type, action, loggedInUser) {
         timeStamp: Date.now()
     }
 }
+
+// function _makeTaskActivityEntry(name, type, action, loggedInUser) {
+//     return {
+//         title: ` has ${action} the "${name}" ${type}`,
+//         user: loggedInUser,
+//         timeStamp: Date.now()
+//     }
+// }

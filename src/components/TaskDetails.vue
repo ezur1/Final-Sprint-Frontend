@@ -15,9 +15,9 @@
       </div>
       <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
-
-    <div class="preview-body flex space-between">
-      <div class="preview-main" @click="closeMiniMenu()">
+    <div>in topic {{topicTitle}}</div>
+    <div class="details-body flex space-between">
+      <div class="details-main" @click="closeMiniMenu()">
        
         <section class="description">
           <div class="description-header flex align-c">
@@ -71,9 +71,32 @@
             :topicTitle="topicTitle"
           />
         </section>
+
+        <section class="taskActivities">
+
+          <div class="task-comments">
+            <div>
+              <h1 v-if="isAddComment" @click="openForm"><span>+ </span>Add Comment</h1>
+            </div>
+            <div v-if="!isAddComment" class="add-comment flex align-c">
+              <input ref="newCommentInput" type="text" placeholder="add a comment..." @keyup.enter="addComment" @blur="exit" />
+              <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
+            </div>
+          </div>
+          <div class="flex col" v-for="activity in task.activities" :key="activity.txt">
+            <div class="flex">
+              <Avatar :size="30" :username="activity.user.fullName"></Avatar>
+              <div>{{activity.user.fullName}}</div>
+              <div>{{activity.timeStamp | moment("from", "now") }}</div>
+            </div>
+            <div>{{activity.txt}}</div>
+          </div>
+
+        </section>
+
       </div>
 
-      <div class="preview-sidebar flex col">
+      <div class="details-sidebar flex col">
         <div class="add-to-card flex col">
           <h3>ADD TO CARD</h3>
 
@@ -222,7 +245,8 @@ export default {
       dueDateMenuOn: false,
       imgMenuOn: false,
       imgUrl: null,
-      taskDescription: ""
+      taskDescription: "",
+      isAddComment: true
     };
   },
   computed: {
@@ -245,6 +269,9 @@ export default {
     tags() {
       var tags = this.$store.getters.currTaskTags;
       return tags;
+    },
+    currUser() {
+      return this.$store.getters.loggedInUser;
     }
   },
   methods: {
@@ -383,6 +410,25 @@ export default {
         checkList: { title: checkListTitle, todos: [] }
       });
     },
+    openForm() {
+      this.isAddComment = !this.isAddComment;
+      // this.newComment.title = "";
+      setTimeout(()=>{
+        this.$refs.newCommentInput.focus();
+      },10) 
+    },
+    addComment() {
+      eventBus.$emit("addTaskComment", {
+        topicTitle: this.topicTitle,
+        taskTitle: this.originalTaskTitle,
+        newComment: {
+            txt:this.$refs.newCommentInput.value,
+            user: this.currUser,
+            timeStamp: Date.now()
+          } 
+      });
+      this.exit();
+    },
     addDueDate() {
       this.showDueDate = !this.showDueDate;
       this.dueDateMenuOn = !this.dueDateMenuOn;
@@ -406,7 +452,10 @@ export default {
     removeImg(imgUrl){
       var currTaskTitle = this.originalTaskTitle;
       eventBus.$emit("removeImgFromTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
-    }
+    },
+    exit() {
+      this.isAddComment=true;
+    },
   },
   created() {
     var boardId = this.$route.params.boardId;

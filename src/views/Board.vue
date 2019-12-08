@@ -253,6 +253,15 @@ export default {
         taskTitle:payload.taskTitle,
         imgUrl: payload.imgUrl
       });
+    },
+    addTaskComment(payload){
+      this.$store.dispatch({
+        type:"addTaskComment",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        newComment: payload.newComment
+      });
     }
   },
   async created() {
@@ -329,6 +338,10 @@ export default {
     eventBus.$on("removeImgFromTask", payload => {
       this.removeImgFromTask(payload);
     });
+    eventBus.$on("addTaskComment", payload => {
+      this.addTaskComment(payload);
+    });
+    
     eventBus.$on("disableWindowOverlay", () => {
       this.$refs.windowOverlay.style.display="none";
     });
