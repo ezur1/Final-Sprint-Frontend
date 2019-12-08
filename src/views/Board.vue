@@ -9,15 +9,6 @@
             <topic :topic="topic" :tasks="topic.tasks" />
         </Draggable>
       </Container>
-      <div @click="openForm()" class="add-topic flex align-c">
-        <div v-if="isAddTopic" >
-          <p><span>+</span>Add Topic</p>
-        </div>
-        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
-          <input ref="input" type="text" placeholder="Topic title" v-model="newTopic.title" @keyup.enter="addTopic" @blur="exit" @click.stop />
-          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
-        </div>
-      </div>
     </section>
     <div ref="windowOverlay" id="window-overlay"></div>
   </section>
@@ -37,12 +28,7 @@ export default {
   data() {
     return {
       val: null,
-      isAddTopic: true,
       isPreviewTask: false,
-      newTopic: {
-        title: "",
-        tasks: []
-      },
       topicTitleForTaskDetails: null,
       currTaskDetails: null
     };
@@ -98,18 +84,7 @@ export default {
         boardImgUrl: payload.boardImgUrl
       });
     },
-    exit() {
-      this.isAddTopic = true;
-      this.newTopic.title = '';
-    },
-    addTopic() {
-      this.$store.dispatch({
-        type: "addTopic",
-        board: this.boardToEdit,
-        newTopic: this.newTopicToEdit
-      });
-      this.newTopic.title = "";
-    },
+
     removeTopic(topicTitle) {
       this.$store.dispatch({
         type: "removeTopic",
@@ -158,12 +133,6 @@ export default {
       // this.$router.push(`/boards/${boardId}/tasks/${taskId}`);
       this.$refs.windowOverlay.style.display="block";
     },
-    openForm() {
-      this.isAddTopic = !this.isAddTopic;
-      setTimeout(() => {
-        this.$refs.input.focus();
-      }, 200);
-    },
     updateTaskTitle(payload) {
       this.$store.dispatch({
         type: "updateTaskTitle",
@@ -208,23 +177,44 @@ export default {
         color:payload.color
       });
     },
-    addCheckList(payload){
+    updateCheckLists(payload){
       this.$store.dispatch({
-        type:"addCheckList",
+        type:"updateCheckLists",
         board: this.boardToEdit,
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
-        checkList: payload.checkList
+        checkList: payload.checkList,
       });
     },
-    addTodo(payload){
+    updateCheckListTitle(payload){
+        this.$store.dispatch({
+        type: "updateCheckListTitle",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        oldCheckListTitle: payload.oldCheckListTitle,
+        newCheckListTitle: payload.newCheckListTitle
+      });
+    },
+    updateTodos(payload){
       this.$store.dispatch({
-        type:"addTodo",
+        type:"updateTodos",
         board: this.boardToEdit,
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
         checkListTitle: payload.checkListTitle,
         todo: payload.todo
+      });
+    },
+    updateToDoItemTxt(payload){
+        this.$store.dispatch({
+        type: "updateToDoItemTxt",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        checkListTitle: payload.checkListTitle,
+        oldToDoItemTxt: payload.oldToDoItemTxt,
+        newToDoItemTxt: payload.newToDoItemTxt
       });
     },
     toggleIsDoneCheckList(payload){
@@ -235,16 +225,6 @@ export default {
         taskTitle:payload.taskTitle,
         checkListTitle: payload.checkListTitle,
         currTodoTxt: payload.currTodoTxt
-      });
-    },
-    removeCheckList(payload){
-      this.$store.dispatch({
-        type:"removeCheckList",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkListTitle: payload.checkListTitle,
-        
       });
     },
     addDueDate(payload){
@@ -272,6 +252,15 @@ export default {
         topicTitle: payload.topicTitle,
         taskTitle:payload.taskTitle,
         imgUrl: payload.imgUrl
+      });
+    },
+    addTaskComment(payload){
+      this.$store.dispatch({
+        type:"addTaskComment",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle:payload.taskTitle,
+        newComment: payload.newComment
       });
     }
   },
@@ -320,16 +309,25 @@ export default {
       this.updateTopicColor(payload);
     });
     eventBus.$on("addCheckList", payload => {
-      this.addCheckList(payload);
+      this.updateCheckLists(payload);
     });
-    eventBus.$on("addTodo", payload => {
-      this.addTodo(payload);
+    eventBus.$on("removeCheckList", payload => {
+      this.updateCheckLists(payload);
+    });
+    eventBus.$on("updateCheckListTitle", payload => {
+      this.updateCheckListTitle(payload);
+    });
+    eventBus.$on("addTodoItem", payload => {
+      this.updateTodos(payload);
+    });
+    eventBus.$on("removeTodoItem", payload => {
+      this.updateTodos(payload);
+    });
+    eventBus.$on("updateToDoItemTxt", payload => {
+      this.updateToDoItemTxt(payload);
     });
     eventBus.$on("toggleIsDoneCheckList", payload => {
       this.toggleIsDoneCheckList(payload);
-    });
-    eventBus.$on("removeCheckList", payload => {
-      this.removeCheckList(payload);
     });
     eventBus.$on("addDueDate", payload => {
       this.addDueDate(payload);
@@ -340,6 +338,10 @@ export default {
     eventBus.$on("removeImgFromTask", payload => {
       this.removeImgFromTask(payload);
     });
+    eventBus.$on("addTaskComment", payload => {
+      this.addTaskComment(payload);
+    });
+    
     eventBus.$on("disableWindowOverlay", () => {
       this.$refs.windowOverlay.style.display="none";
     });

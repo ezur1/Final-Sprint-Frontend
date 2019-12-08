@@ -13,11 +13,21 @@
           <img class="task-preview-image" :src="task.imgUrls[0]" />
         </div>
       </div>
+      <section class="flex space-around indicators">
+      <div v-if="task.dueDate" class="due-date">
+        <font-awesome-icon class="icon" icon="clock" />
+        {{task.dueDate | moment("MMM D")}}
+      </div>   
+      <div v-if="task.checkLists.length>0" class="checklist">
+        <font-awesome-icon class="icon" icon="check-square" />
+        {{checkListStats}}
+      </div>   
       <div v-if="task.members.length!==0" class="members flex">
         <div v-for="member in task.members" :key="member._id" class="member-preview" @click="removeMemberFromTask(task.title, member._id)">
             <Avatar :size="30" :username="member.fullName"></Avatar>
         </div>
       </div>
+      </section>
     </div>
   </div>
 </template>
@@ -29,6 +39,23 @@ export default {
   props: ['topic', 'task'],
   data() {
     return {};
+  },
+  computed: {
+    checkListStats() {
+      var counters = {
+          total: 0,
+          done: 0
+      }
+      this.task.checkLists.forEach(checkList =>{
+        counters.total+=checkList.todos.length
+        checkList.todos.forEach(todo => {
+            if (todo.isDone) {
+                counters.done++
+            }  
+        })
+      })
+      return `${counters.done}/${counters.total}`
+    }
   },
   methods: {
     longtapHandler(){
