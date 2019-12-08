@@ -1,7 +1,6 @@
 <template>
-  <section class="boards-preview">
-    <h2>{{board.title}}</h2>
-    <div class="board-card" @click="goToBoard" :style="{ backgroundImage: `url(${board.imgUrl})`}">
+  <section class="boards-preview "> 
+    <div class="board-card " @click="goToBoard" :style="{ backgroundImage: `url(${board.imgUrl})`}">
       <a href="#" class="board-prev-side-btn" @click.stop="openMenu">
         <font-awesome-icon icon="ellipsis-h" />
         <div v-on-clickaway="openMenu" v-if="boardMenuOn" class="board-prev-mini-menu flex col" @click.stop>
@@ -25,6 +24,7 @@
         </div>
       </a>
     </div>
+    <h2 class="board-title">{{board.title}}</h2>
   </section>
 </template>
 

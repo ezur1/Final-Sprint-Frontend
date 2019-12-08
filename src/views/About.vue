@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div class="devs flex  align-c space-around">
+    <div class="devs flex  align-c space-around wrap">
       <div class="dev">
         <img class="dev-avatar" src="@/assets/img/ohad.jpg" alt="">
         <h2>Ohad Leshem</h2>
