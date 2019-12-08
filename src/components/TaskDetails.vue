@@ -81,13 +81,18 @@
               <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
             </div>
           </div>
-          <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
-            <div class="flex">
-              <Avatar :size="30" :username="activity.user.fullName"></Avatar>
-              <div>{{activity.user.fullName}}</div>
-              <div>{{activity.timeStamp | moment("from", "now") }}</div>
+          <div class="toggle-task-activities">
+            <span @click="showActivityDetails=!showActivityDetails">Toggle Details</span>
+          </div>
+          <div v-if="showActivityDetails"> 
+            <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
+              <div>
+                <Avatar :size="30" :username="activity.user.fullName"></Avatar>
+                <span class="task-activity-user-full-name">{{activity.user.firstName}}</span>
+                <span class="task-activity-txt">{{activity.txt}}</span>
+                <span>{{activity.timeStamp | moment("from", "now") }}</span>
+              </div>
             </div>
-            <div>{{activity.txt}}</div>
           </div>
         </section>
 
@@ -231,6 +236,7 @@ export default {
       dueDate: null,
       showDueDate: false,
       showConfirm: false,
+      showActivityDetails: false,
       showImg: false,
       val: null,
       tagsMenuOn: false,
@@ -410,7 +416,7 @@ export default {
         topicTitle: this.topicTitle,
         taskTitle: this.originalTaskTitle,
         newComment: {
-            txt:this.$refs.newCommentInput.value,
+            txt: `wrote: ${this.$refs.newCommentInput.value}`,
             user: this.currUser,
             timeStamp: Date.now()
           } 
