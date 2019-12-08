@@ -11,8 +11,8 @@
         </div>
     </section>
     <div class="main-content-container ">
-      <div class="flex wrap space-around">
-        <h1>My Boards</h1>
+      <h1>My Boards</h1>
+      <div class="flex wrap ">
         <BoardsPreview v-for="board in boards" 
         :key="board._id" 
         :board="board" 
