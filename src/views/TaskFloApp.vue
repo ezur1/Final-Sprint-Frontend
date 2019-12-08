@@ -1,9 +1,18 @@
 <template>
   <section id="app" class="main-app-container">
     <MainNavBar />
-    <div class="main-content-container">
-      <div class="flex space-around">
-        <h1>My Boards</h1>
+    <section class="add-board flex justify-center ">
+        <div>
+          <h2><p v-if="isAddBoard" @click="openNewBoardModal"><span>+ </span>Add Board</p></h2>
+        </div>
+        <div v-if="!isAddBoard" class="add-board-title flex align-c">
+          <input ref="input" type="text" placeholder="Board title" v-model="newBoard.title" @keyup.enter="addBoard" @blur="exit" />
+          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
+        </div>
+    </section>
+    <div class="main-content-container ">
+      <h1>My Boards</h1>
+      <div class="flex wrap ">
         <BoardsPreview v-for="board in boards" 
         :key="board._id" 
         :board="board" 
@@ -13,15 +22,7 @@
     </div>
       <router-view />
     </div>
-    <section class="add-board">
-        <div>
-          <h2><p v-if="isAddBoard" @click="openNewBoardModal"><span>+ </span>Add Board</p></h2>
-        </div>
-        <div v-if="!isAddBoard" class="add-board-title flex align-c">
-          <input ref="input" type="text" placeholder="Board title" v-model="newBoard.title" @keyup.enter="addBoard" @blur="exit" />
-          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
-        </div>
-    </section>
+    
   </section>
 </template>
 

@@ -13,7 +13,7 @@
           <img class="task-preview-image" :src="task.imgUrls[0]" />
         </div>
       </div>
-      <section class="flex space-around indicators">
+      <section class="flex space-between align-c indicators">
       <div v-if="task.dueDate" class="due-date">
         <font-awesome-icon class="icon" icon="clock" />
         {{task.dueDate | moment("MMM D")}}
