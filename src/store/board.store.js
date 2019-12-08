@@ -201,6 +201,7 @@ export default {
         },
         async addTask(context, { board, topicTitle, newTask }) {
             var idx = _findTopicIndex(board, topicTitle);
+
             board.topics[idx].tasks.push(newTask);
             var newLogEntry = _makeLogEntry(newTask.title, 'task', 'added', context.getters.loggedInUser)
             board.activityLog.push(newLogEntry)
@@ -391,6 +392,8 @@ function _makeLogEntry(name, type, action, loggedInUser) {
         timeStamp: Date.now()
     }
 }
+
+// var newTaskActivityEntry = _makeTaskActivityEntry(newTask.title, 'added', loggedInUser)
 
 // function _makeTaskActivityEntry(name, type, action, loggedInUser) {
 //     return {
