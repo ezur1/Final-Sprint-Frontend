@@ -50,7 +50,8 @@ export default {
     },
   },
   methods: {
-    goToBoard() {
+    async goToBoard() {
+      await this.$store.dispatch({type:"setCurrBoard", boardId: this.board._id})
       this.$router.push(`/boards/${this.board._id}`);
     },
     openMenu() {

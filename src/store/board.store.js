@@ -50,6 +50,11 @@ export default {
             context.commit({ type: 'setBoards', boards })
             return boards
         },
+        async setCurrBoard(context, { boardId }) {
+            var board = await boardService.getById(boardId)
+            context.commit({ type: 'setCurrBoard', board })
+            return board
+        },
         async getBoardById(context, { boardId }) {
             var board = await boardService.getById(boardId)
             context.commit({ type: 'setCurrBoard', board })
@@ -236,7 +241,6 @@ export default {
         async updateCheckLists(context, { board, topicTitle, taskTitle, checkList }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            // var checkListIdx = _findCheckListIndex(board, topicIdx, taskIdx, checkListTitle)
             var currCheckListIdx = board.topics[topicIdx].tasks[taskIdx].checkLists.findIndex(currCheckList => currCheckList.title === checkList.title);
             var foundTask = board.topics[topicIdx].tasks[taskIdx];
             if (currCheckListIdx === -1) {

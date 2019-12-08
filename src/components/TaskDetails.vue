@@ -107,7 +107,7 @@
               <span class="mini-menu-header">Members</span>
               <div class="flex col">
                 <h3>Board Members</h3>
-                <!-- <input type="text" placeholder="Search members" ref="memberSearch" /> -->
+                <!-- <input type="text" placeholder="Search members" ref="memberSearch" /> // future development --> 
               </div>
               <div class="flex" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
                 <Avatar :size="30" :username="member.fullName"></Avatar>
@@ -319,9 +319,6 @@ export default {
       eventBus.$emit("disableWindowOverlay");
       this.$router.push(`/boards/${boardId}`);
     },
-    // closeRemoveMemberModal(){
-    //   this.removeMemberModal= false
-    // },
     closeMiniMenu() {
       this.checklistMenuOn = false;
       this.tagsMenuOn = false;
@@ -397,7 +394,6 @@ export default {
         topicTitle: this.topicTitle,
         tag
       });
-      // console.log("this.tags:", this.tags);
     },
     addCheckList() {
       this.checklistMenuOn = !this.checklistMenuOn;
@@ -412,7 +408,6 @@ export default {
     },
     openForm() {
       this.isAddComment = !this.isAddComment;
-      // this.newComment.title = "";
       setTimeout(()=>{
         this.$refs.newCommentInput.focus();
       },10) 
@@ -463,19 +458,7 @@ export default {
     var topicTitle = this.topicTitle;
     var board = this.$route.params.board
     if (!topicTitle) this.$router.push(`/boards/${boardId}`);
-    // this.$store.dispatch({ type: "getTaskById", boardId, taskId, topicTitle });
     this.$store.dispatch({ type: "getTaskById", board, taskId, topicTitle });
-    
-
-  //   var members = this.currBoard.members;
-  //   console.log('these are the members: ', members);
-  //   var memberObjects = members.map(userId => {
-  //     var memberObject = await this.$store.dispatch({ type: "getUserById", userId })
-  //     console.log('got this memberObject: ',memberObject);
-  //     return memberObject
-  //   })
-  //   this.members = memberObjects
-    
   },
   components: { 
     CheckList,
