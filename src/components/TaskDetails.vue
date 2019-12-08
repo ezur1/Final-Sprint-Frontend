@@ -84,7 +84,10 @@
           <div class="toggle-task-activities">
             <span @click="showActivityDetails=!showActivityDetails">Toggle Details</span>
           </div>
-          <div v-if="showActivityDetails"> 
+          <div v-if="showActivityDetails">
+            <div v-if="task.activities!=0" class="toggle-task-activities">
+            <span @click="clearTaskActivities">Clear Activities</span>
+          </div> 
             <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
               <div>
                 <Avatar :size="30" :username="activity.user.fullName"></Avatar>
@@ -440,15 +443,16 @@ export default {
     addImg() {
       this.showImg = !this.showImg;
       this.imgMenuOn = !this.imgMenuOn;
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("addImgToTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: this.imgUrl });
+      eventBus.$emit("addImgToTask", {taskTitle: this.originalTaskTitle, topicTitle: this.topicTitle, imgUrl: this.imgUrl });
     },
     removeImg(imgUrl){
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("removeImgFromTask", {taskTitle: currTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
+      eventBus.$emit("removeImgFromTask", {taskTitle: this.originalTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
     },
     exit() {
       this.isAddComment=true;
+    },
+    clearTaskActivities() {
+      eventBus.$emit("clearTaskActivities", {topicTitle: this.topicTitle, taskTitle: this.originalTaskTitle});
     },
   },
   created() {

@@ -80,6 +80,16 @@ export default {
             board.activityLog = [];
             await context.dispatch({ type: "updateBoard", board: board });
         },
+
+        async clearTaskActivities(context, { board, topicTitle, taskTitle }) {
+            var topicIdx = _findTopicIndex(board, topicTitle);
+            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
+            board.topics[topicIdx].tasks[taskIdx].activities = [];
+            var newLogEntry = _makeLogEntry(taskTitle, 'task', 'updated', context.getters.loggedInUser)
+            board.activityLog.push(newLogEntry)
+            await context.dispatch({ type: "updateBoard", board: board });
+            return board
+        },
         async addUserToBoard(context, { board, user }) {
             var testIfExist = board.members.find(User => User._id === user._id);
             if (testIfExist) return // console.log('this user is already a member...');

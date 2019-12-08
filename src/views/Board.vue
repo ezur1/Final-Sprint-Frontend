@@ -66,6 +66,13 @@ export default {
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
+    clearTaskActivities(payload){
+      this.$store.dispatch({ 
+        type: "clearTaskActivities",
+        board: this.boardToEdit,
+        topicTitle: payload.topicTitle,
+        taskTitle: payload.taskTitle });
+    },
     updateBoardDescription(payload) {
       this.$store.dispatch({
         type: "updateBoardDescription",
@@ -339,6 +346,10 @@ export default {
       this.$refs.windowOverlay.style.display="none";
     });
     eventBus.$on("clearLog", this.clearLog);
+
+    eventBus.$on("clearTaskActivities", payload => {
+      this.clearTaskActivities(payload);
+    });
   },
   async destroyed(){
     await this.$store.dispatch({ type: "removeUserFromBoard" });
