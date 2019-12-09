@@ -83,7 +83,6 @@
 
 .topic-content-header {
     margin: 10px;
-    // padding: 0 .5rem;
 }
 
 .topic-mini-menu {
@@ -109,31 +108,7 @@
             margin-bottom: .5rem;
         }
     }
-    .light-blue:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .light-red:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .light-green:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .light-pink:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .light-yellow:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .light-gray:hover {
-        transition: all .2s ease-in-out;
-        box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .none:hover {
+    .none:hover,.light-blue:hover,.light-gray:hover,.light-yellow:hover,.light-red:hover,.light-green:hover,.light-pink:hover {
         transition: all .2s ease-in-out;
         box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
     }
@@ -263,6 +238,7 @@
     &:hover {
         background-color: rgba(0, 0, 0, .6);
     }
+
 }
 
 .mini-menu-topic-icon {

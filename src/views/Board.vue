@@ -10,6 +10,7 @@
         </Draggable>
       </Container>
     </section>
+    <mobileNavBar :currBoard="currBoard" />
     <div ref="windowOverlay" id="window-overlay"></div>
   </section>
 </template>
@@ -17,12 +18,12 @@
 <script>
 import BoardNavBar from "../components/BoardNavBar.vue";
 import MainNavBar from "../components/MainNavBar.vue";
+import mobileNavBar from '../components/MobileNavBar.vue';
 import { Container, Draggable } from "vue-smooth-dnd";
 import { utilService } from "../services/util.service.js";
 import Topic from "../components/Topic.vue";
 import { eventBus } from "../main.js";
 import socketService from '../services/socket.service.js';
-
 export default {
   name: "board",
   data() {
@@ -133,7 +134,8 @@ export default {
     BoardNavBar,
     MainNavBar,
     Container, 
-    Draggable
+    Draggable,
+    mobileNavBar
   }
 };
 </script>

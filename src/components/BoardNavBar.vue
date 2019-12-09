@@ -144,8 +144,6 @@ export default {
         });
         return res;
       });
-      // console.log("titles", titles);
-      // var res=titles.map(topicTitle =>{
       return titles.map(topicTitle => {
         let topic = topicTitle.topicTitle;
         return topicTitle.taskTitles.filter(taskTitle => {
@@ -156,9 +154,7 @@ export default {
               taskTitle: taskTitle.title,
               taskId: taskTitle.id
             });
-            // console.log("searchRes", searchRes);
             this.filterRes = searchRes;
-            // console.log("this.filterRes", this.filterRes);
           }
         });
       });

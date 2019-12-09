@@ -54,6 +54,7 @@
           @drop="onDrop" 
           group-name="tasks" 
           :get-child-payload="getTaskPayload(topic.title)"
+          :drag-begin-delay="200"
           drag-class="task-drag"
           drop-class="task-drop"
           >
