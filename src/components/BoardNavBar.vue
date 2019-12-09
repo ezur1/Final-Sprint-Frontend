@@ -125,7 +125,6 @@ export default {
     goToBoard(boardId) {
       if (boardId === this.currBoardId) return;
       this.currBoardId = boardId;
-      console.log('boardId in goToBoard', boardId);
       this.$router.push(`/boards/${boardId}`);
       this.$store.dispatch({ type: 'getBoardById', boardId: boardId });
       this.isOpenDropDown = false;
@@ -144,8 +143,6 @@ export default {
         });
         return res;
       });
-      // console.log("titles", titles);
-      // var res=titles.map(topicTitle =>{
       return titles.map(topicTitle => {
         let topic = topicTitle.topicTitle;
         return topicTitle.taskTitles.filter(taskTitle => {
@@ -156,9 +153,7 @@ export default {
               taskTitle: taskTitle.title,
               taskId: taskTitle.id
             });
-            // console.log("searchRes", searchRes);
             this.filterRes = searchRes;
-            // console.log("this.filterRes", this.filterRes);
           }
         });
       });
@@ -169,7 +164,7 @@ export default {
         this.$refs.newTopicInput.focus();
       }, 200);
     },
-    exit() {
+    exit() {  
       this.$refs.newTopicInput.value = '';
       this.isAddTopic = !this.isAddTopic;
     },
@@ -184,11 +179,7 @@ export default {
       this.filterRes = null;
     },
     openTaskDetails(taskId) {
-      console.log('taskId', taskId);
       let taskToOpen = this.filterRes.filter(task => task.taskId === taskId);
-      console.log('taskToOpen.taskId', taskToOpen[0].taskId);
-      console.log(' taskToOpen.topic', taskToOpen[0].topic);
-
       eventBus.$emit('showTaskDetails', {
         taskId: taskToOpen[0].taskId,
         topicTitle: taskToOpen[0].topic

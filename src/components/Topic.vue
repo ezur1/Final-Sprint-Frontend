@@ -53,6 +53,7 @@
           <Container 
           @drop="onDrop" 
           group-name="tasks" 
+          :drag-begin-delay=100
           :get-child-payload="getTaskPayload(topic.title)"
           drag-class="task-drag"
           drop-class="task-drop"
@@ -136,6 +137,7 @@ export default {
   methods: {
     onDrop(dropResult) {
       this.tasks = utilService.applyDrag(this.tasks, dropResult);
+      // this.topic.blur()
     },
     getTaskPayload (topicTitle) {
       return index => {

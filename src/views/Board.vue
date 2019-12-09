@@ -66,20 +66,6 @@ export default {
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
-    updateBoardDescription(payload) {
-      this.$store.dispatch({
-        type: "updateBoardDescription",
-        board: this.boardToEdit,
-        newBoardDescription: payload.newBoardDescription
-      });
-    },
-    changeBoardBGImg(payload) {
-      this.$store.dispatch({
-        type: "changeBoardBGImg",
-        board: this.boardToEdit,
-        boardImgUrl: payload.boardImgUrl
-      });
-    },
     showTaskDetails(payload) {
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
@@ -87,9 +73,14 @@ export default {
       this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
       this.$refs.windowOverlay.style.display="block";
     },
-    handleTopic(payload){ this.$store.dispatch({ type:"handleTopic", payload });
+    handleBoard(payload){
+       this.$store.dispatch({ type:"handleBoard", payload });
     },
-    handleTask(payload){ this.$store.dispatch({ type:"handleTask", payload });
+    handleTopic(payload){
+       this.$store.dispatch({ type:"handleTopic", payload });
+    },
+    handleTask(payload){
+       this.$store.dispatch({ type:"handleTask", payload });
     }
   },
   async created() {
@@ -100,20 +91,10 @@ export default {
     socketService.emit('gotOnBoard', id)
     socketService.on('boardUpdated', this.updateBoard)
 
-    eventBus.$on("updateBoardDescription", payload => {
-      this.updateBoardDescription(payload);
-    });
-    eventBus.$on("changeBoardBGImg", payload => {
-      this.changeBoardBGImg(payload);
-    });
-
-    //// start generalized section ////
-
+    eventBus.$on('handleBoard', payload => { this.handleBoard(payload) });
     eventBus.$on('handleTopic', payload => { this.handleTopic(payload) });
     eventBus.$on('handleTask', payload => { this.handleTask(payload) });
     
-    //// end generalized section ////
-
     eventBus.$on("showTaskDetails", payload => {
       this.showTaskDetails(payload);
     });
