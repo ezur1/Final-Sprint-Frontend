@@ -30,6 +30,21 @@
     .exit-btn {
         font-size: 1.3rem;
     }
+    @include for-wide-layout{
+        // .add-topic{
+        //     // width: 10rem;
+        // }
+        .board-name-users{
+            h1{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 12rem;
+            }
+            // width: 5rem;
+            // 
+        }
+    }
 }
 
 .open-menu-btn {
