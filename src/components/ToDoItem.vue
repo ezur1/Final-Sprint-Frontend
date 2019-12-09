@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex todo align-c">
-      <input @click="toggleIsDoneTodo(todo.txt)" :checked="todo.isDone" type="checkbox" />
+      <input @click="toggleToDoIsDone(todo)" :checked="todo.isDone" type="checkbox" />
         <p :class="{active: todo.isDone}"
         contenteditable
         ref="toDoItemTxt"
@@ -29,11 +29,13 @@ export default {
     updateToDoItemTxt(event) {
       if (!event.target.innerHTML)
         event.target.innerHTML = "Todo";
-      eventBus.$emit("updateToDoItemTxt", {
-        topicTitle: this.topicTitle,
-        taskTitle: this.taskTitle,
+      eventBus.$emit('handleTask', { 
+        action: 'updateCheckList', 
+        checkListAction: 'updateToDoItemTxt', 
+        topicTitle: this.topicTitle, 
         checkListTitle: this.checkList.title,
-        oldToDoItemTxt: this.todo.txt,
+        todo:this.todo,
+        toDoItemTxt: this.todo.txt,
         newToDoItemTxt: event.target.innerHTML
       });
       this.originalToDoItemTxt = event.target.innerHTML;
@@ -42,20 +44,22 @@ export default {
       this.$refs.toDoItemTxt.blur();
     },
     removeTodoItem(todo) {
-      eventBus.$emit("removeTodoItem", {
-        taskTitle: this.taskTitle,
-        topicTitle: this.topicTitle,
-        checkListTitle: this.checkList.title,
+      eventBus.$emit('handleTask', { 
+        action: 'updateCheckList', 
+        checkListAction: 'updateTodos', 
+        topicTitle: this.topicTitle, 
+        checkListTitle: this.checkList.title, 
         todo
       });
     },
-    toggleIsDoneTodo(currTodoTxt) {
-        eventBus.$emit("toggleIsDoneCheckList", {
-        topicTitle: this.topicTitle,
-        taskTitle: this.taskTitle,
-        checkListTitle: this.checkList.title,
-        currTodoTxt: currTodoTxt
-      });
+    toggleToDoIsDone(todo) {
+        eventBus.$emit('handleTask', { 
+          action: 'updateCheckList', 
+          checkListAction: 'toggleToDoIsDone', 
+          topicTitle: this.topicTitle, 
+          checkListTitle: this.checkList.title, 
+          todo
+        });
     },
   },
   created() {

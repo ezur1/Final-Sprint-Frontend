@@ -66,13 +66,6 @@ export default {
     clearLog(){
       this.$store.dispatch({ type: "clearLog", board: this.boardToEdit, });
     },
-    clearTaskActivities(payload){
-      this.$store.dispatch({ 
-        type: "clearTaskActivities",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle: payload.taskTitle });
-    },
     updateBoardDescription(payload) {
       this.$store.dispatch({
         type: "updateBoardDescription",
@@ -87,46 +80,6 @@ export default {
         boardImgUrl: payload.boardImgUrl
       });
     },
-
-    removeTopic(topicTitle) {
-      this.$store.dispatch({
-        type: "removeTopic",
-        board: this.boardToEdit,
-        topicTitle: topicTitle
-      });
-    },
-    updateTopic(payload) {
-      this.$store.dispatch({
-        type: "updateTopic",
-        board: this.boardToEdit,
-        oldTitle: payload.oldTitle,
-        newTitle: payload.newTitle
-      });
-    },
-    updateTask(payload) {
-      this.$store.dispatch({
-        type: "updateTask",
-        board: this.boardToEdit,
-        oldTitle: payload.oldTitle,
-        newTitle: payload.newTitle
-      });
-    },
-    addTask(payload) {
-      this.$store.dispatch({
-        type: "addTask",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        newTask: payload.newTask
-      });
-    },
-    removeTask(payload) {
-      this.$store.dispatch({
-        type: "removeTask",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle: payload.taskTitle
-      });
-    },
     showTaskDetails(payload) {
       this.topicTitleForTaskDetails = payload.topicTitle;
       var boardId = this.$route.params.boardId;
@@ -134,135 +87,9 @@ export default {
       this.$router.push({name: 'task', params: {boardId, taskId, board: this.currBoard}})
       this.$refs.windowOverlay.style.display="block";
     },
-    updateTaskTitle(payload) {
-      this.$store.dispatch({
-        type: "updateTaskTitle",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        newTitle: payload.newTitle,
-        oldTitle: payload.oldTaskTitle
-      });
+    handleTopic(payload){ this.$store.dispatch({ type:"handleTopic", payload });
     },
-    updateTaskDescription(payload){
-        this.$store.dispatch({
-        type: "updateTaskDescription",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        taskDescription:payload.description
-      });
-    },
-    updateTaskMembers(payload){
-        this.$store.dispatch({
-        type: "updateTaskMembers",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        member:payload.member
-      });
-    },
-    updateTaskTags(payload){
-        this.$store.dispatch({
-        type: "updateTaskTags",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        tag:payload.tag
-      });
-    },
-    updateTopicColor(payload){
-      this.$store.dispatch({
-        type: "updateTopicColor",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        color:payload.color
-      });
-    },
-    updateCheckLists(payload){
-      this.$store.dispatch({
-        type:"updateCheckLists",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkList: payload.checkList,
-      });
-    },
-    updateCheckListTitle(payload){
-        this.$store.dispatch({
-        type: "updateCheckListTitle",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        oldCheckListTitle: payload.oldCheckListTitle,
-        newCheckListTitle: payload.newCheckListTitle
-      });
-    },
-    updateTodos(payload){
-      this.$store.dispatch({
-        type:"updateTodos",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkListTitle: payload.checkListTitle,
-        todo: payload.todo
-      });
-    },
-    updateToDoItemTxt(payload){
-        this.$store.dispatch({
-        type: "updateToDoItemTxt",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkListTitle: payload.checkListTitle,
-        oldToDoItemTxt: payload.oldToDoItemTxt,
-        newToDoItemTxt: payload.newToDoItemTxt
-      });
-    },
-    toggleIsDoneCheckList(payload){
-      this.$store.dispatch({
-        type:"toggleIsDoneCheckList",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        checkListTitle: payload.checkListTitle,
-        currTodoTxt: payload.currTodoTxt
-      });
-    },
-    addDueDate(payload){
-      this.$store.dispatch({
-        type:"addDueDate",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        dueDate: payload.dueDate
-      });
-    },
-    addImgToTask(payload){
-      this.$store.dispatch({
-        type:"addImgToTask",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        imgUrl: payload.imgUrl
-      });
-    },
-    removeImgFromTask(payload){
-      this.$store.dispatch({
-        type:"removeImgFromTask",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        imgUrl: payload.imgUrl
-      });
-    },
-    addTaskComment(payload){
-      this.$store.dispatch({
-        type:"addTaskComment",
-        board: this.boardToEdit,
-        topicTitle: payload.topicTitle,
-        taskTitle:payload.taskTitle,
-        newComment: payload.newComment
-      });
+    handleTask(payload){ this.$store.dispatch({ type:"handleTask", payload });
     }
   },
   async created() {
@@ -279,77 +106,21 @@ export default {
     eventBus.$on("changeBoardBGImg", payload => {
       this.changeBoardBGImg(payload);
     });
-    eventBus.$on("updateTopic", payload => {
-      this.updateTopic(payload);
-    });
-    eventBus.$on("removeTopic", payload => {
-      this.removeTopic(payload);
-    });
-    eventBus.$on("addTask", payload => {
-      this.addTask(payload);
-    });
-    eventBus.$on("removeTask", payload => {
-      this.removeTask(payload);
-    });
+
+    //// start generalized section ////
+
+    eventBus.$on('handleTopic', payload => { this.handleTopic(payload) });
+    eventBus.$on('handleTask', payload => { this.handleTask(payload) });
+    
+    //// end generalized section ////
+
     eventBus.$on("showTaskDetails", payload => {
       this.showTaskDetails(payload);
-    });
-    eventBus.$on("updateTaskTitle", payload => {
-      this.updateTaskTitle(payload);
-    });
-    eventBus.$on("updateTaskDescription", payload => {
-      this.updateTaskDescription(payload);
-    });
-    eventBus.$on("updateTaskMembers", payload => {
-      this.updateTaskMembers(payload);
-    });
-    eventBus.$on("updateTaskTags", payload => {
-      this.updateTaskTags(payload);
-    });
-    eventBus.$on("updateTopicColor", payload => {
-      this.updateTopicColor(payload);
-    });
-    eventBus.$on("addCheckList", payload => {
-      this.updateCheckLists(payload);
-    });
-    eventBus.$on("removeCheckList", payload => {
-      this.updateCheckLists(payload);
-    });
-    eventBus.$on("updateCheckListTitle", payload => {
-      this.updateCheckListTitle(payload);
-    });
-    eventBus.$on("addTodoItem", payload => {
-      this.updateTodos(payload);
-    });
-    eventBus.$on("removeTodoItem", payload => {
-      this.updateTodos(payload);
-    });
-    eventBus.$on("updateToDoItemTxt", payload => {
-      this.updateToDoItemTxt(payload);
-    });
-    eventBus.$on("toggleIsDoneCheckList", payload => {
-      this.toggleIsDoneCheckList(payload);
-    });
-    eventBus.$on("addDueDate", payload => {
-      this.addDueDate(payload);
-    });
-    eventBus.$on("addImgToTask", payload => {
-      this.addImgToTask(payload);
-    });
-    eventBus.$on("removeImgFromTask", payload => {
-      this.removeImgFromTask(payload);
-    });
-    eventBus.$on("addTaskComment", payload => {
-      this.addTaskComment(payload);
     });
     eventBus.$on("disableWindowOverlay", () => {
       this.$refs.windowOverlay.style.display="none";
     });
     eventBus.$on("clearLog", this.clearLog);
-
-    eventBus.$on("clearTaskActivities", payload => {
-      this.clearTaskActivities(payload);
-    });
   },
   async destroyed(){
     await this.$store.dispatch({ type: "removeUserFromBoard" });

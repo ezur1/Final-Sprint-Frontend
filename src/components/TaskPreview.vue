@@ -59,10 +59,7 @@ export default {
   },
   methods: {
     longtapHandler(){
-      console.log('long tap has been detected');
-    },
-    removeTask(taskTitle) {
-      eventBus.$emit('removeTask', { topicTitle: this.topic.title, taskTitle });
+      // console.log('long tap has been detected');
     },
     showTaskDetails(taskId) {
       eventBus.$emit('showTaskDetails', { taskId,topicTitle: this.topic.title});

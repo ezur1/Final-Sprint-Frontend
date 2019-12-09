@@ -38,8 +38,6 @@
   </div>
 </template>
 
-
-
 <script>
 import { eventBus } from "../main.js";
 import { directive as onClickaway } from "vue-clickaway";
@@ -73,14 +71,13 @@ export default {
   },
   methods: {
     updateCheckListTitle(event) {
-      if (!event.target.innerHTML)
-        event.target.innerHTML = "Checklist";
-      eventBus.$emit("updateCheckListTitle", {
-        topicTitle: this.topicTitle,
-        taskTitle: this.taskTitle,
-        oldCheckListTitle: this.checkList.title,
-        newCheckListTitle: event.target.innerHTML
-      });
+      if (!event.target.innerHTML) event.target.innerHTML = "Checklist";
+      eventBus.$emit('handleTask', { 
+        action: 'updateCheckList', 
+        checkListAction: 'updateCheckListTitle', 
+        topicTitle: this.topicTitle, 
+        checkListTitle: this.checkList.title, 
+        newCheckListTitle: event.target.innerHTML})
       this.originalCheckListTitle = event.target.innerHTML;
     },
     endEditCheckListTitle() {
@@ -90,41 +87,18 @@ export default {
       var todoItem = this.$refs.todoItem.value;
       if(todoItem==="")return;
       this.$refs.todoItem.value = "";
-        eventBus.$emit("addTodoItem", {
-          taskTitle: this.taskTitle,
-          topicTitle: this.topicTitle,
-          checkListTitle: this.checkList.title,
-          todo: {
+      eventBus.$emit('handleTask', { 
+        action: 'updateCheckList', 
+        checkListAction: 'updateTodos', 
+        topicTitle: this.topicTitle, 
+        checkListTitle: this.checkList.title, 
+        todo: {
             txt:todoItem,
             isDone:false
-          }
-        });
-    },
-    removeTodoItem(todo) {
-      // var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("removeTodoItem", {
-        taskTitle: this.taskTitle,
-        topicTitle: this.topicTitle,
-        checkListTitle: this.checkList.title,
-        todo
-      });
-    },
-    toggleIsDoneCheckList(currTodoTxt) {
-      // event.target.checked = !event.target.checked;
-        eventBus.$emit("toggleIsDoneCheckList", {
-        topicTitle: this.topicTitle,
-        taskTitle: this.taskTitle,
-        checkListTitle: this.checkList.title,
-        currTodoTxt: currTodoTxt
-      });
+          }})
     },
     removeCheckList() {
-      // var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("removeCheckList", {
-        taskTitle: this.taskTitle,
-        topicTitle: this.topicTitle,
-        checkList: this.checkList
-      });
+      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkList: this.checkList})
     },
     showComposer(){
       this.isAddTodo=false;

@@ -9,32 +9,32 @@
     align-self: center;
     padding: 1.5rem 1.5rem;
     color: #222222;
-    @include for-normal-layout{
+    @include for-normal-layout {
         width: 600px;
         margin-top: 1rem;
-        .details-body{
+        .details-body {
             flex-direction: column;
         }
-        .details-main{
+        .details-main {
             width: 100%;
         }
-        .top-header{
+        .top-header {
             flex-direction: row;
-            .members{
+            .members {
                 border-left: .5px solid #d3d3d3;
                 margin-left: 1rem;
-                padding-left:1rem; 
-                .icon{
+                padding-left: 1rem;
+                .icon {
                     display: none;
                 }
             }
         }
-        .details-sidebar{
+        .details-sidebar {
             width: 100%;
-            .add-ons{
+            .add-ons {
                 justify-content: flex-start;
                 flex-direction: row;
-                .prev-side-btn{
+                .prev-side-btn {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
@@ -42,31 +42,31 @@
                     width: 6.5rem;
                     margin-right: .5rem;
                 }
-                .mini-menu{
+                .mini-menu {
                     top: 0;
                     left: 6.5rem;
-                    .mini-menu-header{
+                    .mini-menu-header {
                         display: none;
                     }
-                    &.duedate-menu{
+                    &.duedate-menu {
                         left: 0;
                         top: 3.1rem;
                     }
-                    &.img-menu{
+                    &.img-menu {
                         left: 0;
                         top: 3.1rem;
                     }
                 }
-                .minimenu-user{
+                .minimenu-user {
                     height: 1.125rem;
                 }
-                .tags-menu{
-                    .tags{
+                .tags-menu {
+                    .tags {
                         flex-direction: row;
                     }
-                    .tag{
+                    .tag {
                         // width: 20%;
-                        margin:0 .25rem;
+                        margin: 0 .25rem;
                     }
                 }
             }
@@ -106,9 +106,8 @@
     .due-date-header {
         margin-bottom: 8px;
     }
-
-    .task-images{
-        .task-img{
+    .task-images {
+        .task-img {
             height: 50%;
             width: 50%;
         }
@@ -276,7 +275,7 @@
         >* {
             .img-attachment {
                 max-width: 9rem;
-                max-height: 10rem;
+                max-height: 4.2rem;
             }
         }
     }

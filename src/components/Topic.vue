@@ -8,7 +8,7 @@
             contenteditable
             ref="topicTitle"
             v-html="topic.title"
-            @blur="updateTopic"
+            @blur="updateTopicTitle"
             @keydown.enter="endEditTopicTitle"
           ></div>
           <a href="#" class="prev-side-btn" @click.prevent="openMenu">
@@ -100,7 +100,6 @@ export default {
   data() {
     return {
       isAddTask: true,
-      val: null,
       newTask: {
         title: "",
         id: null
@@ -126,7 +125,6 @@ export default {
         return this.topic.tasks;
       },
       set(newTaskOrder) {
-        this.val = newTaskOrder;
         this.$store.dispatch({
           type: "updateTaskOrder",
           topicTitle: this.topic.title,
@@ -152,17 +150,18 @@ export default {
       }, 10);
     },
     removeTopic(topicTitle) {
-      eventBus.$emit("removeTopic", topicTitle);
+      eventBus.$emit('handleTopic', {action: 'removeTopic', topicTitle})
     },
-    updateTopic(event) {
-      eventBus.$emit("updateTopic", {
-        oldTitle: this.originalTopicTitle,
-        newTitle: event.target.innerHTML
-      });
+    updateTopicTitle(event){
+      var topicTitle = this.originalTopicTitle;
+      var newTopicTitle = event.target.innerHTML;
+      eventBus.$emit('handleTopic', {action: 'updateTopicTitle', topicTitle, newTopicTitle})
       this.originalTopicTitle = event.target.innerHTML;
     },
-    endEditTopicTitle() {
-      this.$refs.topicTitle.blur();
+    updateTopicColor(topicTitle, color){
+      eventBus.$emit('handleTopic', {action: 'updateTopicColor', topicTitle, color})
+      this.openColorDropDown();
+      this.openMenu();
     },
     addTask(topicTitle) {
       if (!this.newTask.title) return;
@@ -175,10 +174,8 @@ export default {
       this.newTask.imgUrls = [];
       this.newTask.dueDate = 0;
       this.newTask.createdAt = Date.now();
-      eventBus.$emit("addTask", {
-        topicTitle: topicTitle,
-        newTask: this.newTask
-      });
+      var taskTitle = this.newTask.title;
+      eventBus.$emit('handleTask', {action: 'addTask', topicTitle, taskTitle, newTask: this.newTask})
       this.isAddTask = true;
     },
     setSort(key){
@@ -195,6 +192,9 @@ export default {
     exit() {
       this.isAddTask = true;
     },
+    endEditTopicTitle() {
+      this.$refs.topicTitle.blur();
+    },
     openMenu() {
       this.TopicMenuOn = !this.TopicMenuOn;
       this.showConfirm=false
@@ -202,11 +202,6 @@ export default {
     openColorDropDown() {
       this.isColorDropDownOpen = !this.isColorDropDownOpen;
     },
-    updateTopicColor(topicTitle, color) {
-      eventBus.$emit("updateTopicColor", { topicTitle, color });
-      this.openColorDropDown();
-      this.openMenu();
-    }
   },
   components: {
     TaskPreview,

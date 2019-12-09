@@ -59,7 +59,7 @@
           </div>
           <div v-for="(imgUrl, index) in task.imgUrls" :key="index">
             <img :src="imgUrl" />
-            <font-awesome-icon @click="removeImg(imgUrl)" icon="times" class="remove-img-icon"/>
+            <font-awesome-icon @click="removeImgFromTask(imgUrl)" icon="times" class="remove-img-icon"/>
           </div>
         </section>
 
@@ -112,7 +112,7 @@
               <span class="title">Members</span>
               <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
                 <span class="mini-menu-header">Members</span>
-                <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="addMemberToTask(member)">
+                <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="updateTaskMembers(member)">
                   <Avatar :size="30" :username="member.fullName"></Avatar>
                   <span class="title">{{member.fullName}}</span>
                 </div>
@@ -129,31 +129,31 @@
                     ref="blue-tag"
                     class="blue-tag tag"
                     :class="{'selected-tag':task.tags.includes('blue-tag')}"
-                    @click="addTag('blue-tag')"
+                    @click="updateTaskTags('blue-tag')"
                   ></div>
                   <div
                     ref="pink-tag"
                     class="pink-tag tag"
                     :class="{'selected-tag':task.tags.includes('pink-tag')}"
-                    @click="addTag('pink-tag')"
+                    @click="updateTaskTags('pink-tag')"
                   ></div>
                   <div
                     ref="yellow-tag"
                     class="yellow-tag tag"
                     :class="{'selected-tag':task.tags.includes('yellow-tag')}"
-                    @click="addTag('yellow-tag')"
+                    @click="updateTaskTags('yellow-tag')"
                   ></div>
                   <div
                     ref="green-tag"
                     class="green-tag tag"
                     :class="{'selected-tag':task.tags.includes('green-tag')}"
-                    @click="addTag('green-tag')"
+                    @click="updateTaskTags('green-tag')"
                   ></div>
                   <div
                     ref="red-tag"
                     class="red-tag tag"
                     :class="{'selected-tag':task.tags.includes('red-tag')}"
-                    @click="addTag('red-tag')"
+                    @click="updateTaskTags('red-tag')"
                   ></div>
                 </div>
               </div>
@@ -165,9 +165,9 @@
               <div v-if="checklistMenuOn" class="checklist-menu mini-menu flex col" @click.stop>
                 <span class="mini-menu-header">Add Checklist</span>
                 <div class="flex">
-                  <input @keyup.enter="addCheckList" type="text" ref="checklistTitle" placeholder="Checklist Title" />
+                  <input @keyup.enter="updateCheckLists" type="text" ref="checklistTitle" placeholder="Checklist Title" />
                 </div>
-                <button @click="addCheckList">Add</button>
+                <button @click="updateCheckLists">Add</button>
               </div>
             </a>
 
@@ -191,7 +191,7 @@
                   Upload Image
                 </label>
                 <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
-                <button @click="addImg">Add</button>
+                <button @click="addImgToTask()">Add</button>
               </div>
             </a>
           </div>
@@ -213,7 +213,7 @@
               <span class="title" v-if="!showConfirm">Delete</span>
               <div v-if="showConfirm" class="flex space-between">
                 <span>are you sure?</span>
-                <font-awesome-icon class="icon" @click="removeTask(task.title)" icon="check" />
+                <font-awesome-icon class="icon" @click="removeTask()" icon="check" />
                 <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
               </div>
             </div>
@@ -332,12 +332,8 @@ export default {
       this.dueDateMenuOn = false;
     },
     updateTaskTitle(event) {
-      var oldTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("updateTaskTitle", {
-        oldTaskTitle,
-        newTitle: event.target.innerHTML,
-        topicTitle: this.topicTitle
-      });
+      var newTaskTitle = event.target.innerHTML
+      eventBus.$emit('handleTask', {action: 'updateTaskTitle', topicTitle: this.topicTitle, newTaskTitle})
       this.originalTaskTitle = event.target.innerHTML;
     },
     endEditTaskTitle() {
@@ -347,71 +343,41 @@ export default {
       this.$refs.taskDescription.blur();
     },
     updateTaskDescription(event) {
-      var currTaskTitle = this.originalTaskTitle;
-      var newDescription = event.target.innerHTML;
-      if (newDescription === "") {
-        newDescription = "Empty, click here to edit!";
+      var description = event.target.innerHTML;
+      if (description === "") {
+        description = "Empty, click here to edit!";
         event.target.innerHTML = "Empty, click here to edit!";
       }
-      eventBus.$emit("updateTaskDescription", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        description: newDescription
-      });
+      eventBus.$emit('handleTask', {action: 'updateTaskDescription', topicTitle: this.topicTitle, description})
     },
-    removeTask(taskTitle) {
-      eventBus.$emit("removeTask", {
-        topicTitle: this.topicTitle,
-        taskTitle: taskTitle
-      });
+    removeTask() {
+      eventBus.$emit('handleTask', {action: 'removeTask', topicTitle: this.topicTitle})
       this.backToBoard();
     },
-    addMemberToTask(member){
-      var currTaskTitle = this.originalTaskTitle;
+    updateTaskMembers(member){
       var isSelected = event.target.className.includes("selected-member");
       if (isSelected) {
         var classStr = event.target.className;
         classStr = classStr.replace(" selected-member", "");
         event.target.className = classStr;
       } else event.target.className += " selected-member";
-      eventBus.$emit("updateTaskMembers", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        member
-      });
+      eventBus.$emit('handleTask', {action: 'updateTaskMembers', topicTitle: this.topicTitle, member})
     },
-    removeMemberFromTask(member){
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("updateTaskMembers", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        member
-      });
-    },
-    addTag(tag) {
-      var currTaskTitle = this.originalTaskTitle;
+    updateTaskTags(tag) {
       var isSelected = event.target.className.includes("selected-tag");
       if (isSelected) {
         var classStr = event.target.className;
         classStr = classStr.replace(" selected-tag", "");
         event.target.className = classStr;
       } else event.target.className += " selected-tag";
-      eventBus.$emit("updateTaskTags", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        tag
-      });
+      eventBus.$emit('handleTask', {action: 'updateTaskTags', topicTitle: this.topicTitle, tag})
     },
-    addCheckList() {
+    updateCheckLists() {
       this.checklistMenuOn = !this.checklistMenuOn;
       var checkListTitle = this.$refs.checklistTitle.value;
       if(checkListTitle === "")return;
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("addCheckList", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        checkList: { title: checkListTitle, todos: [] }
-      });
+      var checkList = { title: checkListTitle, todos: [] }
+      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkList})
     },
     openForm() {
       this.isAddComment = !this.isAddComment;
@@ -420,44 +386,36 @@ export default {
       },10) 
     },
     addComment() {
-      eventBus.$emit("addTaskComment", {
-        topicTitle: this.topicTitle,
-        taskTitle: this.originalTaskTitle,
-        newComment: {
+      var comment = {
             txt: `wrote: ${this.$refs.newCommentInput.value}`,
             user: this.currUser,
             timeStamp: Date.now()
           } 
-      });
+      eventBus.$emit('handleTask', {action: 'addTaskComment', topicTitle: this.topicTitle, comment})
       this.exit();
     },
     addDueDate() {
       this.showDueDate = !this.showDueDate;
       this.dueDateMenuOn = !this.dueDateMenuOn;
-      var currTaskTitle = this.originalTaskTitle;
-      eventBus.$emit("addDueDate", {
-        taskTitle: currTaskTitle,
-        topicTitle: this.topicTitle,
-        dueDate: this.dueDate
-      });
+      eventBus.$emit('handleTask', {action: 'addDueDate', topicTitle: this.topicTitle, dueDate: this.dueDate})
     },
     async uploadImg(ev) {
       var res = await imgService.uploadImg(ev)
       this.imgUrl = res;
     },
-    addImg() {
+    addImgToTask() {
       this.showImg = !this.showImg;
       this.imgMenuOn = !this.imgMenuOn;
-      eventBus.$emit("addImgToTask", {taskTitle: this.originalTaskTitle, topicTitle: this.topicTitle, imgUrl: this.imgUrl });
+      eventBus.$emit('handleTask', {action: 'addImgToTask', topicTitle: this.topicTitle, imgUrl: this.imgUrl})
     },
-    removeImg(imgUrl){
-      eventBus.$emit("removeImgFromTask", {taskTitle: this.originalTaskTitle, topicTitle: this.topicTitle, imgUrl: imgUrl });
+    removeImgFromTask(imgUrl){
+      eventBus.$emit('handleTask', {action: 'removeImgFromTask', topicTitle: this.topicTitle, imgUrl})
     },
     exit() {
       this.isAddComment=true;
     },
     clearTaskActivities() {
-      eventBus.$emit("clearTaskActivities", {topicTitle: this.topicTitle, taskTitle: this.originalTaskTitle});
+      eventBus.$emit('handleTask', {action: 'clearTaskActivities', topicTitle: this.topicTitle})
     },
   },
   created() {

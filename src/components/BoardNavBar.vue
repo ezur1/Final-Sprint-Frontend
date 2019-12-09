@@ -143,15 +143,10 @@ export default {
         this.$refs.newTopicInput.value='';
         this.isAddTopic = !this.isAddTopic;
     },
-      addTopic() {
-        this.$store.dispatch({
-          type: "addTopic",
-          board: this.currBoard,
-          newTopic: {
-            title:this.$refs.newTopicInput.value,
-            tasks:[]
-          } 
-      });
+    addTopic() {
+      var topicTitle = this.$refs.newTopicInput.value
+      var newTopic = { title: topicTitle, tasks: [] };
+      eventBus.$emit('handleTopic', {action: 'addTopic', topicTitle, newTopic})
       this.exit();
     },
     openSearchModal(){
