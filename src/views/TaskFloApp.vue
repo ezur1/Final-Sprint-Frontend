@@ -1,18 +1,17 @@
 <template>
   <section id="app" class="main-app-container">
     <MainNavBar />
-    <section class="add-board flex justify-center ">
-        <div>
-          <h2><p v-if="isAddBoard" @click="openNewBoardModal"><span>+ </span>Add Board</p></h2>
-        </div>
-        <div v-if="!isAddBoard" class="add-board-title flex align-c">
-          <input ref="input" type="text" placeholder="Board title" v-model="newBoard.title" @keyup.enter="addBoard" @blur="exit" />
-          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
-        </div>
-    </section>
+    <div class="my-boards-header flex align-c justify-center">
+        <h1>My Boards</h1>         
+    </div>
+   
     <div class="main-content-container ">
-      <h1>My Boards</h1>
-      <div class="flex wrap ">
+      <div class="flex justify-center wrap">
+        <div class="add-board-container">
+          <div class="add-board-btn flex align-c justify-center" @click="openNewBoardModal"><font-awesome-icon icon="plus" size="2x" /></div>   
+          <h1 v-if="isAddBoard">Add Board</h1>
+          <input v-if="!isAddBoard" ref="input" type="text" placeholder="Add Board title" v-model="newBoard.title" @keyup.enter="addBoard" @blur="exit" />
+        </div>
         <BoardsPreview v-for="board in boards" 
         :key="board._id" 
         :board="board" 
@@ -22,6 +21,7 @@
     </div>
       <router-view />
     </div>
+    <Footer/>
     
   </section>
 </template>
@@ -29,8 +29,11 @@
 <script>
 import MainNavBar from "../components/MainNavBar.vue";
 import BoardsPreview from "../components/BoardsPreview.vue";
+import Footer from "../components/Footer.vue";
 export default {
   data() {
+
+    
     return {
       isAddBoard: true,
       newBoard: {
@@ -86,7 +89,8 @@ export default {
   },
   components: {
     MainNavBar,
-    BoardsPreview
+    BoardsPreview,
+    Footer
   }
 };
 </script>
