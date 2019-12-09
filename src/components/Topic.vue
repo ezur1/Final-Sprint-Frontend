@@ -55,7 +55,6 @@
           group-name="tasks" 
           :drag-begin-delay=100
           :get-child-payload="getTaskPayload(topic.title)"
-          :drag-begin-delay="200"
           drag-class="task-drag"
           drop-class="task-drop"
           >
