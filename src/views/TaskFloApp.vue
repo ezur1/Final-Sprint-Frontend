@@ -1,10 +1,12 @@
 <template>
   <section id="app" class="main-app-container">
     <MainNavBar />
-
+    <div class="my-boards-header flex align-c justify-center">
+        <h1>My Boards</h1>         
+    </div>
+   
     <div class="main-content-container ">
-      <h1>My Boards</h1>
-      <div class="flex wrap ">
+      <div class="flex justify-center wrap">
         <div class="add-board-container">
           <div class="add-board-btn flex align-c justify-center" @click="openNewBoardModal"><font-awesome-icon icon="plus" size="2x" /></div>   
           <h1 v-if="isAddBoard">Add Board</h1>
