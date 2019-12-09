@@ -1,19 +1,37 @@
 <template>
   <section class="board-nav-bar-container flex space-between">
     <section class="board-name-users flex">
-      <h1 class="nav-bar-logo" @click="openDropDown">{{currBoard.title}}</h1>
-      <div v-if="currBoard.usersOnBoard.length>0" class="connected-users flex ">
+      <h1 class="nav-bar-logo" @click="openDropDown">{{ currBoard.title }}</h1>
+      <div
+        v-if="currBoard.usersOnBoard.length > 0"
+        class="connected-users flex "
+      >
         <div v-for="user in currBoard.usersOnBoard" :key="user._id">
-          <div class="user-on-board">{{user.userName}}</div>
+          <div class="user-on-board">{{ user.userName }}</div>
         </div>
       </div>
       <div @click="openForm()" class="add-topic flex align-c">
-        <div v-if="isAddTopic" >
+        <div v-if="isAddTopic">
           <p><span>+</span>Add Topic</p>
         </div>
-        <div v-if="!isAddTopic" class="topic-composer flex space-between align-c">
-          <input ref="newTopicInput" type="text" placeholder="Topic title" @keyup.enter="addTopic" @blur="exit" @click.stop />
-          <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
+        <div
+          v-if="!isAddTopic"
+          class="topic-composer flex space-between align-c"
+        >
+          <input
+            ref="newTopicInput"
+            type="text"
+            placeholder="Topic title"
+            @keyup.enter="addTopic"
+            @blur="exit"
+            @click.stop
+          />
+          <font-awesome-icon
+            class="exit-btn"
+            @click="exit"
+            icon="times"
+            size="2x"
+          />
         </div>
       </div>
     </section>
@@ -26,48 +44,60 @@
           type="text"
           placeholder="search for a task"
         />
-        <font-awesome-icon class="search-icon" icon="search" @click="openSearchModal" />
+        <font-awesome-icon
+          class="search-icon"
+          icon="search"
+          @click="openSearchModal"
+        />
         <transition name="fade">
           <div v-if="isSearchModal" class="search-modal">
             <h1>search results</h1>
             <h3
-              @click="openTaskDetails"
+              @click="openTaskDetails(task.taskId)"
               v-for="task in filterRes"
               :key="task.taskId"
-            >{{task.taskTitle}}</h3>
+            >
+              {{ task.taskTitle }}
+            </h3>
           </div>
         </transition>
       </div>
-      <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">Open Menu</p>
+      <p class="open-menu-btn" @click="openSideMenu" :board="currBoard">
+        Open Menu
+      </p>
       <transition name="fade">
         <div class="drop-down flex col" v-if="isOpenDropDown">
           <div v-for="board in boards" :key="board._id">
-              <div class="flex" @click="goToBoard(board._id)">
-                <h3 class="board-li">{{board.title}}</h3>
-              </div>
+            <div class="flex" @click="goToBoard(board._id)">
+              <h3 class="board-li">{{ board.title }}</h3>
+            </div>
           </div>
         </div>
       </transition>
     </div>
-    <transition name="slide-fade" >
-      <SideMenu v-on-clickaway="removeSideMenu" v-if="isOpenSideMenu" @removeSideMenu="removeSideMenu()"></SideMenu>
+    <transition name="slide-fade">
+      <SideMenu
+        v-on-clickaway="removeSideMenu"
+        v-if="isOpenSideMenu"
+        @removeSideMenu="removeSideMenu()"
+      ></SideMenu>
     </transition>
   </section>
 </template>
 
 <script>
-import {eventBus} from '../main.js'
+import { eventBus } from '../main.js';
 import SideMenu from '../components/SideMenu.vue';
-import { directive as onClickaway } from "vue-clickaway";
+import { directive as onClickaway } from 'vue-clickaway';
 
 export default {
-  props: ["currBoard"],
+  props: ['currBoard'],
   data() {
     return {
       isAddTopic: true,
-      taskTitles: "",
-      filterBy: "",
-      filterRes: "",
+      taskTitles: '',
+      filterBy: '',
+      filterRes: '',
       isSearchModal: false,
       currBoardId: null,
       boards: null,
@@ -95,9 +125,9 @@ export default {
     goToBoard(boardId) {
       if (boardId === this.currBoardId) return;
       this.currBoardId = boardId;
-      console.log("boardId in goToBoard", boardId);
+      console.log('boardId in goToBoard', boardId);
       this.$router.push(`/boards/${boardId}`);
-      this.$store.dispatch({ type: "getBoardById", boardId: boardId });
+      this.$store.dispatch({ type: 'getBoardById', boardId: boardId });
       this.isOpenDropDown = false;
     },
     filter() {
@@ -107,77 +137,81 @@ export default {
       let titles = this.currBoard.topics.map(topic => {
         let res = { topicTitle: topic.title };
         res.taskTitles = topic.tasks.map(task => {
-          let taskObj = { title: "", id: "" };
+          let taskObj = { title: '', id: '' };
           taskObj.title = task.title;
           taskObj.id = task.id;
           return taskObj;
         });
         return res;
       });
-      console.log("titles", titles);
+      // console.log("titles", titles);
       // var res=titles.map(topicTitle =>{
       return titles.map(topicTitle => {
         let topic = topicTitle.topicTitle;
         return topicTitle.taskTitles.filter(taskTitle => {
-          var regex = new RegExp(filterBy, "i");
+          var regex = new RegExp(filterBy, 'i');
           if (regex.test(filterBy) === regex.test(taskTitle.title)) {
             searchRes.push({
               topic: topic,
               taskTitle: taskTitle.title,
               taskId: taskTitle.id
             });
-            console.log("searchRes", searchRes);
+            // console.log("searchRes", searchRes);
             this.filterRes = searchRes;
-            console.log("this.filterRes", this.filterRes);
+            // console.log("this.filterRes", this.filterRes);
           }
         });
       });
     },
-     openForm() {
+    openForm() {
       this.isAddTopic = !this.isAddTopic;
       setTimeout(() => {
         this.$refs.newTopicInput.focus();
       }, 200);
     },
-      exit() {
-        this.$refs.newTopicInput.value='';
-        this.isAddTopic = !this.isAddTopic;
+    exit() {
+      this.$refs.newTopicInput.value = '';
+      this.isAddTopic = !this.isAddTopic;
     },
-      addTopic() {
-        this.$store.dispatch({
-          type: "addTopic",
-          board: this.currBoard,
-          newTopic: {
-            title:this.$refs.newTopicInput.value,
-            tasks:[]
-          } 
+    addTopic() {
+      this.$store.dispatch({
+        type: 'addTopic',
+        board: this.currBoard,
+        newTopic: {
+          title: this.$refs.newTopicInput.value,
+          tasks: []
+        }
       });
       this.exit();
     },
-    openSearchModal(){
-      this.isSearchModal=!this.isSearchModal
+    openSearchModal() {
+      this.isSearchModal = !this.isSearchModal;
       this.filterRes = null;
     },
-    openTaskDetails() {
-      console.log("this.filterRes", this.filterRes);
-      eventBus.$emit("showTaskDetails", {
-        taskId: this.filterRes[0].taskId,
-        topicTitle: this.filterRes[0].topic
+    openTaskDetails(taskId) {
+      console.log('taskId', taskId);
+      let taskToOpen = this.filterRes.filter(task => task.taskId === taskId);
+      console.log('taskToOpen.taskId', taskToOpen[0].taskId);
+      console.log(' taskToOpen.topic', taskToOpen[0].topic);
+
+      eventBus.$emit('showTaskDetails', {
+        taskId: taskToOpen[0].taskId,
+        topicTitle: taskToOpen[0].topic
       });
       this.filterRes = null;
       this.isSearchModal = false;
     }
   },
   created() {
-    eventBus.$on("removeSideMenu", this.removeSideMenu);
+    eventBus.$on('removeSideMenu', this.removeSideMenu);
     this.boards = this.$store.getters.boards;
     this.currBoardId = this.currBoard._id;
   },
   components: {
     SideMenu
   },
-   directives: {
+  directives: {
     onClickaway: onClickaway
-  },
+  }
 };
 </script>
