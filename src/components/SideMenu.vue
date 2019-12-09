@@ -165,11 +165,8 @@ export default {
   },
   methods: {
     updateBoardDescription(event) {
-      if (!event.target.innerHTML)
-        event.target.innerHTML = "What is this board used for?";
-      eventBus.$emit("updateBoardDescription", {
-        newBoardDescription: event.target.innerHTML
-      });
+      if (!event.target.innerHTML) event.target.innerHTML = "What is this board used for?";
+      eventBus.$emit('handleBoard', {action: 'updateBoardDescription', newBoardDescription: event.target.innerHTML})
       this.originalTopicTitle = event.target.innerHTML;
     },
     endEditBoardDescription() {
@@ -177,10 +174,12 @@ export default {
     },
     async changeBoardBGImg(ev) {
       var res = await imgService.uploadImg(ev);
-      eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
+      eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: res})
+      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
     },
     setBackground(imgUrl) {
-      eventBus.$emit("changeBoardBGImg", { boardImgUrl: imgUrl });
+      eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: imgUrl})
+      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: imgUrl });
     },
     gotoUserPage(userId) {
       console.log("this is the requested userId: ", userId); /// future development

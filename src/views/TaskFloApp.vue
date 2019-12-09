@@ -69,15 +69,18 @@ export default {
       this.newBoard.createdBy = this.$store.getters.loggedInUser;
       this.newBoard.createdOn = Date.now();
       this.newBoard.members.push(this.user)
-      this.$store.dispatch({ type: "addBoard", newBoard: this.newBoard, firstMember: this.user });
+      var payload = { action: 'addBoard', board: this.newBoard, firstMember: this.user}
+      this.$store.dispatch({ type: 'handleBoard', payload });
       this.isAddBoard = true;
     },
     removeBoard(boardId) {
-      this.$store.dispatch({ type: "removeBoard", boardId });
+      var payload = {action: 'removeBoard', boardId}
+      this.$store.dispatch({ type: 'handleBoard', payload });
     },
-    addUserToBoard(payload){
-      this.$store.dispatch({ type: "addUserToBoard", board: payload.board, user: payload.user });
-      this.$store.dispatch({ type: "addBoardToUser", boardId: payload.board._id, user: payload.user });
+    addUserToBoard(passedIn){
+      var payload = { action: 'addUserToBoard', board: passedIn.board, user: passedIn.user }
+      this.$store.dispatch({ type: 'handleBoard', payload });
+      this.$store.dispatch({ type: "addBoardToUser", boardId: passedIn.board._id, user: passedIn.user });
     },
     exit() {
       this.isAddBoard=true;

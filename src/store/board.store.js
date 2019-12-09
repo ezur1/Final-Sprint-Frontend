@@ -76,20 +76,41 @@ export default {
             _broadcastUpdate()
             return updatedBoard
         },
-        // async handleBoard(context, { payload }) {
-        //     var board = context.getters.currBoard;
-        //     var action = payload.action;
-        //     switch (action) {
-        //         case "addBoard":
-        //             break;
-        //         case "removeBoard":
-        //             break;
-        //         case "addUserToBoard":
-        //             break;
-        //     }
-        //     await context.dispatch({ type: "updateBoard", board: board });
-        //     return board
-        // },
+        async handleBoard(context, { payload }) {
+            var action = payload.action;
+            if (action === 'updateBoardDescription' || action === 'changeBoardBGImg') {
+                var board = context.getters.currBoard;
+            }
+            switch (action) {
+                case "addBoard":
+                    payload.board.activityLog.push(_makeLogEntry(payload.board.title, 'board', 'added', context.getters.loggedInUser))
+                    var addedBoard = await boardService.add(payload.board)
+                    context.dispatch({ type: "loadBoards" });
+                    context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: payload.firstMember });
+                    break;
+                case "removeBoard":
+                    await boardService.remove(payload.boardId);
+                    context.dispatch({ type: "loadBoards" });
+                    break;
+                case "addUserToBoard":
+                    var testIfExist = payload.board.members.find(user => user._id === payload.user._id);
+                    if (testIfExist) return // console.log('this user is already a member...');
+                    payload.board.members.push(payload.user);
+                    await context.dispatch({ type: "updateBoard", board: payload.board });
+                    break;
+                case "updateBoardDescription":
+                    board.description = payload.newBoardDescription;
+                    board.activityLog.push(_makeLogEntry(board.title, 'board-description', 'updated', context.getters.loggedInUser))
+                    await context.dispatch({ type: "updateBoard", board: board });
+                    break;
+                case "changeBoardBGImg":
+                    board.imgUrl = payload.boardImgUrl;
+                    await context.dispatch({ type: "updateBoard", board });
+                    break;
+            }
+            if (action === 'addBoard') return addedBoard;
+            if (action === 'changeBoardBGImg' || action === 'updateBoardDescription') return board;
+        },
         async handleTopic(context, { payload }) {
             var board = context.getters.currBoard;
             var action = payload.action;
@@ -232,13 +253,6 @@ export default {
             board.activityLog = [];
             await context.dispatch({ type: "updateBoard", board: board });
         },
-        async addUserToBoard(context, { board, user }) {
-            var testIfExist = board.members.find(User => User._id === user._id);
-            if (testIfExist) return // console.log('this user is already a member...');
-            board.members.push(user);
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
-        },
         getTaskById(context, { board, taskId, topicTitle }) {
             var topicIdx = _findTopicIndex(board, topicTitle);
             var foundTask = board.topics[topicIdx].tasks.find(task => task.id === taskId);
@@ -246,25 +260,7 @@ export default {
             context.commit({ type: 'setCurrTask', foundTask });
             return foundTask
         },
-        async addBoard(context, { newBoard, firstMember }) {
-            var newLogEntry = _makeLogEntry(newBoard.title, 'board', 'added', context.getters.loggedInUser)
-            newBoard.activityLog.push(newLogEntry)
-            var addedBoard = await boardService.add(newBoard)
-            context.dispatch({ type: "loadBoards" });
-            context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: firstMember });
-            return newBoard
-        },
-        async removeBoard(context, { boardId }) {
-            await boardService.remove(boardId)
-            context.dispatch({ type: "loadBoards" });
-        },
-        async updateBoardDescription(context, { board, newBoardDescription }) {
-            board.description = newBoardDescription;
-            var newLogEntry = _makeLogEntry(board.title, 'board-description', 'updated', context.getters.loggedInUser)
-            board.activityLog.push(newLogEntry)
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
-        },
+
         async removeUserFromBoard(context) {
             var loggedInUserId = context.getters.loggedInUser._id;
             var board = context.getters.currBoard;
@@ -274,11 +270,7 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board;
         },
-        async changeBoardBGImg(context, { board, boardImgUrl }) {
-            board.imgUrl = boardImgUrl;
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board
-        },
+
         async updateTopicOrder(context, { topics }) {
             var board = context.getters.currBoard;
             board.topics = topics
@@ -292,27 +284,7 @@ export default {
             await context.dispatch({ type: "updateBoard", board: board });
             return board
         },
-        async addImgToTask(context, { board, topicTitle, taskTitle, imgUrl }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            board.topics[topicIdx].tasks[taskIdx].imgUrls.push(imgUrl);
-            var foundTask = board.topics[topicIdx].tasks[taskIdx];
-            context.commit({ type: 'setCurrTask', foundTask });
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board;
-        },
-        async removeImgFromTask(context, { board, topicTitle, taskTitle, imgUrl }) {
-            var topicIdx = _findTopicIndex(board, topicTitle);
-            var taskIdx = _findTaskIndex(board, topicIdx, taskTitle);
-            var imgIdx = _findImgIndex(board, topicIdx, taskIdx, imgUrl);
-            board.topics[topicIdx].tasks[taskIdx].imgUrls.splice(imgIdx, 1);
-            var foundTask = board.topics[topicIdx].tasks[taskIdx];
-            context.commit({ type: 'setCurrTask', foundTask });
-            await context.dispatch({ type: "updateBoard", board: board });
-            return board;
-        },
     }
-
 }
 
 function _findTopicIndex(board, term) {
