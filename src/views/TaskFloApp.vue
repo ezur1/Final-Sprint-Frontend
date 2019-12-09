@@ -21,6 +21,7 @@
     </div>
       <router-view />
     </div>
+    <Footer/>
     
   </section>
 </template>
@@ -28,6 +29,7 @@
 <script>
 import MainNavBar from "../components/MainNavBar.vue";
 import BoardsPreview from "../components/BoardsPreview.vue";
+import Footer from "../components/Footer.vue";
 export default {
   data() {
 
@@ -87,7 +89,8 @@ export default {
   },
   components: {
     MainNavBar,
-    BoardsPreview
+    BoardsPreview,
+    Footer
   }
 };
 </script>
