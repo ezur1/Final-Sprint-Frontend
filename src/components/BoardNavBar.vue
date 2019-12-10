@@ -50,7 +50,7 @@
           @click="openSearchModal"
         />
         <transition name="fade">
-          <div v-if="isSearchModal" class="search-modal">
+          <div v-on-clickaway="closeSearchResults" v-if="isSearchModal" class="search-modal">
             <h1>search results</h1>
             <h3
               @click="openTaskDetails(task.taskId)"
@@ -176,7 +176,13 @@ export default {
     },
     openSearchModal() {
       this.isSearchModal = !this.isSearchModal;
+      setTimeout(() => {
+        this.$refs.filter.focus();
+      }, 200);
       this.filterRes = null;
+    },
+    closeSearchResults(){
+      this.isSearchModal = false;
     },
     openTaskDetails(taskId) {
       let taskToOpen = this.filterRes.filter(task => task.taskId === taskId);
