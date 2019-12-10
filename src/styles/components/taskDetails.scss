@@ -1,7 +1,7 @@
 .task-details {
     background-color: #f4f5f7;
     border-radius: 3px;
-    overflow: hidden;
+    // overflow: hidden;
     position: absolute;
     width: 768px;
     z-index: 50;
@@ -22,7 +22,7 @@
             width: 100%;
             .icon {
                 margin-right: .5rem;
-                margin-top: .5rem;
+                margin-top: 1rem;
             }
         }
     }
@@ -30,7 +30,7 @@
         align-items: flex-end;
         margin-right: 4rem;
         .tag-preview {
-            width: 2.5rem;
+            width: 2.8rem;
             height: .7rem;
             margin-right: .5rem;
         }
@@ -85,6 +85,7 @@
         }
         .details-sidebar {
             width: 100%;
+            span.title{margin: 0;}
             .add-ons {
                 justify-content: flex-start;
                 flex-direction: row;
@@ -93,26 +94,33 @@
                     flex-direction: column;
                     align-items: center;
                     height: 3rem;
-                    width: 6.5rem;
+                    width: 9rem;
                     margin-right: .5rem;
+                    .confirm-delete{
+                        span{margin-bottom: .25rem;}
+                        flex-direction: column;
+                    }
                 }
                 .mini-menu {
                     top: 0;
-                    left: 6.5rem;
+                    left: 7.2rem;
                     .mini-menu-header {display: none;}
                     &.duedate-menu {
+                        position: absolute;
                         left: 0;
-                        top: 3.1rem;
+                        top: 3.2rem;
                     }
                     &.img-menu {
-                        left: 0;
-                        top: 3.1rem;
+                        left: -4rem;
+                        top: 3.2rem;
                     }
                 }
-                .minimenu-user {height: 1.125rem;}
+                .minimenu-user {height: 1.225rem; cursor: pointer;}
                 .tags-menu {
+                    height: 3rem;
+                    
                     .tags {flex-direction: row;}
-                    .tag {margin: 0 .25rem;}
+                    .tag {margin: 0 .25rem; height: 2rem;}
                 }
             }
         }
@@ -121,6 +129,7 @@
         width: 99%;
         height: 85%;
         margin-top: 3em;
+        .details-main {max-height: 42vh;min-height: 40vh;overflow-y: auto; }
         .task-mid-info{flex-direction: column; flex-flow: column-reverse;}
         .top-header{
             flex-direction: column;
@@ -131,14 +140,32 @@
                 padding: 0;
             }
         }
-      
+        .details-sidebar {
+            .add-ons {
+                flex-wrap: wrap;
+                .prev-side-btn {
+                    font-size: .85rem;
+                    width: 6rem;
+                    height: 2.5rem;
+                    flex-direction: row;
+                    span.title{margin-left: .4rem;}
+                }
+                .mini-menu {
+                    left: 6.2rem;    
+                    &.duedate-menu {left: 0;top: 2.65rem;}
+                    &.checklist-menu {left: -5rem;top: 2.65rem;}
+                    &.img-menu {left: -5rem;top: 2.65rem;}
+                }
+                .tags-menu{top:2.7rem;left: 0;}
+            }
+        }
     }
 }
 .details-main {
     width: 72%;
     min-height: 50vh;
     max-height: 60vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     border-top: 1px solid #d3d3d3;
     margin-top: .5rem;
 }

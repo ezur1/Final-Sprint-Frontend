@@ -13,8 +13,8 @@
             >{{task.title}}</h1>
             <span>{{topicTitle}}</span>
             </div>
-            <div v-if="task.members.length>0" class="flex members-tags space-between">
-              <div class="flex align-c">
+            <div  class="flex members-tags space-between">
+              <div v-if="task.members.length>0" class="flex align-c">
                 <font-awesome-icon class="icon" icon="user-alt" />
                 <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
               </div>
@@ -217,10 +217,12 @@
             <div @click="showConfirm=!showConfirm" class="prev-side-btn">
               <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
               <span class="title" v-if="!showConfirm">Delete</span>
-              <div v-if="showConfirm" class="flex space-between">
+              <div v-if="showConfirm" class="confirm-delete flex space-between">
                 <span>Are you sure?</span>
-                <font-awesome-icon class="icon" @click="removeTask()" icon="check" />
-                <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
+                <div class="flex space-around">
+                  <font-awesome-icon class="icon" @click="removeTask()" icon="check" />
+                  <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
+                </div>
               </div>
             </div>
           </div>
