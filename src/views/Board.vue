@@ -10,7 +10,7 @@
         </Draggable>
       </Container>
     </section>
-    <mobileNavBar :currBoard="currBoard" />
+    <mobileNavBar :currBoard="currBoard" class="show-on-mobile" />
     <div ref="windowOverlay" id="window-overlay"></div>
   </section>
 </template>
