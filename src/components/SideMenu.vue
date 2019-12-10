@@ -36,9 +36,14 @@
         </div>
         <div v-if="showChangeBgc" class="board-background flex col">
           <label>
-            <div class="flex align-c">
-              <font-awesome-icon icon="file-upload" class="fa-icon" />
-              <p>Upload Image</p>
+            <div class="flex col">
+              <div class="flex align-c">
+                <font-awesome-icon icon="file-upload" class="fa-icon" />
+                <p>Upload Image</p>
+              </div>
+              <div v-if="isUploading">
+                uploading...
+              </div>
             </div>
             <input hidden type="file" @change="changeBoardBGImg($event)" />
           </label>
@@ -160,7 +165,8 @@ export default {
       showAboutBoard: false,
       showChangeBgc: false,
       showConfirm: false,
-      showLibrary: false
+      showLibrary: false,
+      isUploading: false
     };
   },
   methods: {
@@ -173,7 +179,9 @@ export default {
       this.$refs.boardDescription.blur();
     },
     async changeBoardBGImg(ev) {
+      this.isUploading = true;
       var res = await imgService.uploadImg(ev);
+      this.isUploading = false;
       eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: res})
     },
     setBackground(imgUrl) {

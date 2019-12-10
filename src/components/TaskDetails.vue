@@ -190,8 +190,11 @@
                   <input hidden type="file" @change="uploadImg($event)" />
                   Upload Image
                 </label>
+                <div v-if="isUploading">
+                  uploading...
+                </div>
                 <div v-if="imgUrl" ><img class="img-attachment" :src="imgUrl" /></div>
-                <button @click="addImgToTask()">Add</button>
+                <button ref="imgAddBtn" @click="addImgToTask()" disabled=true>Add</button>
               </div>
             </a>
           </div>
@@ -252,6 +255,7 @@ export default {
       dueDateMenuOn: false,
       imgMenuOn: false,
       imgUrl: null,
+      isUploading: false,
       taskDescription: "",
       isAddComment: true
     };
@@ -400,13 +404,17 @@ export default {
       eventBus.$emit('handleTask', {action: 'addDueDate', topicTitle: this.topicTitle, dueDate: this.dueDate})
     },
     async uploadImg(ev) {
-      var res = await imgService.uploadImg(ev)
+      this.isUploading = true
+      var res = await imgService.uploadImg(ev);
+      this.isUploading = false;
+      this.$refs.imgAddBtn.disabled = false;
       this.imgUrl = res;
     },
     addImgToTask() {
       this.showImg = !this.showImg;
       this.imgMenuOn = !this.imgMenuOn;
       eventBus.$emit('handleTask', {action: 'addImgToTask', topicTitle: this.topicTitle, imgUrl: this.imgUrl})
+      this.imgUrl = null;
     },
     removeImgFromTask(imgUrl){
       eventBus.$emit('handleTask', {action: 'removeImgFromTask', topicTitle: this.topicTitle, imgUrl})
