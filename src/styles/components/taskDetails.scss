@@ -7,25 +7,79 @@
     z-index: 50;
     margin-top: 5em;
     align-self: center;
-    padding: 1.5rem 1.5rem;
+    padding: 1.5rem;
     color: #222222;
-    @include for-normal-layout {
-        width: 600px;
-        margin-top: 1rem;
-        .details-body {
-            flex-direction: column;
-        }
-        .details-main {
+
+    section {
+        margin: 1rem 0 0 0;
+        h3 {margin-left: .7rem;}
+    }
+    .top-header {width: 83%;}
+    .task-mid-info {
+        width: 100%;
+        .members-tags {
+            justify-content: space-between;
             width: 100%;
+            .icon {
+                margin-right: .5rem;
+                margin-top: .5rem;
+            }
         }
+    }
+    .task-tags {
+        align-items: flex-end;
+        margin-right: 4rem;
+        .tag-preview {
+            width: 2.5rem;
+            height: .7rem;
+            margin-right: .5rem;
+        }
+    }
+    .due-date span{
+            margin-left: 1.7rem;
+    }
+    .due-date-header {
+        margin-bottom: 8px;
+    }
+    
+    .preview-header {
+        position: relative;
+        z-index: 1;
+        h1 {
+            cursor: pointer;
+            outline-color: #67b4a2;
+            font-weight: 900;
+            font-size: 1.4rem;
+        }
+        .exit-btn {
+            font-size: 1.5rem;
+            &:hover {
+                cursor: pointer;
+                color: #d05555;
+            }
+        }
+    }
+
+    @include for-normal-layout {
+        width: 650px;
+        margin-top: 1rem;
+        .details-body {flex-direction: column;}
+        .details-main {width: 100%;}
         .top-header {
             flex-direction: row;
-            .members {
+            width: 100%;
+            .members-tags {
+                flex-direction: column;
+                width: 19rem;
                 border-left: .5px solid #d3d3d3;
-                margin-left: 1rem;
+                margin-left: .5rem;
                 padding-left: 1rem;
                 .icon {
                     display: none;
+                }
+                .task-tags{margin:0;margin-top:1rem; }
+                .tag-preview {
+                    width: 1.5rem;
                 }
             }
         }
@@ -45,9 +99,7 @@
                 .mini-menu {
                     top: 0;
                     left: 6.5rem;
-                    .mini-menu-header {
-                        display: none;
-                    }
+                    .mini-menu-header {display: none;}
                     &.duedate-menu {
                         left: 0;
                         top: 3.1rem;
@@ -57,80 +109,31 @@
                         top: 3.1rem;
                     }
                 }
-                .minimenu-user {
-                    height: 1.125rem;
-                }
+                .minimenu-user {height: 1.125rem;}
                 .tags-menu {
-                    .tags {
-                        flex-direction: row;
-                    }
-                    .tag {
-                        // width: 20%;
-                        margin: 0 .25rem;
-                    }
+                    .tags {flex-direction: row;}
+                    .tag {margin: 0 .25rem;}
                 }
             }
         }
     }
-    section {
-        margin: 1rem 0 0 0;
-        h3 {
-            margin-left: .7rem;
-        }
-    }
-    .task-mid-info {
-        width: 80%;
-        .members {
-            justify-content: end;
-            align-items: baseline;
-            .icon {
-                margin-right: .5rem;
-                margin-top: .5rem;
+    @include for-mobile-layout {
+        width: 99%;
+        height: 85%;
+        margin-top: 3em;
+        .task-mid-info{flex-direction: column; flex-flow: column-reverse;}
+        .top-header{
+            flex-direction: column;
+            h1{font-size: 1.2rem;}
+            .members-tags{
+                border: none;
+                flex-direction: row;
+                padding: 0;
             }
         }
-    }
-    .task-tags {
-        align-items: center;
-        margin-right: 4rem;
-        .tag-preview {
-            width: 2.5rem;
-            height: .7rem;
-            margin-right: .5rem;
-        }
-    }
-    .due-date {
-        span {
-            margin-left: 1.7rem;
-        }
-    }
-    .due-date-header {
-        margin-bottom: 8px;
-    }
-    .task-images {
-        .task-img {
-            height: 50%;
-            width: 50%;
-        }
+      
     }
 }
-
-.preview-header {
-    position: relative;
-    z-index: 1;
-    h1 {
-        cursor: pointer;
-        outline-color: #67b4a2;
-        font-weight: 900;
-        font-size: 1.4rem;
-    }
-    .exit-btn {
-        &:hover {
-            cursor: pointer;
-            color: #d05555;
-        }
-    }
-}
-
 .details-main {
     width: 72%;
     min-height: 50vh;
@@ -139,6 +142,7 @@
     border-top: 1px solid #d3d3d3;
     margin-top: .5rem;
 }
+
 
 .description {
     margin-top: 0.5rem;
@@ -168,7 +172,7 @@
         background-color: rgba(19, 19, 19, 0.04);
         border-radius: 3px;
         cursor: pointer;
-        display: block;
+        // display: block;
         height: 32px;
         margin-top: .6rem;
         max-width: 300px;
@@ -176,14 +180,6 @@
         position: relative;
         text-decoration: none;
         text-overflow: ellipsis;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        white-space: nowrap;
-        transition-property: background-color, border-color, box-shadow;
-        transition-duration: 85ms;
-        transition-timing-function: ease;
         &:hover {
             border-bottom: .5px solid #66799b
         }
@@ -193,7 +189,7 @@
             z-index: 20;
             background-color: #fff;
             border-radius: 3px;
-            box-shadow: 0 8px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
+            box-shadow: 0 1px 16px -4px rgba(9, 30, 66, .25), 0 0 0 1px rgba(9, 30, 66, .08);
             overflow: hidden;
             padding: .5rem;
             color: #172b4d;
@@ -202,9 +198,9 @@
             left: .1rem;
             .mini-menu-header {
                 color: #5e6c84;
-                line-height: 40px;
+                line-height: 35px;
                 border-bottom: 1px solid rgba(9, 30, 66, .13);
-                margin: 0 12px 1rem;
+                margin: 0 12px .8rem;
                 overflow: hidden;
                 padding: 0 32px;
                 position: relative;
@@ -241,19 +237,14 @@
                 background: none;
                 &:hover {
                     border: 1.4px solid #638cd3;
-                    ;
                 }
             }
         }
     }
     .members-menu {
-        .minimenu-user {
-            margin-bottom: .5rem;
-            .minimenu-avatar {
-                margin: 0;
-            }
-        }
+        .minimenu-user {margin-bottom: .5rem;}
         .selected-member::before {
+            font-size: 13px;
             content: "\2713"
         }
     }
@@ -261,7 +252,7 @@
         text-align: center;
         .add-img-link {
             margin: 0 auto;
-            margin-bottom: 1rem;
+            margin-bottom: .5rem;
             cursor: pointer;
             .icon {
                 margin-right: .5rem;
@@ -281,13 +272,13 @@
     }
     .tags-menu {
         .selected-tag::after {
+            font-size: 1.3rem;
             content: "\2713"
         }
         .tag {
             width: 100%;
-            height: 1.7rem;
+            height: 1.4rem;
             margin-bottom: .4rem;
-            display: block;
             border-radius: 3px;
             display: flex;
             justify-content: flex-end;
@@ -295,7 +286,6 @@
             padding-right: .5rem;
             cursor: pointer;
             color: #f4f5f7;
-            font-size: 1.6rem;
         }
         .blue-tag {
             background-color: $clrTag1;
@@ -330,13 +320,13 @@
     }
 }
 
-.remove-checklist {
-    display: none;
-    margin-left: 1.5rem;
-}
+
 
 .checklist-container {
     width: 95%;
+    &:hover{
+        .add-todo{display: block}
+    }
     .progress-bar {
         width: 60%;
         margin-left: 1.8rem;
@@ -345,8 +335,9 @@
             margin-left: .5rem;
         }
     }
-    p {
-        margin: 0;
+    .remove-checklist {
+        display: none;
+        margin-left: 1.5rem;
     }
     margin-bottom: 1rem;
     .checklist-header {
@@ -374,10 +365,12 @@
             margin-left: .5rem;
             font-size: 1rem;
         }
+        .active {
+            text-decoration: line-through;
+        }
         .checklist-list {
             width: 92%;
-            // margin-bottom: .2rem;
-            padding: .1rem .4rem;
+            padding: .2rem .4rem;
             &:hover {
                 background-color: #fff;
                 border-radius: 3px;
@@ -390,24 +383,24 @@
                 margin-right: .5rem;
             }
         }
-        .add-todo {
-            margin-top: 1rem;
-            span {
-                border: 1.4px solid #172b4d;
-                border-radius: 3px;
-                color: #172b4d;
-                padding: 0 .3rem;
-                margin-left: 1rem;
-                cursor: pointer;
-                font-size: .9rem;
-            }
+        
+    }
+    .add-todo {
+        display: none;
+        margin-top: 1rem;
+        span {
+            border: 1.4px solid #172b4d;
+            border-radius: 3px;
+            color: #172b4d;
+            padding: .1rem .3rem;
+            margin-left: .5rem;
+            cursor: pointer;
+            font-size: 1rem;
         }
     }
 }
 
-.active {
-    text-decoration: line-through;
-}
+
 
 .task-images {
     img {
@@ -430,17 +423,15 @@
     }
 }
 
-.task-activities {
-    .task-created-by {}
-}
 
 .toggle-task-activities {
-    float: right;
+    // float: right;
+    width: 7rem;
     border: 1.4px solid #172b4d;
     border-radius: 3px;
     color: #172b4d;
-    padding: 0 .3rem;
-    margin-top: .8rem;
+    padding: .1rem .3rem;
+    margin-bottom: .8rem;
     margin-left: 1rem;
     cursor: pointer;
     font-size: .9rem;

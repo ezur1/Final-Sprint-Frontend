@@ -13,15 +13,18 @@
             >{{task.title}}</h1>
             <span>{{topicTitle}}</span>
             </div>
-            <div v-if="task.members.length>0" class="flex members">
-              <font-awesome-icon class="icon" icon="user-alt" />
-              <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
+            <div v-if="task.members.length>0" class="flex members-tags space-between">
+              <div class="flex align-c">
+                <font-awesome-icon class="icon" icon="user-alt" />
+                <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
+              </div>
+              <div v-if="tags" class="task-tags flex ">
+                <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
+              </div>
             </div>
         </div>
         
-        <div v-if="tags" class="task-tags flex">
-            <div v-for="tag in tags" :key="tag" :class="tag" class="tag-preview" />
-        </div>
+       
       </div>
       <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
@@ -113,7 +116,7 @@
               <div v-if="membersMenuOn" class="members-menu mini-menu flex col" @click.stop>
                 <span class="mini-menu-header">Members</span>
                 <div class="minimenu-user flex align-c" v-for="member in currBoard.members" :key="member._id" @click="updateTaskMembers(member)">
-                  <Avatar :size="30" :username="member.fullName"></Avatar>
+                  <Avatar :size="22" :username="member.fullName"></Avatar>
                   <span class="title">{{member.fullName}}</span>
                 </div>
               </div>
@@ -212,7 +215,7 @@
               <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
               <span class="title" v-if="!showConfirm">Delete</span>
               <div v-if="showConfirm" class="flex space-between">
-                <span>are you sure?</span>
+                <span>Are you sure?</span>
                 <font-awesome-icon class="icon" @click="removeTask()" icon="check" />
                 <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
               </div>
