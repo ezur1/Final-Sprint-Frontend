@@ -1,92 +1,85 @@
-
-.about{
+.about {
     background-color: rgb(230, 230, 230);
-    .main-about-page-content{
-        .about-header{
-            background-image: url(../assets/img/about-hero.png);
+    .main-about-page-content {
+        .about-header {
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
             width: 100%;
             height: 38rem;
-            @include for-normal-layout{
-                background-image: url(../assets/img/about-hero.png);
+            @include for-normal-layout {
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
                 width: 100%;
                 height: 20rem;
             }
-            .contact-us{
+            .contact-us {
                 padding: 4rem;
                 border: 0.2rem solid white;
-                h1{
+                h1 {
                     font-size: 4.5rem;
                     color: rgb(233, 233, 233);
                     text-align: center;
                 }
-                p{
+                p {
                     font-weight: bold;
                     font-size: 2rem;
                     color: rgb(233, 233, 233);
                     text-align: center;
                 }
-                @include for-normal-layout{
+                @include for-normal-layout {
                     height: 50%;
                     width: 100%;
                     border: none;
                     padding: 1rem;
-                        h1{
-                            font-size: 2.5rem;
-                            color: rgb(233, 233, 233);
-                            text-align: center;
-                        }
-                        p{
-                            font-weight: bold;
-                            font-size: 1rem;
-                            color: rgb(233, 233, 233);
-                            text-align: center;
-                        }
+                    h1 {
+                        font-size: 2.5rem;
+                        color: rgb(233, 233, 233);
+                        text-align: center;
+                    }
+                    p {
+                        font-weight: bold;
+                        font-size: 1rem;
+                        color: rgb(233, 233, 233);
+                        text-align: center;
+                    }
                 }
-
             }
         }
     }
-
-    .devs{
+    .devs {
         background-color: rgb(241, 241, 241);
         height: 30rem;
         width: 90%;
         padding: 1rem;
         margin-bottom: 3rem;
         margin-top: 3rem;
-        margin-left:  auto;
-        margin-right:  auto;
-        @include for-normal-layout{
+        margin-left: auto;
+        margin-right: auto;
+        @include for-normal-layout {
             height: 100%;
             width: 80%;
         }
-        .dev{
+        .dev {
             width: 20rem;
             height: 20rem;
             text-align: center;
-            .dev-avatar{
+            .dev-avatar {
                 display: block;
                 margin: 0 auto;
                 width: 10rem;
                 height: 10rem;
                 margin-bottom: 1rem;
             }
-            .social-media-logo{
-                img{
-                margin: 0.5rem;
+            .social-media-logo {
+                img {
+                    margin: 0.5rem;
                 }
-                &:hover{
+                &:hover {
                     cursor: pointer;
-                }               
+                }
             }
         }
-       
     }
 }
-
