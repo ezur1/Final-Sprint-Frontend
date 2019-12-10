@@ -1,6 +1,6 @@
 .main-nav-bar-container {
     height: 3rem;
-    padding: .5rem 1rem;
+    padding: .5rem .5rem;
     background: rgba(23, 43, 38, 0.85);
     .links>*:not(.avatar) {
         font-weight: 900;
@@ -16,6 +16,7 @@
         margin-left: 10px;
     }
     .logo {
+        padding: 3px;
         width: 2.4em;
         height: 2.7em;
         cursor: pointer;

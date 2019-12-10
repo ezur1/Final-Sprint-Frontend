@@ -1,7 +1,7 @@
 <template>
   <section class="board-nav-bar-container flex space-between">
-    <section class="board-name-users flex">
-      <h1 class="nav-bar-logo" @click="openDropDown">{{ currBoard.title }}</h1>
+    <section class="board-name-users flex align-c">
+      <h1 class="nav-board-name" @click="openDropDown">{{ currBoard.title }}</h1>
       <div
         v-if="currBoard.usersOnBoard.length > 0"
         class="connected-users flex "

@@ -6,8 +6,7 @@
     vertical-align: top;
     white-space: nowrap;
     .topic-tasks{
-        max-height: 65vh;
-        // overflow: hidden;
+        max-height: 60vh;
         overflow-y: auto;
     }
     .topic-title {
@@ -233,11 +232,13 @@
         border: none;
         border-radius: 3px;
         padding-left: .5rem;
-        color: #172b4d;
+        color: aliceblue;
+        background: none;
     }
     &:hover {
         background-color: rgba(0, 0, 0, .6);
     }
+    @include for-mobile-layout{display: none;}
 
 }
 
