@@ -61,7 +61,7 @@ export default {
                 });
                 return res;
             });
-            console.log(titles);
+            // console.log(titles);
             
             return titles.map(topicTitle => {
                 let topic = topicTitle.topicTitle;

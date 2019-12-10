@@ -127,7 +127,7 @@
               :key="index"
             >
               <span class="username-activity">
-                <img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)" />
+                <img :src="activity.user.imgUrl" />
                 {{activity.user.userName}}
               </span>
               <span
@@ -175,14 +175,9 @@ export default {
     async changeBoardBGImg(ev) {
       var res = await imgService.uploadImg(ev);
       eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: res})
-      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
     },
     setBackground(imgUrl) {
       eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: imgUrl})
-      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: imgUrl });
-    },
-    gotoUserPage(userId) {
-      console.log("this is the requested userId: ", userId); /// future development
     },
     clearLog() {
       eventBus.$emit("clearLog");
