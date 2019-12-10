@@ -36,9 +36,14 @@
         </div>
         <div v-if="showChangeBgc" class="board-background flex col">
           <label>
-            <div class="flex align-c">
-              <font-awesome-icon icon="file-upload" class="fa-icon" />
-              <p>Upload Image</p>
+            <div class="flex col">
+              <div class="flex align-c">
+                <font-awesome-icon icon="file-upload" class="fa-icon" />
+                <p>Upload Image</p>
+              </div>
+              <div v-if="isUploading">
+                uploading...
+              </div>
             </div>
             <input hidden type="file" @change="changeBoardBGImg($event)" />
           </label>
@@ -127,7 +132,7 @@
               :key="index"
             >
               <span class="username-activity">
-                <img :src="activity.user.imgUrl" @click="gotoUserPage(activity.user._id)" />
+                <img :src="activity.user.imgUrl" />
                 {{activity.user.userName}}
               </span>
               <span
@@ -160,7 +165,8 @@ export default {
       showAboutBoard: false,
       showChangeBgc: false,
       showConfirm: false,
-      showLibrary: false
+      showLibrary: false,
+      isUploading: false
     };
   },
   methods: {
@@ -173,16 +179,13 @@ export default {
       this.$refs.boardDescription.blur();
     },
     async changeBoardBGImg(ev) {
+      this.isUploading = true;
       var res = await imgService.uploadImg(ev);
+      this.isUploading = false;
       eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: res})
-      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: res });
     },
     setBackground(imgUrl) {
       eventBus.$emit('handleBoard', {action: 'changeBoardBGImg', boardImgUrl: imgUrl})
-      // eventBus.$emit("changeBoardBGImg", { boardImgUrl: imgUrl });
-    },
-    gotoUserPage(userId) {
-      console.log("this is the requested userId: ", userId); /// future development
     },
     clearLog() {
       eventBus.$emit("clearLog");

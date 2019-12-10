@@ -9,7 +9,7 @@
         @blur="updateCheckListTitle"
         @keydown.enter="endEditCheckListTitle">
         </h3>
-        <font-awesome-icon class="remove-checklist" @click="removeCheckList" icon="trash"/>
+        <font-awesome-icon class="remove-checklist" @click="removeCheckList(checkList.title)" icon="trash"/>
     </div>
     <div v-if="checkList.todos.length>0" class="progress-bar flex ">
       <p>{{checkListStats}}%</p>
@@ -97,8 +97,8 @@ export default {
             isDone:false
           }})
     },
-    removeCheckList() {
-      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkList: this.checkList})
+    removeCheckList(checkListTitle) {
+      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkListTitle})
     },
     showComposer(){
       this.isAddTodo=false;

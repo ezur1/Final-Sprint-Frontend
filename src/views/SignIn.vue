@@ -3,14 +3,14 @@
     <div v-if="isShowSignUp" class="signin">
       <h1>Sign Up</h1>
       <input type="text" placeholder="Username" v-model="userCred.userName" />
-      <input type="password" placeholder="password" v-model="userCred.password" />
+      <input type="password" placeholder="password" v-model="userCred.password" @keyup.enter="doSignup" />
       <button class="btn" @click="doSignup">Sign Up</button>
       <p @click="openLogIn">Log In</p>
     </div>
     <div v-if="isShowlogin" class="login">
       <h1>Login</h1>
       <input type="text" placeholder="Username" v-model="userCred.userName" />
-      <input type="password" placeholder="password" v-model="userCred.password" />
+      <input type="password" placeholder="password" v-model="userCred.password" @keyup.enter="doLogin"/>
       <button class="btn" @click="doLogin">Login</button>
       <p @click="openSignUp">Sign Up</p>
     </div>

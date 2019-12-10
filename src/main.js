@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import './plugins/fontawesome'
 import App from './App.vue'
-import './registerServiceWorker'
 import router from './router'
 import store from './store/index'
 import Vue2TouchEvents from 'vue2-touch-events'
 
 import './styles/global.scss'
+import './registerServiceWorker'
 
 Vue.use(require('vue-moment'));
 Vue.use(Vue2TouchEvents)
