@@ -2,15 +2,6 @@
     height: 3rem;
     padding: .5rem 1rem;
     background: rgba(23, 43, 38, 0.85);
-    // &:hover{
-    //     transition: all .3s ease-in-out;
-    //     background: rgba(23, 43, 38, 0.9);
-    // }
-    .nav-bar-logot {
-        &:hover {
-            cursor: pointer;
-        }
-    }
     .links>*:not(.avatar) {
         font-weight: 900;
         margin-left: 1rem;
@@ -24,6 +15,16 @@
     .avatar {
         margin-left: 10px;
     }
+    .logo {
+        width: 2.4em;
+        height: 2.7em;
+        cursor: pointer;
+      }
+      @include for-mobile-layout{
+          .home-link,.about-link{
+              display:none;
+          }
+      }
 }
 
 .user-image {

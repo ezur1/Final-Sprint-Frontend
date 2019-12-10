@@ -5,9 +5,9 @@
     </div>
 
     <div class="links flex align-c">
-      <router-link to="/">Home</router-link>
-      <router-link to="/taskfloapp">Boards</router-link>
-      <router-link to="/about">About Us</router-link>
+      <router-link class="home-link" to="/">Home</router-link>
+      <router-link class="boards-link" to="/taskfloapp">Boards</router-link>
+      <router-link class="about-link" to="/about">About Us</router-link>
       <div v-if="user.fullName" class="avatar" @click="toggleUserMenu"><Avatar :size="40" :username="user.fullName"></Avatar></div>
     </div>
     <transition name="slide-fade" >
