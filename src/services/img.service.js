@@ -1,8 +1,8 @@
 'use strict';
 
 export default {
-    uploadImg,
-    uploadScreenshot
+    uploadImg
+    // uploadScreenshot
 }
 
 
@@ -23,25 +23,25 @@ function uploadImg(ev) {
         .then(res => {
             return res.url
         })
-        .catch(err => console.error(err))
+        .catch()
 }
 
-function uploadScreenshot(dataURL) {
-    const CLOUD_NAME = 'ddvdpsmgu'
-    const PRESET_NAME = 'gl5rcald'
-    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+// function uploadScreenshot(dataURL) {
+//     const CLOUD_NAME = 'ddvdpsmgu'
+//     const PRESET_NAME = 'gl5rcald'
+//     const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
 
-    const formData = new FormData();
-    formData.append('file', dataURL)
-    formData.append('upload_preset', PRESET_NAME);
+//     const formData = new FormData();
+//     formData.append('file', dataURL)
+//     formData.append('upload_preset', PRESET_NAME);
 
-    return fetch(UPLOAD_URL, {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(res => {
-            return res.url
-        })
-        .catch(err => console.error(err))
-}
+//     return fetch(UPLOAD_URL, {
+//             method: 'POST',
+//             body: formData
+//         })
+//         .then(res => res.json())
+//         .then(res => {
+//             return res.url
+//         })
+//         .catch(err => console.error(err))
+// }

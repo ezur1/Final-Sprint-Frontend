@@ -193,7 +193,7 @@ export default {
                         board.topics[topicIdx].tasks[taskIdx].activities.unshift(_makeTaskActivityEntry(payload.checkList.title, 'added checklist ', context.getters.loggedInUser))
                         board.topics[topicIdx].tasks[taskIdx].checkLists.push(payload.checkList);
                     } else {
-                        board.topics[topicIdx].tasks[taskIdx].activities.unshift(_makeTaskActivityEntry(payload.checkList.title, 'removed checklist ', context.getters.loggedInUser))
+                        board.topics[topicIdx].tasks[taskIdx].activities.unshift(_makeTaskActivityEntry(payload.checkListTitle, 'removed checklist ', context.getters.loggedInUser))
                         board.topics[topicIdx].tasks[taskIdx].checkLists.splice(checkListIdx, 1);
                     }
                     break;

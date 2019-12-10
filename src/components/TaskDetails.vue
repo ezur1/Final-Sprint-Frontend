@@ -381,7 +381,7 @@ export default {
       var checkListTitle = this.$refs.checklistTitle.value;
       if(checkListTitle === "")return;
       var checkList = { title: checkListTitle, todos: [] }
-      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkList})
+      eventBus.$emit('handleTask', {action: 'updateCheckLists', topicTitle: this.topicTitle, checkListTitle, checkList})
     },
     openForm() {
       this.isAddComment = !this.isAddComment;
