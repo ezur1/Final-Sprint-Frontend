@@ -49,9 +49,8 @@ export default {
             return user
         },
         async addBoardToUser(context, { boardId, user }) {
-            console.log('got to the addBoardToUser action in the user.store');
             var testIfExist = user.boards.find(boardID => boardID === boardId);
-            if (testIfExist) return console.log('this board already has THIS member...');
+            if (testIfExist) return // console.log('this board already has THIS member...');
             user.boards.push(boardId);
             await context.dispatch({ type: "updateUser", user });
             return user
