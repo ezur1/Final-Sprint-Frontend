@@ -1,10 +1,6 @@
 <template>
   <section id="app" class="main-app-container">
     <MainNavBar />
-    <div class="my-boards-header flex align-c justify-center">
-        <h1>My Boards</h1>         
-    </div>
-   
     <div class="main-content-container ">
       <div class="flex justify-center wrap">
         <div class="add-board-container">
@@ -17,7 +13,7 @@
         :board="board" 
         :users="users" 
         @removeBoard="removeBoard"
-        @addUserToBoard="addUserToBoard" />
+        @updateBoardMembers="updateBoardMembers" />
     </div>
       <router-view />
     </div>
@@ -32,8 +28,6 @@ import BoardsPreview from "../components/BoardsPreview.vue";
 import Footer from "../components/Footer.vue";
 export default {
   data() {
-
-    
     return {
       isAddBoard: true,
       newBoard: {
@@ -73,14 +67,13 @@ export default {
       this.$store.dispatch({ type: 'handleBoard', payload });
       this.isAddBoard = true;
     },
-    removeBoard(boardId) {
-      var payload = {action: 'removeBoard', boardId}
+    removeBoard(board) {
+      var payload = {action: 'removeBoard', board}
       this.$store.dispatch({ type: 'handleBoard', payload });
     },
-    addUserToBoard(passedIn){
-      var payload = { action: 'addUserToBoard', board: passedIn.board, user: passedIn.user }
+    updateBoardMembers(passedIn){
+      var payload = { action: 'updateBoardMembers', board: passedIn.board, member: passedIn.member }
       this.$store.dispatch({ type: 'handleBoard', payload });
-      this.$store.dispatch({ type: "addBoardToUser", boardId: passedIn.board._id, user: passedIn.user });
     },
     exit() {
       this.isAddBoard=true;

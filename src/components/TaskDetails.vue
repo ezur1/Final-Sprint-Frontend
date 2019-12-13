@@ -13,7 +13,7 @@
             >{{task.title}}</h1>
             <span>{{topicTitle}}</span>
             </div>
-            <div  class="flex members-tags space-between">
+            <div class="flex members-tags space-between">
               <div v-if="task.members.length>0" class="flex align-c">
                 <font-awesome-icon class="icon" icon="user-alt" />
                 <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       

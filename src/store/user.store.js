@@ -6,7 +6,6 @@ if (sessionStorage.user) localLoggedinUser = JSON.parse(sessionStorage.user);
 export default {
     state: {
         loggedinUser: localLoggedinUser,
-        handledUser: null,
         users: []
     },
     mutations: {
@@ -47,24 +46,33 @@ export default {
         },
         async getUserById(context, { userId }) {
             var user = await userService.getById(userId)
-                // context.commit({ type: 'setHandledUser', user })
             return user
         },
-        async addBoardToUser(context, { user, boardId }) {
+        async addBoardToUser(context, { boardId, user }) {
+            console.log('got to the addBoardToUser action in the user.store');
             var testIfExist = user.boards.find(boardID => boardID === boardId);
-            if (testIfExist) return // console.log('this board already has THIS member...');
+            if (testIfExist) return console.log('this board already has THIS member...');
             user.boards.push(boardId);
             await context.dispatch({ type: "updateUser", user });
             return user
         },
+        async removeBoardFromUser(context, { boardId, userId }) {
+            var user = await context.dispatch({ type: "getUserById", userId });
+            var boardIdxInUser = _findBoardIdxInUser(user, boardId);
+            user.boards.splice(boardIdxInUser, 1);
+            var scrubbedUser = await context.dispatch({ type: "updateUser", user });
+            return scrubbedUser
+        },
         async updateUser(context, { user }) {
             await userService.update(user)
             var updatedUser = await userService.getById(user._id)
-                // context.commit({ type: 'setCurrBoard', board: updatedBoard })
-                // _broadcastUpdate()
             return updatedUser
         },
 
     },
     modules: {}
+}
+
+function _findBoardIdxInUser(user, term) {
+    return user.boards.findIndex(boardId => boardId === term);
 }
