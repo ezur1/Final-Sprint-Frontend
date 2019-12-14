@@ -76,6 +76,12 @@ export default {
             _broadcastUpdate()
             return updatedBoard
         },
+        async updateBoardNoEmission(context, { board }) {
+            await boardService.update(board)
+            var updatedBoard = await boardService.getById(board._id)
+            context.commit({ type: 'setCurrBoard', board: updatedBoard })
+            return updatedBoard
+        },
         async handleBoard(context, { payload }) {
             var action = payload.action;
             if (action === 'updateBoardDescription' || action === 'changeBoardBGImg') {
@@ -89,14 +95,24 @@ export default {
                     context.dispatch({ type: "addBoardToUser", boardId: addedBoard._id, user: payload.firstMember });
                     break;
                 case "removeBoard":
-                    await boardService.remove(payload.boardId);
+                    var usersToScrub = payload.board.members;
+                    usersToScrub.forEach(user => {
+                        context.dispatch({ type: "removeBoardFromUser", boardId: payload.board._id, userId: user._id });
+                    })
+                    await boardService.remove(payload.board._id);
                     context.dispatch({ type: "loadBoards" });
                     break;
-                case "addUserToBoard":
-                    var testIfExist = payload.board.members.find(user => user._id === payload.user._id);
-                    if (testIfExist) return // console.log('this user is already a member...');
-                    payload.board.members.push(payload.user);
-                    await context.dispatch({ type: "updateBoard", board: payload.board });
+                case "updateBoardMembers":
+                    var boardMemberIdx = _findBoardMemberIndex(payload.board, payload.member);
+                    if (boardMemberIdx === -1) {
+                        payload.board.members.push(payload.member);
+                        context.dispatch({ type: "addBoardToUser", boardId: payload.board._id, user: payload.member });
+                    } else {
+                        payload.board.members.splice(boardMemberIdx, 1);
+                        context.dispatch({ type: "removeBoardFromUser", boardId: payload.board._id, user: payload.member });
+                    }
+                    var updatedBoard = await context.dispatch({ type: "updateBoardNoEmission", board: payload.board });
+                    await context.dispatch({ type: "loadBoards" });
                     break;
                 case "updateBoardDescription":
                     board.description = payload.newBoardDescription;
@@ -109,6 +125,7 @@ export default {
                     break;
             }
             if (action === 'addBoard') return addedBoard;
+            if (action === 'updateBoardMembers') return updatedBoard
             if (action === 'changeBoardBGImg' || action === 'updateBoardDescription') return board;
         },
         async handleTopic(context, { payload }) {
@@ -285,6 +302,10 @@ export default {
             return board
         },
     }
+}
+
+function _findBoardMemberIndex(board, term) {
+    return board.members.findIndex(currMember => currMember._id === term._id);
 }
 
 function _findTopicIndex(board, term) {

@@ -1,23 +1,16 @@
 <template>
   <section class="boards-preview flex col aglin-c align-center">
     <div
-      class="board-card "
+      class="board-card flex col space-between"
       @click="goToBoard"
-      :style="{ backgroundImage: `url(${board.imgUrl})` }"
-    >
+      :style="{ backgroundImage: `url(${board.imgUrl})` }">
       <a href="#" class="board-prev-side-btn" @click.stop="openMenu">
-        <font-awesome-icon icon="ellipsis-h" />
-        
-        <div
-          v-on-clickaway="openMenu"
-          v-if="boardMenuOn"
-          class="board-prev-mini-menu flex col"
-          @click.stop
-        >
+        <font-awesome-icon icon="cog" style="color:white"/>
+        <div v-on-clickaway="openMenu" v-if="boardMenuOn" class="board-prev-mini-menu flex col" @click.stop>
           <span @click="showUsersMenu">Add Member</span>
           <div v-if="showUsers">
             <div v-for="user in users" :key="user._id">
-              <div class="board-color none flex" @click="addUserToBoard(user)">
+              <div class="board-color none flex" @click="updateBoardMembers(user)">
                 <Avatar :size="30" :username="user.fullName"></Avatar>
                 <p>{{ user.firstName }}</p>
               </div>
@@ -27,16 +20,15 @@
           <div v-if="showConfirm" class="confirmation-modal">
             <p>are you sure?</p>
             <div class="flex space-between">
-              <button @click="removeBoard(board._id)" class="confirm-btn">
-                yes
-              </button>
-              <button @click="showConfirm = !showConfirm" class="cancel-btn">
-                no
-              </button>
+              <button @click="removeBoard(board)" class="confirm-btn">yes</button>
+              <button @click="showConfirm = !showConfirm" class="cancel-btn">no</button>
             </div>
           </div>
         </div>
       </a>
+      <div v-if="board.members.length>0" class="flex align-c">
+        <BoardMemberPreview class="flex" v-for="member in board.members" :key="member._id" :member="member" @removeMemberFromBoard="updateBoardMembers" />       
+      </div>
     </div>
     <h2 class="board-title">{{ board.title }}</h2>
   </section>
@@ -44,6 +36,7 @@
 
 <script>
 import { directive as onClickaway } from 'vue-clickaway';
+import BoardMemberPreview from "./BoardMemberPreview";
 import Avatar from 'vue-avatar';
 
 export default {
@@ -83,15 +76,18 @@ export default {
       this.showConfirm = !this.showConfirm;
       this.showUsers = false;
     },
-    removeBoard(boardId) {
-      this.$emit('removeBoard', boardId);
+    removeBoard(board) {
+      this.$emit('removeBoard', board);
     },
-    addUserToBoard(user) {
-      this.$emit('addUserToBoard', { board: this.boardToEdit, user });
-    }
+    updateBoardMembers(member) {
+      this.$emit('updateBoardMembers', { board: this.boardToEdit, member });
+      this.showUsers = false;
+      this.boardMenuOn = false;
+    },
   },
   components: {
-    Avatar
+    Avatar,
+    BoardMemberPreview
   }
 };
 </script>

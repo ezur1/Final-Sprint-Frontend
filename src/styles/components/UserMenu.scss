@@ -1,0 +1,33 @@
+.user-image {
+    width: 100px;
+    height: 100px;
+}
+
+.user-img,
+.user-mgmt {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 20px;
+    width: 300px;
+    max-height: 200px;
+    overflow: scroll;
+}
+
+.logout {
+    color: white;
+    font-size: larger;
+    width: 5rem;
+    height: 2rem;
+    border-radius: 1rem;
+    background-color: #0093E9;
+    border-style: none;
+    display: block;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(36, 160, 231);
+    }
+    &:focus {
+        outline: 0;
+    }
+}

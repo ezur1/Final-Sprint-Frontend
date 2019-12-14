@@ -20,15 +20,11 @@
         width: 2.4em;
         height: 2.7em;
         cursor: pointer;
-      }
-      @include for-mobile-layout{
-          .home-link,.about-link{
-              display:none;
-          }
-      }
-}
-
-.user-image {
-    width: 100px;
-    height: 100px;
+    }
+    @include for-mobile-layout {
+        .home-link,
+        .about-link {
+            display: none;
+        }
+    }
 }
