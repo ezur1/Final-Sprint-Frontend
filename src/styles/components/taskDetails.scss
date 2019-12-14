@@ -128,6 +128,7 @@
     @include for-mobile-layout {
         width: 99%;
         height: 85%;
+        padding: 1rem;
         margin-top: 3em;
         .details-main {max-height: 42vh;min-height: 40vh;overflow-y: auto; }
         .task-mid-info{flex-direction: column; flex-flow: column-reverse;}
