@@ -1,6 +1,14 @@
 <template>
   <section class="side-menu">
-    <h2 class="side-menu-header">Menu</h2>
+    <div class="side-menu-header">
+      <h2 >Menu</h2>
+      <font-awesome-icon
+            class="exit-btn"
+            @click="closeSideMenu"
+            icon="times"
+            size="2x"
+          />
+    </div>
     <div class="side-menu-content">
       <div class="about-board">
         <div @click="showAboutBoard=!showAboutBoard" class="flex align-c">
@@ -188,7 +196,10 @@ export default {
     },
     openLibrary() {
       this.showLibrary = !this.showLibrary;
-    }
+    },
+    closeSideMenu(){
+      eventBus.$emit('openSideMenu')
+    } 
   },
   computed: {
     board() {

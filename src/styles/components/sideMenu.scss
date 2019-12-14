@@ -1,13 +1,13 @@
 .side-menu {
     position: absolute;
-    top: 3rem;
+    top: 6rem;
     right: 0rem;
     z-index: 900;
     overflow: hidden;
     width: 25rem;
     background-color: rgba(228, 235, 234, 0.99);
     border-radius: 3px;
-    height: 94.7%;
+    height: 89.7%;
     padding: 1rem 1.25rem;
     color: #003e4b;
     .side-menu-header {
@@ -98,8 +98,6 @@
                 
             }
             }
-            &:hover {
-            }
         }
         .avtivity-log {
             margin-top: 1rem;
@@ -123,6 +121,13 @@
                 position: relative;
                 height: 50vh;
             }
+        }
+    }
+    @include for-mobile-layout{
+        width: 23.5rem;
+        .side-menu-header {
+            position: relative;
+            .exit-btn{position: absolute;right: 0;top: .5rem; cursor: pointer;}
         }
     }
 }
