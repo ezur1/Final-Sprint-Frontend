@@ -126,11 +126,7 @@
           <ul class="activity">
             <li
               style="border-bottom: 1px solid rgb(182, 202, 197);padding-bottom:.3rem"
-              class="clean"
-              v-for="(activity,index) in activities"
-              :activity="activity"
-              :key="index"
-            >
+              class="clean" v-for="(activity,index) in activities" :activity="activity" :key="index">
               <span class="username-activity">
                 <img :src="activity.user.imgUrl" />
                 {{activity.user.userName}}

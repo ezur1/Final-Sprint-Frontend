@@ -35,6 +35,29 @@ export default {
             context.commit({ type: 'setUser', user })
             return user;
         },
+        async removeUser(context, { user }) {
+            var boardsToScrub = user.boards;
+            if (boardsToScrub.length > 0) {
+                boardsToScrub.forEach(boardId => {
+                    context.dispatch({ type: "scrubUserFromBoard", boardId, user });
+                })
+            }
+            await context.dispatch({ type: "loadBoards" });
+            await userService.remove(user._id)
+            await context.dispatch({ type: 'loadUsers' })
+        },
+        async scrubUserFromBoard(context, { boardId, user }) {
+            var board = await context.dispatch({ type: "getBoardById", boardId });
+            var boardMemberIdx = _findBoardMemberIndex(board, user._id);
+            board.members.splice(boardMemberIdx, 1);
+            context.dispatch({ type: "updateBoardNoEmission", board });
+        },
+        async changeUserImg(context, { userImgUrl }) {
+            var user = context.getters.loggedInUser
+            user.imgUrl = userImgUrl;
+            await context.dispatch({ type: "updateUser", user });
+            context.commit({ type: 'setUser', user })
+        },
         async logout(context) {
             await userService.logout()
             context.commit({ type: 'setUser', user: null })
@@ -74,4 +97,8 @@ export default {
 
 function _findBoardIdxInUser(user, term) {
     return user.boards.findIndex(boardId => boardId === term);
+}
+
+function _findBoardMemberIndex(board, term) {
+    return board.members.findIndex(currMember => currMember._id === term);
 }

@@ -5,7 +5,7 @@
       @click="goToBoard"
       :style="{ backgroundImage: `url(${board.imgUrl})` }">
       <a href="#" class="board-prev-side-btn" @click.stop="openMenu">
-        <font-awesome-icon icon="ellipsis-h" />
+        <font-awesome-icon icon="cog" style="color:white"/>
         <div v-on-clickaway="openMenu" v-if="boardMenuOn" class="board-prev-mini-menu flex col" @click.stop>
           <span @click="showUsersMenu">Add Member</span>
           <div v-if="showUsers">

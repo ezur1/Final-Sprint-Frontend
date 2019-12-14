@@ -7,6 +7,7 @@ export default {
     query,
     getById,
     update,
+    remove,
     login,
     signup,
     logout
@@ -24,6 +25,10 @@ async function getById(id) {
 
 function update(user) {
     return httpService.put(`${USER_ROUTE}/${user._id}`, user)
+}
+
+function remove(userId) {
+    return httpService.delete(`${USER_ROUTE}/${userId}`)
 }
 
 async function login(userCred) {
