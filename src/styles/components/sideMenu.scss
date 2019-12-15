@@ -17,6 +17,8 @@
         padding-bottom: .5rem;
         border-bottom: 1px hsl(190, 82%, 13%) solid;
         margin-bottom: 1rem;
+        position: relative;
+        .exit-btn{position: absolute;top: .5rem;right:0;}
     }
     .side-menu-content {
         p {
