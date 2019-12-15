@@ -96,8 +96,8 @@
           </div> 
             <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
               <div class="flex align-c">
-                <Avatar :size="28" :username="activity.user.fullName"></Avatar>
-                <span class="task-activity-user-full-name">{{activity.user.firstName}}</span>
+                <Avatar :size="25" :username="activity.user.fullName"></Avatar>
+                <span class="task-activity-user-full-name"> {{activity.user.firstName}}</span>
                 <span class="task-activity-txt">{{activity.txt}}</span>
                 <span>{{activity.timeStamp | moment("from", "now") }}</span>
               </div>
@@ -207,14 +207,14 @@
         <div class="actions-on-card flex col">
           <h3>ACTIONS</h3>
           <div class="add-ons flex col">
-            <div class="prev-side-btn">
+            <!-- <div class="prev-side-btn">
               <font-awesome-icon class="icon" icon="chevron-right" />
               <span class="title">Move</span>
             </div>
             <div class="prev-side-btn">
               <font-awesome-icon class="icon" icon="copy"/>
               <span class="title">Copy</span>
-            </div>
+            </div> -->
             <div @click="showConfirm=!showConfirm" class="prev-side-btn">
               <font-awesome-icon v-if="!showConfirm" class="icon" icon="trash-alt"/>
               <span class="title" v-if="!showConfirm">Delete</span>

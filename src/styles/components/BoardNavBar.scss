@@ -1,5 +1,5 @@
 .board-nav-bar-container {
-    color: rgba(240, 248, 255, 0.9);
+    color: $clr2;
     height: 3rem;
     padding: .5rem .5rem;
     background: linear-gradient(to bottom, rgba(226,226,226,0) 0%, rgba(209,209,209,0) 0%, rgba(11, 44, 36, 0.8) 0%, rgba(254, 254, 254, 0.125) 100%);
@@ -7,7 +7,7 @@
     .nav-board-name{
         font-size: 1.5rem;
         padding-right: .5rem;
-        border-right: 1px solid  rgba(240, 248, 255, 0.9);
+        border-right: 1px solid  $clr2;
         cursor: pointer;
         
     }
@@ -16,13 +16,13 @@
         margin-right:1.6rem;
         cursor: pointer; 
         &:hover{
-            color: rgba(240, 248, 255, 1);
+            color: $clr2;
         }
         @include for-mobile-layout{display: none;}
     }
 
     .user-on-board {
-        border: 1px solid rgba(240, 248, 255, 0.9);
+        border: 1px solid $clr2;
         border-radius: 4px;
         padding: 5px;
         margin-left: .5rem;
@@ -30,7 +30,7 @@
     }
 
     .connected-users{
-        border-right: 1px solid rgba(240, 248, 255, 0.9);
+        border-right: 1px solid $clr2;
         padding-right:.5rem; 
     }
     img {
@@ -51,7 +51,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 12rem;
+                max-width: 17rem;
             }
         }
     }
@@ -74,7 +74,7 @@
 }
 
 .open-menu-btn {
-    border: 1px solid rgba(240, 248, 255, 0.9);
+    border: 1px solid $clr2;
     border-radius: 0.3rem;
     padding: 0.4rem .8rem;
     &:hover{
@@ -99,16 +99,14 @@
     .board-li {
         padding: .3rem;
         width: 100%;
-        color: rgba(240, 248, 255, 1);
+        color: $clr2;
         margin:.2rem .2rem;
-        // border-bottom: .5px solid rgba(240, 248, 255, 1);
         background: linear-gradient(to top, rgba(226,226,226,0) 0%, rgba(209,209,209,0.9) 0%, rgba(23, 43, 38, 0.9) 0%, rgba(254, 254, 254, 0.9) 200%);
         border-radius: 3px;
         &:hover {
             cursor: pointer;
-            border : .5px solid rgba(240, 248, 255, 1);
-            // border-top: .5px solid rgba(240, 248, 255, 1);
-    }
+            border : .5px solid $clr2;
+        }
     }
 }
 
@@ -124,9 +122,9 @@
             border: none;
             border-radius: 3px;
             padding-left: .5rem;
-            color: aliceblue;
+            color: $clr2;
         }
-        ::-webkit-input-placeholder{color: aliceblue;}
+        ::-webkit-input-placeholder{color: $clr2;}
         position: relative;
         .search-modal{          
             overflow: auto;
@@ -135,17 +133,17 @@
             right: 0;
             max-height: 15rem;
             width: 25rem;
-            background-color: rgb(255, 255, 255);
+            background-color: $clr2;
             border-radius: 0.3rem;
             z-index: 1;
             h3{
                 padding: 0.5rem;
                 margin: .8rem;
                 color: rgb(32, 32, 32);
-                &:hover{cursor: pointer;border: 1px solid #0a1e3f;}
                 border: 1px solid rgb(226, 226, 226);
                 background-color: white;
                 border-radius: 4px;
+                &:hover{cursor: pointer;border: 1px solid $clr3;}
             }
         }
         &.add-topic{

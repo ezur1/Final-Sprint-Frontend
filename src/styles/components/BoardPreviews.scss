@@ -12,7 +12,7 @@
     cursor: default;
     position: absolute;
     z-index: 20;
-    background-color: #fff;
+    background-color: $clr2;
     border-radius: 3px;
     overflow: hidden;
     padding: 1rem;
@@ -34,9 +34,6 @@
     .none:hover {
         transition: all .2s ease-in-out;
         box-shadow: -2.5px 0 0 rgb(119, 124, 123), 2.5px 0 0 rgb(119, 124, 123);
-    }
-    .none {
-        // justify-content: center
     }
 }
 

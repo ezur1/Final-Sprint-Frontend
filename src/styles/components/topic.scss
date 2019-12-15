@@ -27,7 +27,7 @@
             padding: .4rem 0 .5rem;
             padding-right: .5rem;
             margin-bottom: .5rem;
-            color: #0a1e3f;
+            color: $clr3;
             border-radius: 3px;
             span {
                 font-size: 1.5rem;
@@ -37,7 +37,7 @@
                 cursor: pointer;
                 font-weight: 900;
                 font-size: 1rem;
-                background-color: aliceblue;
+                background-color: $clr2;
                 span {
                     color: #44ae3e;
                 }
@@ -213,7 +213,7 @@
     width: 13rem;
     margin-left:.5rem;
     background-color: rgba(0, 0, 0, .4);
-    color: aliceblue;
+    color: $clr2;
     border-radius: 5px;
     max-height: 100%;
     font-weight: 900;
@@ -232,7 +232,7 @@
         border: none;
         border-radius: 3px;
         padding-left: .5rem;
-        color: aliceblue;
+        color: $clr2;
         background: none;
     }
     &:hover {
@@ -245,5 +245,5 @@
 .mini-menu-topic-icon {
     font-size: 1.2rem;
     padding-top: 4px;
-    color: #0a1e3f;
+    color: $clr3;
 }
