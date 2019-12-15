@@ -8,23 +8,20 @@
         background: rgb(118, 198, 161);
         background: linear-gradient(140deg, rgba(118, 198, 161, 1) 6%, rgba(118, 198, 161, 1) 35%, rgba(206, 227, 120, 1) 73%);
         position: relative;
-
         #logo {
             width: 6rem;
             height: 8rem;
             margin-top: 2rem;
             margin-left: 3rem;
         }
-        @include for-mobile-layout{
+        @include for-mobile-layout {
             #logo {
                 width: 3rem;
                 height: 4rem;
                 margin-left: 1.5rem;
                 margin-top: 1rem;
-
             }
         }
-
         .login-btn {
             text-align: center;
             color: $clr2;
@@ -36,17 +33,16 @@
             border-radius: 2rem;
             border: none;
             background-color: #376263;
-                &:hover {
-                    transition: all .3s ease-in-out;
-                    cursor: pointer;
-                    background-color: #0c414d;
-                    box-shadow: inset 0 0 0 1px $clr2;
-                }
-                &:focus {
-                    outline: 0;
-                }
+            &:hover {
+                transition: all .3s ease-in-out;
+                cursor: pointer;
+                background-color: #0c414d;
+                box-shadow: inset 0 0 0 1px $clr2;
+            }
+            &:focus {
+                outline: 0;
+            }
         }
-
         .start-now-btn {
             color: $clr2;
             font-size: 1.8rem;
@@ -58,20 +54,19 @@
             display: block;
             margin-top: 2.5rem;
             margin-left: 10rem;
-                img {
-                    width: 50px;
-                }
-                &:hover {
-                    transition: all .3s ease-in-out;
-                    cursor: pointer;
-                    background-color: #0c414d;
-                    box-shadow: inset 0 0 0 1px $clr2;
-                }
-                &:focus {
-                    outline: 0;
-                }
+            img {
+                width: 50px;
+            }
+            &:hover {
+                transition: all .3s ease-in-out;
+                cursor: pointer;
+                background-color: #0c414d;
+                box-shadow: inset 0 0 0 1px $clr2;
+            }
+            &:focus {
+                outline: 0;
+            }
         }
-
         .greet {
             height: 80vh;
             width: 95vw;
@@ -83,7 +78,6 @@
                 right: 2rem;
                 bottom: 3rem;
             }
-
             .greet-content {
                 width: 55%;
                 position: absolute;
@@ -92,128 +86,118 @@
             }
             h1 {
                 font-size: 3em;
-                margin-bottom: 3rem;
+                margin-bottom: .5rem;
                 padding: 1rem;
+                width: 80%;
             }
-
             p {
                 margin: 0;
                 font-size: 1.7rem;
                 line-height: 1.5em;
                 padding: 1rem;
-                width: 75%;
-
+                width: 80%;
             }
         }
-            @include for-wide-layout {
-                .greet { 
-                    h1 {font-size: 2.5em;}
-                    p {font-size: 1.3rem;}
-                    .head-img {bottom: 9rem;}
+        @include for-wide-layout {
+            .greet {
+                h1 {
+                    font-size: 2.5em;
                 }
-            }
-
-            @include for-normal-layout {
-                .greet{
-                    .greet-content {
-                        
-                        width: 80%;
-                        top: 3rem;
-                        h1 {
-                            font-size: 1.875em;
-                        }
-    
-                        p {
-                            width: 60%;
-                        }
-                        .start-now-btn {
-                            margin: 0;
-                            margin: 0 auto;
-                        }
-                    }
-                    .head-img {
-                        bottom: 12rem;
-                    }
-    
-                    
+                p {
+                    font-size: 1.3rem;
                 }
-
-            }
-
-            @include for-narrow-layout {
-                .greet-content {
-                    height: 100vh;
-                    width: 80%;
-
-                    h1 {
-                        font-size: 1.8rem;
-                        width: 100%;
-                    }
-
-                    p {
-                        width: 54%;
-                    }
-
-                    .start-now-btn {
-                        margin-left: 14rem;
-                        margin-top: 7rem;
-                    }
-                }
-
                 .head-img {
-                    top: 12rem;
-                    right: 2rem;
+                    bottom: 9rem;
                 }
             }
-
-            @include for-mobile-layout{
-
-                .home-header-container{
-                    padding: 0;
-                }
-                .login-btn {
-                    margin-right: 2em;
-                    margin-top: 2em;
-                    height: 1.8rem;
-                    font-size: 1rem;
-                    width: 5rem;
-                    padding: 0;
-                }
-                .greet{
-                    .head-img {
-                        top: 24.5rem;
-                        left: 3rem;
-                        width: 80%
-                    }
-                    .greet-content {
-                        width: 100vw;
-                        text-align: center;
-                        align-items: center;
-                        left: 0;
-                        p {
-                            width: 90%;
-                            line-height: 1.125em;
-                        }
-        
-                        h1 {
-                            margin: 0;
-                            padding-top:0; 
-                            padding-bottom:0; 
-                        }
-        
-                        .start-now-btn {
-                            margin: 0;
-                            width: 14.5rem;
-                            height: 2rem;
-                            font-size: 1.3rem;
-                            img{width: 40px;}
-                        }
-                    }
-                    
-                }
-            }
-
         }
+        @include for-normal-layout {
+            .greet {
+                .greet-content {
+                    width: 80%;
+                    top: 3rem;
+                    h1 {
+                        font-size: 1.875em;
+                    }
+                    p {
+                        width: 60%;
+                    }
+                    .start-now-btn {
+                        margin: 0;
+                        margin: 0 auto;
+                    }
+                }
+                .head-img {
+                    bottom: 12rem;
+                }
+            }
+        }
+        @include for-narrow-layout {
+            .greet-content {
+                height: 100vh;
+                width: 80%;
+                h1 {
+                    font-size: 1.8rem;
+                    width: 100%;
+                }
+                p {
+                    width: 54%;
+                }
+                .start-now-btn {
+                    margin-left: 14rem;
+                    margin-top: 7rem;
+                }
+            }
+            .head-img {
+                top: 12rem;
+                right: 2rem;
+            }
+        }
+        @include for-mobile-layout {
+            .home-header-container {
+                padding: 0;
+            }
+            .login-btn {
+                margin-right: 2em;
+                margin-top: 2em;
+                height: 1.8rem;
+                font-size: 1rem;
+                width: 5rem;
+                padding: 0;
+            }
+            .greet {
+                .head-img {
+                    top: 24.5rem;
+                    left: 3rem;
+                    width: 80%
+                }
+                .greet-content {
+                    width: 100vw;
+                    text-align: center;
+                    align-items: center;
+                    left: 0;
+                    p {
+                        width: 90%;
+                        line-height: 1.125em;
+                    }
+                    h1 {
+                        margin: 0;
+                        padding-top: 0;
+                        padding-bottom: 0;
+                    }
+                    .start-now-btn {
+                        margin: 0;
+                        width: 14.5rem;
+                        height: 2rem;
+                        font-size: 1.3rem;
+                        img {
+                            width: 40px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .home-productivity-container {
@@ -231,7 +215,7 @@
         width: 100%;
         height: 100%;
         position: relative;
-        .content{
+        .content {
             position: absolute;
             width: 70%;
             right: 0;
@@ -241,9 +225,7 @@
                 font-weight: 900;
                 margin-top: 10rem;
                 margin-left: 9rem;
-                
             }
-    
             p {
                 width: 60%;
                 font-size: 1.8rem;
@@ -252,7 +234,6 @@
                 margin-top: 1rem;
                 line-height: 3rem;
             }
-
             @include for-mobile-layout {
                 position: relative;
                 margin: 0 auto;
@@ -268,7 +249,6 @@
                     margin: 1rem 0;
                     font-size: 1.8rem;
                 }
-                
             }
         }
         img {
@@ -284,7 +264,3 @@
         }
     }
 }
-
-
-
-

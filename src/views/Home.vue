@@ -12,7 +12,7 @@
             <div class="flex col">
               <h1>Looking for a simple and effective way to manage your project?</h1>
             </div>
-            <p>TaskFlow lets you break it up into manageable tasks and tackle them with ease !  </p>
+            <p>TaskFlow lets you break it up into manageable tasks and tackle them with ease!  </p>
             <button class="start-now-btn" @click="startAsGuest">Try It Now <img src="@/assets/arrow.png" class="arrow" /></button>
           </div>
         </div>
