@@ -1,6 +1,6 @@
 <template>
   <section class="signin-container flex justify-center align-c">
-   
+    <img id="logo" class="login-page-img" src="@/assets/login.png" />
     <div v-if="isShowSignUp" class="signup">
       <h1>Sign Up</h1>
       <input type="text" placeholder="Username" v-model="userSignUpDetails.userName" />
