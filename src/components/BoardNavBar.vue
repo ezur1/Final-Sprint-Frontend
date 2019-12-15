@@ -36,7 +36,7 @@
       </div>
     </section>
     <div class="board-menu-section flex align-c">
-      <div class="board-search flex align-center">
+      <div class="board-search flex align-center" :class="{'add-topic':isSearchModal}">
         <input
           ref="filter"
           @keyup="filter"
@@ -51,7 +51,6 @@
         />
         <transition name="fade">
           <div v-on-clickaway="closeSearchResults" v-if="isSearchModal" class="search-modal">
-            <h1>search results</h1>
             <h3
               @click="openTaskDetails(task.taskId)"
               v-for="task in filterRes"
@@ -196,6 +195,7 @@ export default {
   },
   created() {
     eventBus.$on('removeSideMenu', this.removeSideMenu);
+    eventBus.$on('openSideMenu', this.openSideMenu);
     this.boards = this.$store.getters.boards;
     this.currBoardId = this.currBoard._id;
   },

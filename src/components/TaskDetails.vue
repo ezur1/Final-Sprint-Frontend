@@ -13,8 +13,8 @@
             >{{task.title}}</h1>
             <span>{{topicTitle}}</span>
             </div>
-            <div class="flex members-tags space-between">
-              <div v-if="task.members.length>0" class="flex align-c">
+            <div v-if="task.members.length>0||task.tags.length>0" class="flex members-tags space-between">
+              <div  class="flex align-c">
                 <font-awesome-icon class="icon" icon="user-alt" />
                 <MemberPreview class="flex" v-for="member in task.members" :key="member._id" :topicTitle="topicTitle" :taskTitle="originalTaskTitle" :member="member" />       
               </div>
@@ -29,7 +29,7 @@
       <font-awesome-icon class="exit-btn" icon="times" @click="backToBoard()" />
     </div>
     <div class="details-body flex space-between">
-      <div class="details-main" @click="closeMiniMenu()">
+      <div class="details-main flex col" @click="closeMiniMenu()">
        
         <section class="description">
           <div class="description-header flex align-c">
@@ -47,8 +47,8 @@
 
         
 
-        <section class="due-date">
-          <div v-if="task.dueDate" class="due-date-header flex align-c">
+        <section v-if="task.dueDate" class="due-date">
+          <div  class="due-date-header flex align-c">
             <font-awesome-icon class="icon" icon="clock" />
             <h3>Due date</h3>
           </div>
@@ -66,7 +66,7 @@
           </div>
         </section>
 
-        <section class="check-list flex col">
+        <section v-if="task.checkLists.length>0" class="check-list flex col">
           <CheckList
             v-for="checkList in task.checkLists"
             :key="checkList.title"
@@ -76,26 +76,27 @@
           />
         </section>
 
-        <section class="task-activities">
+        <section class="task-activities flex col">
           <div class="task-comments">
-            <div>
-              <h1 v-if="isAddComment" @click="openForm"><span>+ </span>Add Comment</h1>
+            <div class="flex align-c">
+              <font-awesome-icon class="icon" icon="comment-dots" size="2x" />
+              <h3 @click="openForm">Add Comment</h3>
             </div>
-            <div v-if="!isAddComment" class="add-comment flex align-c">
+            <div v-if="!isAddComment" class="add-comment flex align-c space-around">
               <input ref="newCommentInput" type="text" placeholder="add a comment..." @keyup.enter="addComment" @blur="exit" />
               <font-awesome-icon class="exit-btn" @click="exit" icon="times" size="2x" />
             </div>
           </div>
           <div class="toggle-task-activities">
-            <span @click="showActivityDetails=!showActivityDetails">Toggle Details</span>
+            <span @click="showActivityDetails=!showActivityDetails">Toggle Activities</span>
           </div>
           <div v-if="showActivityDetails">
             <div v-if="task.activities!=0" class="toggle-task-activities">
             <span @click="clearTaskActivities">Clear Activities</span>
           </div> 
             <div class="task-created-by flex col" v-for="activity in task.activities" :key="activity.txt">
-              <div>
-                <Avatar :size="30" :username="activity.user.fullName"></Avatar>
+              <div class="flex align-c">
+                <Avatar :size="28" :username="activity.user.fullName"></Avatar>
                 <span class="task-activity-user-full-name">{{activity.user.firstName}}</span>
                 <span class="task-activity-txt">{{activity.txt}}</span>
                 <span>{{activity.timeStamp | moment("from", "now") }}</span>
@@ -219,7 +220,7 @@
               <span class="title" v-if="!showConfirm">Delete</span>
               <div v-if="showConfirm" class="confirm-delete flex space-between">
                 <span>Are you sure?</span>
-                <div class="flex space-around">
+                <div style="width:2.5rem;" class="flex space-between">
                   <font-awesome-icon class="icon" @click="removeTask()" icon="check" />
                   <font-awesome-icon class="icon" @click="showConfirm = true" icon="times" />
                 </div>

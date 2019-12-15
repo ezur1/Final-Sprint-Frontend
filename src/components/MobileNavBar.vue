@@ -1,10 +1,9 @@
 <template>
     <section class="mobile-nav-container flex">
-        <div class="board-search justify-center flex align-center">
+        <div @click="openSearchModal" class="board-search justify-center flex align-center">
             <font-awesome-icon
             class="search-icon"
             icon="search"
-            @click="openSearchModal"
             />
             <span>Search</span>
             <input
@@ -12,6 +11,7 @@
             @keyup="filter"
             v-if="isSearchModal"
             type="text"
+            @click.stop
             placeholder="search for a task"
             />
             <transition name="fade">
@@ -30,7 +30,7 @@
       <div class="board-add-topic flex justify-center align-center">
             <span>+Add Topic</span>
       </div>
-      <div class="board-menu flex justify-center align-center">
+      <div @click="openSideMenu()" class="board-menu flex justify-center align-center">
             <span>Menu</span>
       </div>
     </section>
@@ -38,6 +38,7 @@
 
 
 <script>
+import { eventBus } from '../main.js';
 export default {
     props:['currBoard'],
     data(){
@@ -82,6 +83,9 @@ export default {
             this.isSearchModal = !this.isSearchModal;
             this.filterRes = null;
         },
+        openSideMenu(){
+            eventBus.$emit('openSideMenu')
+        }    
     },
 }
 </script>

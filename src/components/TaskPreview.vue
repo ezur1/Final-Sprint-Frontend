@@ -14,19 +14,19 @@
         </div>
       </div>
       <section class="flex space-between align-c indicators">
-      <div v-if="task.dueDate" class="due-date">
-        <font-awesome-icon class="icon" icon="clock" />
-        {{task.dueDate | moment("MMM D")}}
-      </div> 
-      <div v-if="task.checkLists.length>0" class="checklist">
-        <font-awesome-icon class="icon" icon="check-square" />
-        {{checkListStats}}
-      </div>   
-      <div v-if="task.members.length!==0" class="members flex">
-        <div v-for="member in task.members" :key="member._id" class="member-preview" @click="removeMemberFromTask(task.title, member._id)">
-            <Avatar :size="30" :username="member.fullName"></Avatar>
+        <div v-if="task.dueDate" class="due-date">
+          <font-awesome-icon class="icon" icon="clock" />
+          {{task.dueDate | moment("MMM D")}}
+        </div> 
+        <div v-if="task.checkLists.length>0" class="checklist">
+          <font-awesome-icon class="icon" icon="check-square" />
+          {{checkListStats}}
+        </div>   
+        <div v-if="task.members.length!==0" class="members flex">
+          <div v-for="member in task.members" :key="member._id" class="member-preview" @click="removeMemberFromTask(task.title, member._id)">
+              <Avatar :size="25" :username="member.fullName"></Avatar>
+          </div>
         </div>
-      </div>
       </section>
     </div>
   </div>
