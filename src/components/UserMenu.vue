@@ -50,7 +50,6 @@ export default {
       await this.$store.dispatch({ type: "changeUserImg", userImgUrl: res })
     },
     async removeUser(user){
-      console.log('you want to remove user with ID: ',user._id);
       await this.$store.dispatch({ type: "removeUser", user })
     },
     showConfirmMenu() {
