@@ -10,14 +10,9 @@
           <img class="head-img" src="@/assets/headTp.png" />
           <div class="greet-content flex col">
             <div class="flex col">
-              <h1>TaskFlow lets you work
-              more collaboratively
-              and get more done.</h1>
+              <h1>Looking for a simple and effective way to manage your project?</h1>
             </div>
-            <p>TaskFlow’s Boards, Topics, and Tasks enable
-            you to organize and prioritize your
-            projects in a fun, flexible, and
-            rewarding way!</p>
+            <p>TaskFlow lets you break it up into manageable tasks and tackle them with ease !  </p>
             <button class="start-now-btn" @click="startAsGuest">Try It Now <img src="@/assets/arrow.png" class="arrow" /></button>
           </div>
         </div>
@@ -26,11 +21,8 @@
       <div class="home-productivity-container flex col ">
           <div class="prodactivity-content flex">
             <div class="content flex col">
-              <h1>Work with any team</h1>
-                  <p>Wheter its for work,a side project
-                  or even the next family vacation,
-                  TaskFlow helps your team
-                  stay orgenized.</p>
+              <h1>Achieve more, by working together.</h1>
+                  <p>Divide the workload between collaborators and easily monitor completion.</p>
             </div>
             <img class="body-home-page" src="@/assets/bodyTp.png" />
           </div>
