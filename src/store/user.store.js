@@ -59,6 +59,7 @@ export default {
             context.commit({ type: 'setUser', user })
         },
         async logout(context) {
+            // await context.dispatch({ type: "removeUserFromBoard" });
             await userService.logout()
             context.commit({ type: 'setUser', user: null })
         },

@@ -2,7 +2,7 @@
     <section class="side-menu">
       <div class="flex space-between">
         <h2 class="side-menu-header">{{user.fullName}}</h2>
-        <button class="logout"  @click="doLogout">Logout</button>
+        <button v-if="!currBoard" class="logout" @click="doLogout">Logout</button>
       </div>
       <div class="flex col align-center">
         <div class="user-img align-c">
@@ -55,8 +55,8 @@ export default {
     showConfirmMenu() {
       this.showConfirm = !this.showConfirm;
     },
-    doLogout() {
-      this.$store.dispatch({ type: "logout" });
+    async doLogout() {
+      await this.$store.dispatch({ type: "logout" });
     }
   },
   computed: {
@@ -66,6 +66,9 @@ export default {
     users(){
       return this.$store.getters.users
     },
+    currBoard(){
+      return this.$store.getters.currBoard;
+    }
   },
   created() {},
   components: { 
