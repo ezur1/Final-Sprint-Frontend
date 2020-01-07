@@ -20,6 +20,9 @@ export default {
         setCurrBoard(state, { board }) {
             state.currBoard = board
         },
+        setCurrBoardToNull(state) {
+            state.currBoard = null
+        },
         setCurrTopicTitle(state, topicTitle) {
             state.currTopicTitle = topicTitle;
         }
@@ -54,6 +57,9 @@ export default {
             var board = await boardService.getById(boardId)
             context.commit({ type: 'setCurrBoard', board })
             return board
+        },
+        setCurrBoardToNull(context) {
+            context.commit({ type: 'setCurrBoardToNull' })
         },
         async getBoardById(context, { boardId }) {
             var board = await boardService.getById(boardId)

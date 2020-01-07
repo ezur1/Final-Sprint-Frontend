@@ -37,9 +37,9 @@ export default {
     goToHome() {
       this.$router.push(`/`);
     },
-    doLogout() {
-      this.$store.dispatch({ type: "logout" });
-    }
+    // async doLogout() {
+    //   await this.$store.dispatch({ type: "logout" });
+    // }
   },
     created() {},
     components: {

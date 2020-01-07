@@ -106,6 +106,7 @@ export default {
   },
   async destroyed(){
     await this.$store.dispatch({ type: "removeUserFromBoard" });
+    await this.$store.dispatch({ type: 'setCurrBoardToNull' })
     socketService.off('chat addMsg', this.addMsg)
     socketService.terminate();
     eventBus.$off()
