@@ -9,22 +9,8 @@
 
 <script>
 export default {
-  data(){
-    return{}
-  },
-  computed: {
-    boards() {
-      return this.$store.getters.boards;
-    }
-  },
   created() {
   this.$store.dispatch("loadBoards");
-  },
-  components: {
   }
 }
 </script>
-
-<style lang="scss">
-
-</style>

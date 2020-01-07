@@ -7,19 +7,20 @@
       <input type="password" placeholder="Password" v-model="userSignUpDetails.password" @keyup.enter="doSignup" />
       <button class="btn flex justify-center align-c" @click="doSignup">
         Sign Up
-        <div v-if="isPleaseWait" class="loading"><div></div><div></div><div></div><div></div></div>
+        <div v-if="isPleaseWait" class="loading"></div>
       </button>
       <p class="underline" @click="openLogIn">Log In</p>
     </div>
     <div v-if="isShowlogin" class="login">
-      <!-- <h1>Login</h1> -->
-      <input type="text" placeholder="Username" v-model="userCred.userName" />
-      <input type="password" placeholder="password" v-model="userCred.password" @keyup.enter="doLogin"/>
-      <button class="btn flex justify-center align-c" @click="doLogin">
-        Login
-        <div v-if="isPleaseWait" class="loading"><div></div><div></div><div></div><div></div></div>
+      <div class="form">
+        <input class="user-name" type="text" placeholder="Username" v-model="userCred.userName" />
+        <input class="password" type="password" placeholder="password" v-model="userCred.password" @keyup.enter="doLogin"/>
+        <button class="btn flex justify-center align-c" @click="doLogin">
+          Login
+          <div v-if="isPleaseWait" class="loading"></div>
         </button>
-      <p class="underline" @click="openSignUp">Sign Up</p>
+        <p class="underline" @click="openSignUp">Sign Up</p>
+      </div>
     </div>
     <img id="logo" class="login-page-img" src="@/assets/login.png" />
   </section>
